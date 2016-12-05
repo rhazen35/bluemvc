@@ -36,10 +36,10 @@
             <a href="<?= BASE_PATH ?>home/index">Home</a>
             <a href="<?= BASE_PATH ?>projects/index">Projects</a>
             <a href="<?= BASE_PATH ?>manual/index">Manual</a>
-<!--            --><?php //if( $this->is_admin_or_super_user() ): ?>
-<!--                <a href="--><?//= BASE_PATH ?><!--users/index">Users</a>-->
-<!--            --><?php //endif; ?>
-<!--            <a href="--><?//= BASE_PATH ?><!--contact/index">Contact</a>-->
+            <?php if( $this->is_admin_or_super_user() ): ?>
+                <a href="<?= BASE_PATH ?>users/index">Users</a>
+            <?php endif; ?>
+            <a href="<?= BASE_PATH ?>contact/index">Contact</a>
         </div>
     </div>
     <?php endif; ?>

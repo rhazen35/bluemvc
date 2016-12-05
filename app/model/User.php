@@ -1,80 +1,71 @@
 <?php
-
-namespace app\models;
-
+/** --- MODEL --- */
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-if( !class_exists( "User" ) ):
-
-    class User extends Eloquent
+class User extends Eloquent
+{
+    protected $fillable = ['email', 'hash'];
+    protected $capsule;
+    protected $userID;
+    /** Inititalize the model */
+    public function __construct()
     {
-        protected $fillable = [
-            'email',
-            'hash'
-        ];
-
-
-        //--------------------------------------------------------------------------------------------------------------
-        // Relations
-        //--------------------------------------------------------------------------------------------------------------
-
-        public function projects()
-        {
-            return $this->hasMany(Project::class);
-        }
-
-
-        public function get_user_type( $data = [] )
-        {
-            $capsule = unserialize( CAPSULE );
-            $data    = $capsule->table('users_type')->where('user_id', '=', $data['user_id'])->get();
-
-            if( !empty( $data ) ):
-                foreach( $data as $item ):
-                    if( !empty( $item->type ) ):
-                        return( $item->type );
-                    else:
-                        return( false );
-                    endif;
-                endforeach;
-            else:
-                return( false );
-            endif;
-
-            return( false );
-        }
-
-        public function get_users()
-        {
-            $capsule = unserialize( CAPSULE );
-            $data    = $capsule->table('users')->get();
-            return($data);
-        }
-
-        public function create_user( $data = [] )
-        {
-            $capsule = unserialize( CAPSULE );
-            $hash    = password_hash( $data['pass'], PASSWORD_BCRYPT );
-            $dataSet = array('email' => $data['email'], 'hash' => $hash);
-            $user    = User::create($dataSet);
-            $userID  = $user->id;
-
-            $capsule->table('users_type')->insert(['user_id' => $userID, 'type' => $data['type']]);
-        }
-
-        public function update_user( $params )
-        {
-            $capsule = unserialize( CAPSULE );
-            $capsule->table('users')->where('id', $params[0])->update(['email' => $params[1]]);
-            $capsule->table('users_type')->where('user_id', $params[0])->update(['type' => $params[2]]);
-        }
-
-        public function delete_user( $data = [] )
-        {
-            $capsule = unserialize( CAPSULE );
-            $capsule->table('users_type')->whereIn('user_id', (array) $data)->delete();
-            User::destroy($data);
-        }
+        parent::__construct();
+        $this->capsule = unserialize( CAPSULE );
+        $this->userID  = ( !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "" );
     }
+    /**
+     * --- CRUD -=--
+     *
+     *Read a users type
+     */
+    public function get_user_type( $data = '' )
+    {
+        $data    = $this->capsule->table('users_type')->where('user_id', '=', $data)->select('type')->first();
 
-endif;
+        if( !empty( $data->type ) ):
+            return( $data->type );
+        else:
+            return( false );
+        endif;
+    }
+    /** Read all users */
+    public function get_users()
+    {
+        $data    = $this->capsule->table('users')->get();
+        return($data);
+    }
+    /** Read a users email */
+    public function get_user_email(){return( $this->capsule->table('users')->where('id', $this->userID)->select('email')->first() );}
+    /** Check if a user exists */
+    public function check_user_exists( $email )
+    {
+        $user = $this->capsule->table('users')->where('email', $email)->select('id')->first();
+        if( !empty( $user ) ):
+            return( true );
+        else:
+            return( false );
+        endif;
+    }
+    /** Create a new user */
+    public function create_user( $data = [] )
+    {
+        $hash    = password_hash( $data['pass'], PASSWORD_BCRYPT );
+        $dataSet = array('email' => $data['email'], 'hash' => $hash);
+        $userID = $this->capsule->table('users')->insertGetId($dataSet);
+
+        $this->capsule->table('users_type')->insert(['user_id' => $userID, 'type' => $data['type']]);
+    }
+    /** Update a user */
+    public function update_user( $params )
+    {
+        $this->capsule->table('users')->where('id', $params[0])->update(['email' => $params[1]]);
+        $this->capsule->table('users_type')->where('user_id', $params[0])->update(['type' => $params[2]]);
+    }
+    /** Delete a user */
+    public function delete_user( $data = [] )
+    {
+        $this->capsule->table('users_type')->whereIn('user_id', (array) $data)->delete();
+        User::destroy($data);
+    }
+}

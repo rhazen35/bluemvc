@@ -15,9 +15,7 @@
             ?>
             <form action="<?= BASE_PATH ?>users/edit" method="post" class="table-row">
                 <input type="hidden" name="userID" value="<?= $user->id ?>">
-                <span class="table-cell">
-                    <input id="updateUser" type="email" name="email" value="<?= $user->email ?>">
-                </span>
+                <span class="table-cell"><input id="updateUser" type="email" name="email" value="<?= $user->email ?>"></span>
                 <span class="table-cell">
                         <select name="type" id="updateUser">
                             <option value="<?= $user_type ?>"><?= $user_type ?></option>
@@ -31,7 +29,7 @@
                 <span class="table-cell"><?= $user->created_at ?></span>
                 <span class="table-cell"><?= $user->updated_at ?></span>
                 <span class="table-cell-delete">
-                    <a id="deleteUser" class="users-delete" data-url="<?= BASE_PATH ?>users/delete/<?= $user->id ?>" title="Delete this user"><img src="<?= PUBLIC_PATH ?>img/icons/bin_icon.png"></a>
+                    <a id="deleteUser" class="users-delete" data-url="<?= BASE_PATH ?>users/delete/<?= $user->id ?>" title="Delete this user"></a>
                 </span>
             </form>
         <?php endforeach; ?>

@@ -4,9 +4,14 @@ namespace app\controller;
 
 use app\core\BaseController;
 use app\core\Library as Lib;
+use app\observer\ISubject;
+use app\observer\IObserver;
+use app\observer\login\AuthorizeObserver;
+use app\observer\login\RegisterLoginObserver;
 
-class Login extends BaseController
+class Login extends BaseController implements ISubject
 {
+    private $observers = array();
     protected $login;
     protected $login_user;
 
@@ -21,58 +26,64 @@ class Login extends BaseController
         $this->view('home/index', []);
     }
 
-    public static function is_logged_in()
+    function attach(IObserver $observer_in)
     {
-        return( isset( $_SESSION['login'] ) && !empty( $_SESSION['login'] ) ? true : false );
+        $this->observers[] = $observer_in;
+    }
+
+    function detach(IObserver $observer_in)
+    {
+        foreach ($this->observers as $okey => $oval) {
+            if ($oval == $observer_in) {
+                unset($this->observers[$okey]);
+            }
+        }
+    }
+
+    function notify()
+    {
+        $events = array();
+        foreach ($this->observers as $obs) {
+            $event = $obs->update($this);
+            if (!empty($event) && $event !== null) {
+                $events[] = $event;
+            }
+        }
+        return ($events);
     }
 
     public function authorize()
     {
-        $email    = ( !empty( $_POST['email'] ) ? trim( $_POST['email'] ) : "" );
-        $password = ( !empty( $_POST['password'] ) ? trim( $_POST['password'] ) : "" );
+        $a = new AuthorizeObserver();
+        $r = new RegisterLoginObserver();
 
-        if( !empty( $email ) && !empty( $password ) ):
-            $data = $this->login->read_where_email(['email' => $email]);
-            if( $this->verify( $data, $password ) ):
-                foreach( $data as $item ):
-                    $_SESSION['login'] = $item->id;
-                endforeach;
-                $this->register_login();
-                Lib::redirect("home/index");
-            else:
-                Lib::redirect("login/failed");
-            endif;
-        else:
-            return( false );
-        endif;
+        $this->attach($a);
+        $events = $this->notify();
+        foreach( $events as $event ) {
+            if( $event['event'] === 'login_authorization' && $event['response'] === true ) {
+                $this->detach( $a );
+                $this->attach($r);
+                $events = $this->notify();
+                $this->detach( $r );
+                foreach ($events as $eventi) {
+                    if( $eventi['event'] === 'register_user_login' && $eventi['response'] === true ) {
+                        Lib::redirect('home/index');
+                    }
+                    else{
+                        Lib::redirect('login/failed');
+                    }
+                }
+                break;
+            }
+            else{
+                Lib::redirect('login/failed');
+            }
+        }
     }
 
-    private function verify( $data, $password )
+    public static function is_logged_in()
     {
-        if( !empty( $data ) ):
-            foreach( $data as $item ):
-                if( !empty( $item->hash ) ):
-                    $verify = !empty( $item->hash ) ? password_verify( $password, $item->hash ) : "";
-                    return( $verify );
-                else:
-                    return( false );
-                endif;
-            endforeach;
-        else:
-            return( false );
-        endif;
-    }
-
-    public function register_login()
-    {
-        $data = $this->login_user->register_login();
-
-        if( empty( $data ) ):
-            $this->login_user->register_new_login();
-        else:
-            $this->login_user->update_user_login( $data );
-        endif;
-        Lib::redirect("home/index");
+        return( isset( $_SESSION['login'] ) && !empty( $_SESSION['login'] ) ? true : false );
     }
 
     public function failed()
