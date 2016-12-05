@@ -1,0 +1,11 @@
+{
+  "require": {
+    "illuminate/database": "^5.3"
+  },
+  "autoload":
+  {
+    "classmap": [
+      "app/models"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+DirectoryIndex index.html index.htm default.htm index.php index.php3 index.phtml index.php5 index.shtml mwindex.phtml
+
+Options -MultiViews
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
+
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
