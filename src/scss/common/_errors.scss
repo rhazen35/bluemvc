@@ -1,0 +1,39 @@
+.page-404
+{
+  z-index:-1;
+  min-height: 100%;
+  min-width: 1024px;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: fixed;
+
+  color: $white;
+
+  background-image: url('../../public/img/hero/404.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  h3
+  {
+    margin-top:3rem;
+    font-size:125%;
+    text-align:center;
+  }
+
+  h4
+  {
+    margin-top:3rem;
+    font-size:105%;
+    text-align:center;
+  }
+
+}
+
+.page-404-text
+{
+  padding:1rem;
+}

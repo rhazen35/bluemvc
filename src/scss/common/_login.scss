@@ -1,0 +1,68 @@
+.login
+{
+  width:25rem;
+  margin: 0 auto;
+  margin-top:2rem;
+}
+
+.login form
+{
+  width:25rem;
+}
+
+.login form fieldset
+{
+  padding:2rem;
+  text-align:center;
+  border: 1px solid $swamp-green;
+}
+
+.login form fieldset legend
+{
+  font-size:90%;
+  padding-left:0.5rem;
+  padding-right:0.5rem;
+}
+
+.login form fieldset input[type="text"],
+.login form fieldset input[type="email"],
+.login form fieldset input[type="password"]
+{
+  width:90%;
+  margin-top:0.5rem;
+  padding:0.5rem;
+}
+
+.login .radio-box
+{
+  margin-top:1rem;
+}
+
+.login form fieldset input[type="radio"]
+{
+  width:auto;
+  padding:0.5rem;
+  padding-left:0;
+}
+
+.login form fieldset input[type="submit"]
+{
+  width:90%;
+  margin-top:1rem;
+  padding:1rem;
+  font-weight:bold;
+  background-color: $swamp-green;
+  border:1px solid transparent;
+  cursor:pointer;
+}
+
+.login form fieldset input[type="submit"]:hover
+{
+  background-color: $light-sky-blue;
+}
+
+.login-failed
+{
+  color: $firebrick;
+  text-align:center;
+}

@@ -5,10 +5,10 @@
 
 namespace app\core;
 
-use app\core\Controller;
 use app\core\Library as Lib;
+use app\core\BaseController;
 
-class Router extends Controller
+class Router extends BaseController
 {
     protected $url;
     protected $routes;
@@ -67,23 +67,21 @@ class Router extends Controller
         /** Check if the route exists, if not send 404 */
         if( !$route_exist ):
             $this->view('common/404', []);
-            exit();
         endif;
         /** Check if the controller exists, if not send 404 */
-        $controllerPath = realpath( APPLICATION_PATH . Lib::path('app/controllers/' . ucfirst( $this->controller ) . '.php' ) );
+        $controllerPath = realpath( APPLICATION_PATH . Lib::path('app/controller/' . ucfirst( $this->controller ) . '.php' ) );
         if( file_exists( $controllerPath ) ):
             require_once($controllerPath);
             unset($url[0]);
             /** Capitalize first letter of controller and set controller namespace */
             $cp_controller    = ucfirst( $this->controller );
-            $ns_controller    = "\\app\\controllers\\".$cp_controller;
+            $ns_controller    = "\\app\\controller\\".$cp_controller;
             $this->controller = ( new $ns_controller );
             /** Check if the method exists, if not send 404 */
             if( method_exists( $this->controller, $this->method ) ):
                 unset( $url[1] );
             else:
                 $this->view('common/404', []);
-                exit();
             endif;
             /** Set the params */
             $this->params = $url ? array_values( $url ) : [];
@@ -91,7 +89,6 @@ class Router extends Controller
             call_user_func_array( [ $this->controller, $this->method ], $this->params );
         else:
             $this->view('common/404', []);
-            exit();
         endif;
     }
 }

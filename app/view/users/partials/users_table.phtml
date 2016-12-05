@@ -1,0 +1,39 @@
+<?php $users = $this->get_users(); ?>
+
+<div id="stage-table-wrapper">
+    <div class="users">
+        <span class="table-row">
+            <span class="table-header">Email</span>
+            <span class="table-header">Type</span>
+            <span class="table-header">Created at</span>
+            <span class="table-header">Updated at</span>
+            <span class="table-header">Delete</span>
+        </span>
+        <?php
+        foreach( $users as $user ):
+            $user_type = $this->convert_user_type_text( $this->model('User')->get_user_type( $data = ['user_id' => $user->id] ) );
+            ?>
+            <form action="<?= BASE_PATH ?>users/edit" method="post" class="table-row">
+                <input type="hidden" name="userID" value="<?= $user->id ?>">
+                <span class="table-cell">
+                    <input id="updateUser" type="email" name="email" value="<?= $user->email ?>">
+                </span>
+                <span class="table-cell">
+                        <select name="type" id="updateUser">
+                            <option value="<?= $user_type ?>"><?= $user_type ?></option>
+                            <?php foreach( $this->user_types_array() as $type ): ?>
+                                <?php if( $user_type !== $type ): ?>
+                                    <option value="<?= $type ?>"><?= $type ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </span>
+                <span class="table-cell"><?= $user->created_at ?></span>
+                <span class="table-cell"><?= $user->updated_at ?></span>
+                <span class="table-cell-delete">
+                    <a id="deleteUser" class="users-delete" data-url="<?= BASE_PATH ?>users/delete/<?= $user->id ?>" title="Delete this user"><img src="<?= PUBLIC_PATH ?>img/icons/bin_icon.png"></a>
+                </span>
+            </form>
+        <?php endforeach; ?>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+.container
+{
+  clear: both;
+  height:auto;
+  background: $white;
+  overflow: hidden;
+  border-bottom: 1px solid $marine;
+}
+
+.container-title
+{
+  float:left;
+  padding: 0.5rem;
+  padding-right:1rem;
+  color: $marine;
+  font-weight:bold;
+  font-size:80%;
+  border-right: 1px solid $marine;
+}
+
+.container-menu
+{
+  float:left;
+  display:flex;
+  flex-flow: row;
+  justify-content: flex-start;
+}
+
+.container-menu a,
+.container-menu span
+{
+  width:auto;
+  padding:0.5rem;
+  color: $black;
+  font-size:80%;
+  text-decoration:none;
+  border-right: 1px solid $marine;
+}
+
+.container a:hover
+{
+  background-color: $light-sky-blue;
+}
+

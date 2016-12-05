@@ -3,7 +3,7 @@
 namespace app\core;
 
 use app\core\Library as Lib;
-use app\controllers\Login;
+use app\controller\Login;
 
 /** BASE CONTROLLER */
 class BaseController
@@ -14,7 +14,7 @@ class BaseController
      */
     protected function model( $model )
     {
-        require_once( Lib::path("app/models/" . $model . ".php" ) );
+        require_once( Lib::path("app/model/" . $model . ".php" ) );
         return( new $model );
     }
     /** View
@@ -32,18 +32,18 @@ class BaseController
          *
          * Header, requested view, footer
          */
-        require_once( Lib::path("app/views/common/header.phtml" ) );
-        require_once( Lib::path("app/views/" . $view . ".phtml" ) );
-        require_once( Lib::path("app/views/common/footer.phtml" ) );
+        require_once( Lib::path("app/view/common/header.phtml" ) );
+        require_once( Lib::path("app/view/" . $view . ".phtml" ) );
+        require_once( Lib::path("app/view/common/footer.phtml" ) );
     }
     /** View a partial
      * @param $view
      * @param $partial
      * @param array $data
      */
-    protected function view_partial( $view, $partial, $data = [] ){include_once( Lib::path("app/views/" . $view . "/partials/" . $partial . ".phtml" ) );}
+    protected function view_partial( $view, $partial, $data = [] ){include_once( Lib::path("app/view/" . $view . "/partials/" . $partial . ".phtml" ) );}
     /** View a message */
-    protected function view_messages( $view, $data = [] ){require_once( Lib::path("app/views/messages/" . $view . ".phtml" ) );}
+    protected function view_messages( $view, $data = [] ){require_once( Lib::path("app/view/messages/" . $view . ".phtml" ) );}
     /** Check if the user is an admon or a super user */
     protected function is_admin_or_super_user()
     {
@@ -63,17 +63,5 @@ class BaseController
             return( false );
         endif;
     }
-    /** Redirect
-     * @param string $location
-     */
-    public function redirect( $location = '' )
-    {
-        header("Location: " . BASE_PATH . $location . "");
-        exit();
-    }
-    /** Get a users email */
-    public function get_user_email(){return( $this->model('User')->get_user_email() );}
-    /** Get a users login */
-    public function get_user_login(){return( $this->model('LoginUser')->get_users_login() );}
 
 }

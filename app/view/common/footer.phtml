@@ -1,0 +1,15 @@
+        <footer>
+
+        </footer>
+        <script src="<?= PUBLIC_PATH ?>js/app.min.js"></script>
+    </body>
+</html>
+
+<script>
+    $(window).load(function() {
+        // Animate loader off screen
+        $('body').hide();
+        $(".se-pre-con").delay(300).fadeOut(100);
+        $('body').show().fadeIn(500);
+    });
+</script>

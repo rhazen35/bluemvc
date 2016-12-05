@@ -1,0 +1,74 @@
+@import
+'reset'
+// Common
+, "common/colors"
+, "common/header"
+, "common/container"
+, "common/dropDownNav"
+, "common/login"
+, "common/errors"
+// Users
+, "users/users"
+, "users/newUser"
+;
+
+
+*
+{
+  padding: 0;
+  margin: 0;
+}
+
+html, body
+{
+  font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+  clear:both;
+  padding: 0;
+  margin: 0;
+  margin: 0;
+}
+
+a
+{
+  padding:0;
+}
+
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: #fff;
+}
+
+.se-pre-con-txt
+{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+
+.se-pre-con-txt img
+{
+  margin-bottom: 1rem;
+}
+
+.se-pre-con-txt span
+{
+  position: relative;
+  left: -50%;
+}
+
+.display-message
+{
+  margin-top:3rem;
+  padding:2rem;
+  text-align:center;
+  background-color: #F1F1F1;
+  -webkit-box-shadow: inset -1px 0px 9px -2px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset -1px 0px 9px -2px rgba(0,0,0,0.75);
+  box-shadow: inset -1px 0px 9px -2px rgba(0,0,0,0.75);
+}

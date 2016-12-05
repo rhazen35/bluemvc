@@ -1,0 +1,64 @@
+.new-user
+{
+  width:25rem;
+  margin: 0 auto;
+  margin-top:1rem;
+}
+
+.new-user form
+{
+  width:25rem;
+}
+
+.new-user form fieldset
+{
+  padding:2rem;
+  text-align:center;
+  border: 1px solid $swamp-green;
+}
+
+.new-user form fieldset .random
+{
+  padding-top:1rem;
+  text-align:center;
+}
+
+.new-user form fieldset legend
+{
+  font-size:90%;
+  padding-left:0.5rem;
+  padding-right:0.5rem;
+}
+
+.new-user form fieldset input,
+.new-user form fieldset select
+{
+  margin-top:0.5rem;
+  padding:0.5rem;
+}
+
+.new-user form fieldset input
+{
+  width:90%;
+}
+
+.new-user form fieldset select
+{
+  width:96%;
+}
+
+.new-user form fieldset input[type="submit"]
+{
+  width:90%;
+  margin-top:1rem;
+  padding:1rem;
+  font-weight:bold;
+  background-color: $swamp-green;
+  border:1px solid transparent;
+  cursor:pointer;
+}
+
+.new-user form fieldset input[type="submit"]:hover
+{
+  background-color: $light-sky-blue;
+}
