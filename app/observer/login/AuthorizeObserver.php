@@ -17,8 +17,6 @@ class AuthorizeObserver extends BaseController implements IObserver
     }
     public function update(ISubject $subject)
     {
-        echo 'Login | Authorize observer';
-
         $email    = ( !empty( $_POST['email'] ) ? trim( $_POST['email'] ) : "" );
         $password = ( !empty( $_POST['password'] ) ? trim( $_POST['password'] ) : "" );
 
@@ -28,12 +26,12 @@ class AuthorizeObserver extends BaseController implements IObserver
                 foreach( $data as $item ):
                     $_SESSION['login'] = $item->id;
                 endforeach;
-                return( array('event' => 'login_authorization', 'response' => true) );
+                return( true );
             else:
-                return( array('event' => 'login_authorization', 'response' => false) );
+                return( false );
             endif;
         else:
-            return( array('event' => 'login_authorization', 'response' => false) );
+            return( false );
         endif;
     }
 

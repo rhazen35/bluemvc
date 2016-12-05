@@ -25,6 +25,6 @@ class RegisterLoginObserver extends BaseController implements IObserver
             $this->login_user->update_user_login( $data );
         endif;
 
-        return( array('event' => 'register_user_login', 'response' => true) );
+        return( true );
     }
 }

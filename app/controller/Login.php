@@ -11,9 +11,9 @@ use app\observer\login\RegisterLoginObserver;
 
 class Login extends BaseController implements ISubject
 {
-    private $observers = array();
     protected $login;
     protected $login_user;
+    private $observers = array();
 
     public function __construct()
     {
@@ -26,12 +26,12 @@ class Login extends BaseController implements ISubject
         $this->view('home/index', []);
     }
 
-    function attach(IObserver $observer_in)
+    public function attach(IObserver $observer_in)
     {
         $this->observers[] = $observer_in;
     }
 
-    function detach(IObserver $observer_in)
+    public function detach(IObserver $observer_in)
     {
         foreach ($this->observers as $okey => $oval) {
             if ($oval == $observer_in) {
@@ -40,7 +40,7 @@ class Login extends BaseController implements ISubject
         }
     }
 
-    function notify()
+    public function notify()
     {
         $events = array();
         foreach ($this->observers as $obs) {
@@ -54,30 +54,28 @@ class Login extends BaseController implements ISubject
 
     public function authorize()
     {
-        $a = new AuthorizeObserver();
-        $r = new RegisterLoginObserver();
+        $auth = new AuthorizeObserver();
+        $regi = new RegisterLoginObserver();
 
-        $this->attach($a);
-        $events = $this->notify();
-        foreach( $events as $event ) {
-            if( $event['event'] === 'login_authorization' && $event['response'] === true ) {
-                $this->detach( $a );
-                $this->attach($r);
-                $events = $this->notify();
-                $this->detach( $r );
-                foreach ($events as $eventi) {
-                    if( $eventi['event'] === 'register_user_login' && $eventi['response'] === true ) {
-                        Lib::redirect('home/index');
-                    }
-                    else{
-                        Lib::redirect('login/failed');
-                    }
-                }
-                break;
-            }
-            else{
-                Lib::redirect('login/failed');
-            }
+        $this->attach( $auth );
+        $response = $this->notify();
+        $this->detach( $auth );
+
+        if( $response )
+        {
+            $this->attach( $regi );
+            $response = $this->notify();
+            $this->detach( $regi );
+
+            if( $response ):
+                echo 'okidoki';
+            else:
+                echo 'error';
+            endif;
+        }
+        else
+        {
+            echo 'error';
         }
     }
 
