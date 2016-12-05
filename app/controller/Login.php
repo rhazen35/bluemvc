@@ -6,7 +6,6 @@ use app\core\BaseController;
 use app\core\Library as Lib;
 use app\observer\ISubject;
 use app\observer\IObserver;
-use app\observer\login\AuthorizeObserver;
 use app\observer\login\RegisterLoginObserver;
 use app\core\Events;
 
@@ -27,12 +26,12 @@ class Login extends BaseController implements ISubject
         $this->view('home/index', []);
     }
 
-    public function attach(IObserver $observer_in)
+    public function attach( IObserver $observer_in )
     {
         $this->observers[] = $observer_in;
     }
 
-    public function detach(IObserver $observer_in)
+    public function detach( IObserver $observer_in )
     {
         foreach ($this->observers as $okey => $oval) {
             if ($oval == $observer_in) {
@@ -43,41 +42,73 @@ class Login extends BaseController implements ISubject
 
     public function notify()
     {
-        $events = array();
         foreach ($this->observers as $obs) {
-            $event = $obs->update($this);
-            if (!empty($event) && $event !== null) {
-                $events[] = $event;
-            }
+           $obs->update($this);
         }
-        return ($events);
     }
 
-    public function authorize()
+    public function login()
     {
-        $auth = new AuthorizeObserver();
-        $regi = new RegisterLoginObserver();
-
-        $this->attach( $auth );
-        $response = $this->notify();
-        $this->detach( $auth );
-
-        if( $response )
-        {
-            $this->attach( $regi );
-            $response = $this->notify();
-            $this->detach( $regi );
-
-            if( $response ):
-                ( new Events() )->trigger( 1 );
-            else:
-                ( new Events() )->trigger( 2 );
-            endif;
-        }
-        else
-        {
+        $authorized = $this->authorize( $_POST );
+        if( $authorized ){
+            $this->register_login_datetime();
+            ( new Events() )->trigger( 1 );
+        } else {
             ( new Events() )->trigger( 2 );
         }
+    }
+
+    public function validate( $data )
+    {
+        $email    = ( !empty( $data['email'] ) ? trim( $data['email'] ) : "" );
+        $password = ( !empty( $data['password'] ) ? trim( $data['password'] ) : "" );
+        return( !empty( $email ) && Lib::isValidEmail( $email ) && !empty( $password ) ? true : false );
+    }
+
+    public function authorize( $data )
+    {
+        $valid = $this->validate( $data );
+        if( $valid ) {
+            $email      = $data['email'];
+            $password   = $data['password'];
+            $login_data = $this->login->read_where_email(['email' => $email]);
+            if ($this->verify($login_data, $password)) {
+                foreach ($login_data as $item) {
+                    $_SESSION['login'] = $item->id;
+                    return (true);
+                }
+            } else {
+                return (false);
+            }
+        } else {
+            return (false);
+        }
+        return (false);
+    }
+
+    public function register_login_datetime()
+    {
+        $regi = new RegisterLoginObserver();
+        $this->attach( $regi );
+        $this->notify();
+        $this->detach( $regi );
+    }
+
+    private function verify( $data, $password )
+    {
+        if( !empty( $data ) ):
+            foreach( $data as $item ):
+                if( !empty( $item->hash ) ):
+                    $verify = !empty( $item->hash ) ? password_verify( $password, $item->hash ) : "";
+                    return( $verify );
+                else:
+                    return( false );
+                endif;
+            endforeach;
+        else:
+            return( false );
+        endif;
+        return (false);
     }
 
     public static function is_logged_in()

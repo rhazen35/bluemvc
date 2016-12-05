@@ -18,13 +18,10 @@ class RegisterLoginObserver extends BaseController implements IObserver
     public function update( ISubject $subject )
     {
         $data = $this->login_user->register_login();
-
         if( empty( $data ) ):
             $this->login_user->register_new_login();
         else:
             $this->login_user->update_user_login( $data );
         endif;
-
-        return( true );
     }
 }

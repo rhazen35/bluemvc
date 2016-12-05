@@ -17,7 +17,7 @@ class RouterMapper
             /** Login */
             array('url' => 'login/index'                        , 'controller' => 'login'              , 'action' => 'index'),
             array('url' => 'login/logout'                       , 'controller' => 'login'              , 'action' => 'logout'),
-            array('url' => 'login/authorize'                   , 'controller' => 'login'              , 'action' => 'authorize'),
+            array('url' => 'login/login'                        , 'controller' => 'login'              , 'action' => 'login'),
             array('url' => 'login/failed'                       , 'controller' => 'login'              , 'action' => 'failed'),
 
             /** Users */

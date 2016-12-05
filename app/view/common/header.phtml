@@ -1,3 +1,11 @@
+<?php
+
+use app\core\Priviliges;
+
+$privilige = ( new Priviliges() )->privilige;
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +44,7 @@
             <a href="<?= BASE_PATH ?>home/index">Home</a>
             <a href="<?= BASE_PATH ?>projects/index">Projects</a>
             <a href="<?= BASE_PATH ?>manual/index">Manual</a>
-            <?php if( $this->is_admin_or_super_user() ): ?>
+            <?php if( $privilige === 1 || $privilige === 2 ): ?>
                 <a href="<?= BASE_PATH ?>users/index">Users</a>
             <?php endif; ?>
             <a href="<?= BASE_PATH ?>contact/index">Contact</a>
@@ -44,7 +52,7 @@
     </div>
     <?php endif; ?>
     <div class="header-title">Blueberry</div>
-    <?php if( !empty( $_SESSION['login'] ) ): ?>
+    <?php if( !empty( $privilige ) ): ?>
     <div class="header-logout">
         <img class="logout-img" data-alt-src="<?= PUBLIC_PATH . 'img/icons/lock_icon_closed.png'?>" src="<?= PUBLIC_PATH ?>img/icons/lock_icon_open.png">
         <a class="logout" href="<?= BASE_PATH ?>login/logout" title="Click to logout">Logout</a>

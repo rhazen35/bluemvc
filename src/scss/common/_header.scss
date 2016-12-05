@@ -2,16 +2,15 @@
 {
   z-index: 1;
   clear:both;
-  height:2rem;
   background: $marine;
-  padding:2rem;
+  height:2.5rem;
 }
 
 .header-title
 {
   float:left;
-  line-height:2rem;
-  margin-left:1rem;
+  line-height:2.5rem;
+  margin-left:0.5rem;
   color: $white;
 }
 
@@ -29,22 +28,26 @@
 .header-logout
 {
   float:right;
-  line-height:3rem;
+  line-height:2.5rem;
+  margin-right:0.5rem;
+  margin-top:0.5rem;
 }
 
 .header-logout img
 {
   float:left;
-  width:30px;
-  height:30px;
+  width:1rem;
+  height:1rem;
+  padding-top:0.25rem;
 }
 
 .header-logout a
 {
   float:left;
   display:block;
-  line-height:2.5rem;
+  line-height:1.5rem;
   margin-left:0.5rem;
   color: $white;
   text-decoration:none;
+  font-size:80%;
 }

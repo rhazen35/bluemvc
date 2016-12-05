@@ -2,7 +2,7 @@
 {
   width:25rem;
   margin: 0 auto;
-  margin-top:1rem;
+  margin-top:2rem;
 }
 
 .new-user form
@@ -12,15 +12,9 @@
 
 .new-user form fieldset
 {
-  padding:2rem;
+  padding:1rem;
   text-align:center;
   border: 1px solid $swamp-green;
-}
-
-.new-user form fieldset .random
-{
-  padding-top:1rem;
-  text-align:center;
 }
 
 .new-user form fieldset legend
