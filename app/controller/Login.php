@@ -8,6 +8,7 @@ use app\observer\ISubject;
 use app\observer\IObserver;
 use app\observer\login\AuthorizeObserver;
 use app\observer\login\RegisterLoginObserver;
+use app\core\Events;
 
 class Login extends BaseController implements ISubject
 {
@@ -68,14 +69,14 @@ class Login extends BaseController implements ISubject
             $this->detach( $regi );
 
             if( $response ):
-                echo 'okidoki';
+                ( new Events() )->trigger( 1 );
             else:
-                echo 'error';
+                ( new Events() )->trigger( 2 );
             endif;
         }
         else
         {
-            echo 'error';
+            ( new Events() )->trigger( 2 );
         }
     }
 

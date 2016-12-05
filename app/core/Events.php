@@ -15,14 +15,14 @@ class Events extends BaseController
         $this->events = EventsMapper::events();
     }
 
-    public function trigger()
+    public function trigger( $subject )
     {
-        foreach( $this->events as $event )
-        {
-
+        foreach ($this->events as $event) {
+            if ( in_array( $subject, $event ) ) {
+                $this->view_messages('notifications/success', $event);
+            }
         }
     }
-
 }
 
 ?>
