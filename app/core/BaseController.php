@@ -8,14 +8,15 @@ use app\controller\Login;
 /** BASE CONTROLLER */
 class BaseController
 {
-    /** Model
-     * @param $model
+    /**
+     * @param $service
      * @return mixed
      */
-    protected function model( $model )
+    protected function service( $service )
     {
-        require_once( Lib::path("app/model/" . $model . ".php" ) );
-        return( new $model );
+        require_once( Lib::path("app/service/" . $service . ".php" ) );
+        $service = "\\app\\service\\" . $service;
+        return( new $service );
     }
     /** View
      * @param $view

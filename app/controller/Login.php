@@ -4,21 +4,23 @@ namespace app\controller;
 
 use app\core\BaseController;
 use app\core\Library as Lib;
-use app\observer\ISubject;
-use app\observer\IObserver;
-use app\observer\login\RegisterLoginObserver;
 use app\core\Events;
 
-class Login extends BaseController implements ISubject
+class Login extends BaseController
 {
-    protected $login;
-    protected $login_user;
-    private $observers = array();
+    protected $user;
+    protected $user_role;
+    protected $user_login;
+    protected $userID;
+    protected $date;
 
     public function __construct()
     {
-        $this->login = $this->model('Login');
-        $this->login_user = $this->model('LoginUser');
+        $this->user          = $this->service('UserService');
+        $this->user_role     = $this->service('UserRoleService');
+        $this->user_login    = $this->service('UserLoginService');
+        $this->userID        = !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "";
+        $this->date          = date( 'Y-m-d H:i:s' );
     }
 
     public function index()
@@ -26,36 +28,20 @@ class Login extends BaseController implements ISubject
         $this->view('home/index', []);
     }
 
-    public function attach( IObserver $observer_in )
-    {
-        $this->observers[] = $observer_in;
-    }
-
-    public function detach( IObserver $observer_in )
-    {
-        foreach ($this->observers as $okey => $oval) {
-            if ($oval == $observer_in) {
-                unset($this->observers[$okey]);
-            }
-        }
-    }
-
-    public function notify()
-    {
-        foreach ($this->observers as $obs) {
-           $obs->update($this);
-        }
-    }
-
     public function login()
     {
         $authorized = $this->authorize( $_POST );
-        if( $authorized ){
-            $this->register_login_datetime();
-            ( new Events() )->trigger( 1 );
+        if( !empty( $authorized ) && $authorized !== false ){
+            $this->register_login_datetime( $authorized );
+            ( new Events() )->trigger( 1, true );
         } else {
-            ( new Events() )->trigger( 2 );
+            ( new Events() )->trigger( 2, true );
         }
+    }
+
+    public static function is_logged_in()
+    {
+        return( isset( $_SESSION['login'] ) && !empty( $_SESSION['login'] ) ? true : false );
     }
 
     public function validate( $data )
@@ -71,11 +57,11 @@ class Login extends BaseController implements ISubject
         if( $valid ) {
             $email      = $data['email'];
             $password   = $data['password'];
-            $login_data = $this->login->read_where_email(['email' => $email]);
+            $login_data = $this->user->read( false, ['email' => $email], false, false );
             if ($this->verify($login_data, $password)) {
                 foreach ($login_data as $item) {
                     $_SESSION['login'] = $item->id;
-                    return (true);
+                    return ( $item->id );
                 }
             } else {
                 return (false);
@@ -84,14 +70,6 @@ class Login extends BaseController implements ISubject
             return (false);
         }
         return (false);
-    }
-
-    public function register_login_datetime()
-    {
-        $regi = new RegisterLoginObserver();
-        $this->attach( $regi );
-        $this->notify();
-        $this->detach( $regi );
     }
 
     private function verify( $data, $password )
@@ -111,21 +89,34 @@ class Login extends BaseController implements ISubject
         return (false);
     }
 
-    public static function is_logged_in()
+    public function register_login_datetime( $authorized )
     {
-        return( isset( $_SESSION['login'] ) && !empty( $_SESSION['login'] ) ? true : false );
-    }
+        $data = $this->user_login->read(false, ['user_id' => $authorized], false, false);
 
-    public function failed()
-    {
-        $this->index();
-        $this->view_messages('login/failed', []);
+        if( $data->isEmpty() ){
+            $this->user_login->create([
+                'user_id' => $authorized,
+                'previous' => "",
+                'current' => $this->date,
+                'first' => $this->date,
+                'count' => 1,
+                'created_at' => $this->date
+            ]);
+        } else {
+            foreach ($data as $login) {
+                $previous = $login->current;
+                $this->user_login->update(
+                    ['user_id' => $authorized],
+                    ['current' => $this->date, 'previous' => $previous, 'updated_at' => $this->date]
+                );
+            }
+        }
     }
 
     public function logout()
     {
         unset( $_SESSION['login'] );
-        Lib::redirect("home/index");
+        ( new Events() )->trigger( 3, true );
     }
 
 }

@@ -5,20 +5,23 @@ namespace app\controller;
 use app\core\BaseController;
 use app\core\Library as Lib;
 
-class Users extends BaseController
+class User extends BaseController
 {
-    protected $user;
+    protected $service;
 
     /** Inititalize the model */
-    public function __construct(){$this->user = $this->model("User");}
+    public function __construct()
+    {
+        $this->service = $this->service("UserService");
+    }
     /**
      * --- Router functions ---
      *
      * Index
      */
-    public function index(){( $this->is_admin_or_super_user() ? $this->view('users/index', []) : $this->view('home/index', []) );}
+    public function index(){ $this->view('users/index', []); }
     /** New user */
-    public function new_user(){( $this->is_admin_or_super_user() ? $this->view('users/new_user', []) : $this->view('home/index', []) );}
+    public function new_user(){ $this->view('users/new_user', []); }
     /**
      * --- CRUD ---
      *
@@ -26,8 +29,18 @@ class Users extends BaseController
      */
     public function get_users()
     {
-        $data = $this->model('User')->get_users();
+        $data = $this->service->read( false, false, false, false );
         return( $data );
+    }
+    /** Read where email */
+    public function get_user_by_email( $email ){
+        return( $this->service->read(
+                false,
+                $params = array( 'email' => $email ),
+                false,
+                false
+            )
+        );
     }
     /** Read user email and check if exists */
     public function check_user_exists( $email ){return( $this->user->check_user_exists( $email ) );}

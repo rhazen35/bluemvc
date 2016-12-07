@@ -2,7 +2,8 @@
 
 namespace app\observer;
 
-interface IObserver {
+interface IObserver
+{
     public function update(ISubject $subject_in);
 }
 

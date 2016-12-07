@@ -1,6 +1,15 @@
+var body = $('body');
+
 $(window).load(function() {
     // Animate loader off screen
-    $(".se-pre-con").delay(100).fadeOut(200);
+    body.hide();
+    $(".se-pre-con").delay(300).fadeOut(100);
+    body.show().fadeIn(500);
+});
+
+$(document).ready(function(){
+    $(".event-success").delay(3500).animate({ height: 0, opacity: 0 }, 'fast');
+    $(".event-failed").delay(4500).animate({ height: 0, opacity: 0 }, 'fast');
 });
 
 function goBack()

@@ -1,46 +1,50 @@
 <?php
+
+namespace app\model;
 /** --- MODEL --- */
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class User extends Eloquent
 {
-    protected $fillable = ['email', 'hash'];
     protected $capsule;
+    protected $table;
     protected $userID;
     /** Inititalize the model */
     public function __construct()
     {
         parent::__construct();
         $this->capsule = unserialize( CAPSULE );
+        $this->table   = 'user';
         $this->userID  = ( !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "" );
     }
+
+    public function get( $joins, $params, $groups, $orders )
+    {
+        $query = $this->capsule->table( $this->table );
+
+        if( $params !== false ) {
+            $query->where( $params );
+        }
+        $execute = $query->get();
+        return ($execute);
+    }
+
     /**
      * --- CRUD -=--
      *
-     *Read a users type
-     */
-    public function get_user_type( $data = '' )
-    {
-        $data    = $this->capsule->table('users_type')->where('user_id', '=', $data)->select('type')->first();
 
-        if( !empty( $data->type ) ):
-            return( $data->type );
-        else:
-            return( false );
-        endif;
-    }
-    /** Read all users */
-    public function get_users()
+     */
+
+    public function get_users_and_groups_and_roles()
     {
-        $data    = $this->capsule->table('users')->get();
-        return($data);
+        $data = $this->capsule->table( $this->table )->select('id', 'email')->get();
+        return( $data );
     }
-    /** Read a users email */
-    public function get_user_email(){return( $this->capsule->table('users')->where('id', $this->userID)->select('email')->first() );}
+
     /** Check if a user exists */
     public function check_user_exists( $email )
     {
-        $user = $this->capsule->table('users')->where('email', $email)->select('id')->first();
+        $user = $this->capsule->table('user')->where('email', $email)->select('id')->first();
         if( !empty( $user ) ):
             return( true );
         else:
@@ -52,14 +56,14 @@ class User extends Eloquent
     {
         $hash    = password_hash( $data['pass'], PASSWORD_BCRYPT );
         $dataSet = array('email' => $data['email'], 'hash' => $hash);
-        $userID = $this->capsule->table('users')->insertGetId($dataSet);
+        $userID = $this->capsule->table('user')->insertGetId($dataSet);
 
         $this->capsule->table('users_type')->insert(['user_id' => $userID, 'type' => $data['type']]);
     }
     /** Update a user */
     public function update_user( $params )
     {
-        $this->capsule->table('users')->where('id', $params[0])->update(['email' => $params[1]]);
+        $this->capsule->table('user')->where('id', $params[0])->update(['email' => $params[1]]);
         $this->capsule->table('users_type')->where('user_id', $params[0])->update(['type' => $params[2]]);
     }
     /** Delete a user */

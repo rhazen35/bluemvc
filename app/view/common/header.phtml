@@ -1,8 +1,9 @@
 <?php
 
-use app\core\Priviliges;
+use app\core\Privileges;
+use app\core\EventMessage;
 
-$privilige = ( new Priviliges() )->privilige;
+$privileges = ( new Privileges() )->privileges;
 
 ?>
 
@@ -44,18 +45,27 @@ $privilige = ( new Priviliges() )->privilige;
             <a href="<?= BASE_PATH ?>home/index">Home</a>
             <a href="<?= BASE_PATH ?>projects/index">Projects</a>
             <a href="<?= BASE_PATH ?>manual/index">Manual</a>
-            <?php if( $privilige === 1 || $privilige === 2 ): ?>
-                <a href="<?= BASE_PATH ?>users/index">Users</a>
-            <?php endif; ?>
+            <?php
+                foreach( $privileges as $privilege ):
+                    if( $privilege === 1 ):
+                ?>
+                        <a href="<?= BASE_PATH ?>adminPanel/index">Admin Panel</a>
+                <?php
+                    endif;
+                endforeach;
+             ?>
             <a href="<?= BASE_PATH ?>contact/index">Contact</a>
         </div>
     </div>
     <?php endif; ?>
     <div class="header-title">Blueberry</div>
-    <?php if( !empty( $privilige ) ): ?>
+    <?php if( !empty( $_SESSION['login'] ) ): ?>
     <div class="header-logout">
         <img class="logout-img" data-alt-src="<?= PUBLIC_PATH . 'img/icons/lock_icon_closed.png'?>" src="<?= PUBLIC_PATH ?>img/icons/lock_icon_open.png">
         <a class="logout" href="<?= BASE_PATH ?>login/logout" title="Click to logout">Logout</a>
     </div>
     <?php endif; ?>
 </div>
+
+<?= ( new EventMessage() )->display() ?>
+

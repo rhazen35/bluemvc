@@ -17,13 +17,14 @@ class Events extends BaseController
         $this->events = EventsMapper::events();
     }
 
-    public function trigger( $subject )
+    public function trigger( $subject, $display )
     {
         foreach ($this->events as $event) {
             if ( in_array( $subject, $event, true ) ) {
-                $_SESSION['response_message'] = $event['message'];
+                if( true === $display ) {
+                    $_SESSION['event'] = $subject;
+                }
                 Lib::redirect($event['redirect']);
-                break;
             }
         }
     }

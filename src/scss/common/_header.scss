@@ -17,6 +17,7 @@
 .header-navigation
 {
   float:left;
+  margin-left:0.5rem;
 }
 
 .header-navigation-item
@@ -29,7 +30,7 @@
 {
   float:right;
   line-height:2.5rem;
-  margin-right:0.5rem;
+  margin-right:1rem;
   margin-top:0.5rem;
 }
 
@@ -49,5 +50,5 @@
   margin-left:0.5rem;
   color: $white;
   text-decoration:none;
-  font-size:80%;
+  font-size:90%;
 }

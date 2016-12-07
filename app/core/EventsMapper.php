@@ -6,10 +6,11 @@ class EventsMapper
 {
     public static function events()
     {
-        /** Event ************** Type ********************** Message ************************************* Arguments *************** Redirect ********/
+        /******** Event ****************** Type ****************** Response **************************** Arguments ***************** Redirect ********/
         $events = array(
-            array('event' => 1     ,'type' => 'login'       ,'message' => 'Logged in successful.'        ,'arguments' => true       , 'home/index' ),
-            array('event' => 2     ,'type' => 'login'       ,'message' => 'Login Failed!'                ,'arguments' => false )    , 'login/index'
+             array('event' => 1     ,'type' => 'login'       ,'response' => 'success'            ,'arguments' => true       , 'redirect' => 'home/index')
+            ,array('event' => 2     ,'type' => 'login'       ,'response' => 'failed'             ,'arguments' => false      , 'redirect' => 'login/index')
+            ,array('event' => 3     ,'type' => 'logout'      ,'response' => 'success'            ,'arguments' => true       , 'redirect' => 'home/index')
         );
 
         return( $events );

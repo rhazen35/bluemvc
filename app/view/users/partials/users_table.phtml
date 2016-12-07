@@ -11,7 +11,8 @@
         </span>
         <?php
         foreach( $users as $user ):
-            $user_type = $this->convert_user_type_text( $this->model('User')->get_user_type( $data = ['user_id' => $user->id] ) );
+            $user_role = $this->get_user_type( $data = ['user_id' => $user->id] )
+
             ?>
             <form action="<?= BASE_PATH ?>users/edit" method="post" class="table-row">
                 <input type="hidden" name="userID" value="<?= $user->id ?>">
