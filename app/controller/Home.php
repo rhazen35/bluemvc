@@ -5,7 +5,7 @@ namespace app\controller;
 use app\core\BaseController;
 
 
-class Home extends BaseController
+class Home extends BaseController implements IController
 {
     public function index( $data = [] )
     {

@@ -6,7 +6,7 @@ use app\core\BaseController;
 use app\core\Library as Lib;
 use app\core\Events;
 
-class Login extends BaseController
+class Login extends BaseController implements IController
 {
     protected $user;
     protected $user_role;
@@ -28,6 +28,9 @@ class Login extends BaseController
         $this->view('home/index', []);
     }
 
+    /**
+     * Handle a user login, authorize the request, register the login if successful and trigger a corresponding event.
+     */
     public function login()
     {
         $authorized = $this->authorize( $_POST );
@@ -39,11 +42,20 @@ class Login extends BaseController
         }
     }
 
+    /**
+     * Checks if a user is logged in.
+     * @return bool
+     */
     public static function is_logged_in()
     {
         return( isset( $_SESSION['login'] ) && !empty( $_SESSION['login'] ) ? true : false );
     }
 
+    /**
+     * Validate the input, in this case the email address.
+     * @param $data
+     * @return bool
+     */
     public function validate( $data )
     {
         $email    = ( !empty( $data['email'] ) ? trim( $data['email'] ) : "" );
@@ -51,6 +63,11 @@ class Login extends BaseController
         return( !empty( $email ) && Lib::isValidEmail( $email ) && !empty( $password ) ? true : false );
     }
 
+    /**
+     * Authorize a user login.
+     * @param $data
+     * @return bool
+     */
     public function authorize( $data )
     {
         $valid = $this->validate( $data );
@@ -72,6 +89,12 @@ class Login extends BaseController
         return (false);
     }
 
+    /**
+     * Verify a password.
+     * @param $data
+     * @param $password
+     * @return bool|string
+     */
     private function verify( $data, $password )
     {
         if( !empty( $data ) ):
@@ -89,6 +112,10 @@ class Login extends BaseController
         return (false);
     }
 
+    /**
+     * Register a user login.
+     * @param $authorized
+     */
     public function register_login_datetime( $authorized )
     {
         $data = $this->user_login->read(false, ['user_id' => $authorized], false, false);
@@ -113,6 +140,9 @@ class Login extends BaseController
         }
     }
 
+    /**
+     * Log a user out and trigger the corresponding event.
+     */
     public function logout()
     {
         unset( $_SESSION['login'] );

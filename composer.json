@@ -5,7 +5,14 @@
   "autoload":
   {
     "classmap": [
-      "app/model"
+      "app/",
+      "app/controller",
+      "app/core",
+      "app/core/interfaces",
+      "app/model",
+      "app/observer",
+      "app/service",
+      "app/traits"
     ]
   }
 }

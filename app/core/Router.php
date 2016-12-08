@@ -1,12 +1,8 @@
 <?php
-/** CORE */
-
-/** Router extracts the url and determines the path to go to */
 
 namespace app\core;
 
 use app\core\Library as Lib;
-use app\core\BaseController;
 
 class Router extends BaseController
 {
@@ -20,20 +16,16 @@ class Router extends BaseController
 
     /**
      * Router constructor.
-     *
      * Set the url and get the routes from the mapper
      */
     public function __construct()
     {
-        /**
-         * Parse the url
-         * @var $url
-         */
         $this->url    = $this->parse_url( isset( $_GET['url'] ) ? $_GET['url'] : "" );
         $this->routes = RouterMapper::routes();
     }
+
     /**
-     * Parse the url
+     * Parse the url, explode by a slash.
      * @param $url
      * @return array|bool
      */
@@ -46,6 +38,7 @@ class Router extends BaseController
 
         return( false );
     }
+
     /** Set the route, extracted from the url */
     public function set_route()
     {
@@ -72,7 +65,7 @@ class Router extends BaseController
         $controllerPath = realpath( APPLICATION_PATH . Lib::path('app/controller/' . ucfirst( $this->controller ) . '.php' ) );
         if( file_exists( $controllerPath ) ):
             require_once($controllerPath);
-            unset($url[0]);
+            unset($url[0]); /** Unset the controller part of the url */
             /** Capitalize first letter of controller and set controller namespace */
             $cp_controller    = ucfirst( $this->controller );
             $ns_controller    = "\\app\\controller\\".$cp_controller;
@@ -81,6 +74,7 @@ class Router extends BaseController
             if( method_exists( $this->controller, $this->method ) ):
                 unset( $url[1] );
             else:
+                /** Display the 404 page */
                 $this->view('common/404', []);
             endif;
             /** Set the params */
@@ -88,6 +82,7 @@ class Router extends BaseController
             /** Call the method with parameters */
             call_user_func_array( [ $this->controller, $this->method ], $this->params );
         else:
+            /** Display the 404 page */
             $this->view('common/404', []);
         endif;
     }

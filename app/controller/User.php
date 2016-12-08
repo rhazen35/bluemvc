@@ -5,7 +5,7 @@ namespace app\controller;
 use app\core\BaseController;
 use app\core\Library as Lib;
 
-class User extends BaseController
+class User extends BaseController implements IController
 {
     protected $service;
 
