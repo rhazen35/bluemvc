@@ -2,7 +2,7 @@
 
 namespace app\core;
 
-use app\core\EventMessageMapper;
+/** Displays an event message */
 
 class EventMessage
 {
@@ -15,6 +15,9 @@ class EventMessage
         $this->messages = EventMessageMapper::messages();
     }
 
+    /**
+     * @return string
+     */
     public function display()
     {
         if( !empty( $this->event ) ):

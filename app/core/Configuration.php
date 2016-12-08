@@ -1,5 +1,5 @@
 <?php
-/** CORE */
+
 namespace app\core;
 
 class Configuration

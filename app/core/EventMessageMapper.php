@@ -14,7 +14,6 @@ class EventMessageMapper
             ),
             array('event' => 3    ,'type' => true   ,'message' => 'Logged out.'
             )
-
         );
         return( $messages );
     }

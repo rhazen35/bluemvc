@@ -1,5 +1,4 @@
 <?php
-/** CORE */
 
 /** Set the root directory */
 define('ROOT_DIRECTORY', 'bluemvc');

@@ -12,9 +12,7 @@ class EventsMapper
             ,array('event' => 2     ,'type' => 'login'       ,'response' => 'failed'             ,'arguments' => false      , 'redirect' => 'login/index')
             ,array('event' => 3     ,'type' => 'logout'      ,'response' => 'success'            ,'arguments' => true       , 'redirect' => 'home/index')
         );
-
         return( $events );
     }
 }
-
 ?>

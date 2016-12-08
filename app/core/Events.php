@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+/** Handles all events */
+
 use app\core\Library as Lib;
 
 class Events extends BaseController
@@ -18,10 +20,11 @@ class Events extends BaseController
     }
 
     /**
+     * Trigger an event, the event will be passed trough a session when display is true, redirect afterwards.
      * @param $subject
      * @param $display
      */
-    public function trigger($subject, $display )
+    public function trigger( $subject, $display )
     {
         foreach ( $this->events as $event ) {
             if ( in_array( $subject, $event, true ) ) {

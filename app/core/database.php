@@ -1,5 +1,4 @@
 <?php
-/** CORE */
 
 /** Use Laravel's database manager Eloquent */
 use Illuminate\Database\Capsule\Manager as Capsule;
