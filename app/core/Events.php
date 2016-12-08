@@ -17,9 +17,13 @@ class Events extends BaseController
         $this->events = EventsMapper::events();
     }
 
-    public function trigger( $subject, $display )
+    /**
+     * @param $subject
+     * @param $display
+     */
+    public function trigger($subject, $display )
     {
-        foreach ($this->events as $event) {
+        foreach ( $this->events as $event ) {
             if ( in_array( $subject, $event, true ) ) {
                 if( true === $display ) {
                     $_SESSION['event'] = $subject;

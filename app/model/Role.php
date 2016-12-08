@@ -14,19 +14,7 @@ class Role extends Eloquent
     {
         $this->userID  = !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "";
         $this->capsule = unserialize( CAPSULE );
-        $this->table   = 'role';
+        $this->table   = 'roles';
         parent::__construct();
-    }
-
-    public function get( $params )
-    {
-        $query = $this->capsule->table( $this->table );
-
-        if( $params !== false ) {
-            $query->where( $params );
-        }
-        $execute = $query->get();
-        return ($execute);
-
     }
 }

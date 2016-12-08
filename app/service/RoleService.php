@@ -3,9 +3,8 @@
 namespace app\service;
 
 use app\core\ServiceController;
-use app\service\IService;
 
-class RoleService extends ServiceController implements IService
+class RoleService extends ServiceController
 {
     protected $model;
 
@@ -14,24 +13,5 @@ class RoleService extends ServiceController implements IService
         $this->model = $this->model('Role');
     }
 
-    public function create( $params )
-    {
-
-    }
-
-    public function read( $joins, $params, $groups, $orders )
-    {
-        return( $this->model->get( $joins, $params, $groups, $orders ) );
-    }
-
-    public function update( $where, $params )
-    {
-
-    }
-
-    public function delete( $params )
-    {
-
-    }
 
 }

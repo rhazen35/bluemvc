@@ -14,18 +14,13 @@ class UserRole extends Eloquent
     {
         $this->userID  = !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "";
         $this->capsule = unserialize( CAPSULE );
-        $this->table   = 'user_role';
+        $this->table   = 'role_user';
         parent::__construct();
     }
 
-    public function get( $joins, $params, $groups, $orders  )
+    public function get_user_roles()
     {
-        $query = $this->capsule->table( $this->table );
-
-        if( $params !== false ) {
-            $query->where( $params );
-        }
-        $execute = $query->get();
-        return ($execute);
+        $data = UserRole::where('user_id', $this->userID)->get();
+        return( $data );
     }
 }

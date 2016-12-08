@@ -12,29 +12,14 @@ class UserLogin extends Eloquent
 
     public function __construct()
     {
-        $this->table   = 'user_login';
+        $this->table   = 'login_user';
         $this->capsule = unserialize( CAPSULE );
         parent::__construct();
     }
 
-    public function get( $joins, $params, $groups, $orders )
+    public function user()
     {
-        $query = $this->capsule->table( $this->table );
-
-        if( $params !== false ) {
-            $query->where( $params );
-        }
-        $execute = $query->get();
-        return ($execute);
+        return( $this->belongsTo('app\model\User') );
     }
 
-    public function insert( $params )
-    {
-        $this->capsule->table( $this->table )->insert( $params );
-    }
-
-    public function edit( $where, $params )
-    {
-        $this->capsule->table( $this->table )->where( $where )->update( $params );
-    }
 }

@@ -1,12 +1,10 @@
 <?php
-/** CORE */
 namespace app\core;
 
 use app\core\Library as Lib;
 use app\controller\Login;
 use app\core\interfaces\IBaseController;
 
-/** BASE CONTROLLER */
 class BaseController implements IBaseController
 {
     /**
@@ -19,9 +17,11 @@ class BaseController implements IBaseController
         $service = "\\app\\service\\" . $service;
         return( new $service );
     }
+
     /** View
      * @param $view
      * @param array $data
+     * @return void
      */
     public function view( $view, $data = [] )
     {
@@ -38,10 +38,12 @@ class BaseController implements IBaseController
         require_once( Lib::path("app/view/" . $view . ".phtml" ) );
         require_once( Lib::path("app/view/common/footer.phtml" ) );
     }
+
     /** View a partial
      * @param $view
      * @param $partial
      * @param array $data
+     * @return void
      */
     public function view_partial( $view, $partial, $data = [] )
     {

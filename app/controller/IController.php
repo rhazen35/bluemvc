@@ -2,6 +2,10 @@
 
 namespace app\controller;
 
+/**
+ * Standard interface for controllers, except the BaseController.
+ */
+
 interface IController
 {
     /**

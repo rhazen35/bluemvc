@@ -1,7 +1,6 @@
 <?php
-/** CORE */
 
-/** Autoload namespaces, class names and class file names must contain uppercase first letter.*/
+/** Autoload namespaces, class names, class file names must contain uppercase first letter.*/
 
 use app\core\Library as Lib;
 

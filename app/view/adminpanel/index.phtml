@@ -1,4 +1,9 @@
-<?php var_dump($this->get_all_user_info()); ?>
+<?php
+
+$users = $this->get_all_users();
+
+
+?>
 
 <div class="container">
     <div class="container-title">Admin Panel</div>
@@ -8,4 +13,48 @@
         <a href="<?= BASE_PATH; ?>user/groups">User groups</a>
         <a href="<?= BASE_PATH; ?>user/roles">User roles</a>
     </div>
+</div>
+
+<div class="users">
+    <div class="table-row">
+        <div class="table-header">User</div>
+        <div class="table-header">Groups</div>
+        <div class="table-header">Roles</div>
+        <div class="table-header">Last login</div>
+        <div class="table-header">Since</div>
+        <div class="table-header"></div>
+    </div>
+    <?php
+        foreach( $users as $user ){
+            echo '<div class="table-row">';
+            echo '<div class="table-cell">' . $user->email . '</div>';
+            echo '<div class="table-cell">';
+            $total_groups =  $user->groups->count();
+            $i = 1;
+            foreach( $user->groups as $group ){
+                echo $group->name;
+                if( $i< $total_groups ){
+                    echo',&nbsp;';
+                }
+                $i++;
+            }
+            echo '</div>';
+            echo '<div class="table-cell">';
+            $total_roles =  $user->roles->count();
+            $j = 1;
+            foreach( $user->roles as $role ){
+                echo $role->role;
+                if( $j < $total_roles ){
+                    echo',&nbsp;';
+                }
+                $j++;
+            }
+            echo '</div>';
+            $user_last_login = !empty( $user->login ) ? $user->login->previous : "";
+            echo '<div class="table-cell">' . $user_last_login . '</div>';
+            echo '<div class="table-cell">' . $user->created_at . '</div>';
+            echo '<div class="table-cell"><a href="' . BASE_PATH . 'users/delete">Delete</a></div>';
+            echo '</div>';
+        }
+    ?>
 </div>

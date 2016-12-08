@@ -2,6 +2,8 @@
 
 namespace app\core\interfaces;
 
+/** Interface for the BaseController */
+
 interface IBaseController
 {
     /**

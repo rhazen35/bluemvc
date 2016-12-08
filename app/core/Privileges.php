@@ -3,50 +3,43 @@
 namespace app\core;
 
 use app\core\BaseController;
+use app\traits\User;
+use app\traits\Role;
 
 class Privileges extends BaseController
 {
-    protected $userID;
     public $privileges;
-    protected $service;
+    protected $userID;
+    protected $base_service;
+    protected $user_role;
     protected $role;
+    protected $table_role;
+    protected $table_user_role;
+
+    use User;
+    use Role;
 
     public function __construct()
     {
-        $this->userID     = ( !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "" );
-        $this->service    = $this->service('UserRoleService');
-        $this->role       = $this->service('RoleService');
-        $this->privileges = $this->get_privileges();
+        $this->userID          = ( !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "" );
+        $this->base_service    = $this->service('BaseService');
+        $this->user_role       = $this->service('UserRoleService');
+        $this->role            = $this->service('RoleService');
+        $this->privileges      = $this->get_privileges();
+        $this->table_role      = 'roles';
+        $this->table_user_role = 'user_role';
     }
 
     private function get_privileges()
     {
         $privileges = array();
-        $data = $this->service->read(
-            false,
-            $params = array( 'user_id' => $this->userID ),
-            false,
-            false
-        );
-        foreach( $data as $privilege ){
-            $role         = $this->get_role_from_id( $privilege->role_id );
-            $privileges[] = $role;
+        $user_roles = $this->get_user_roles();
+        foreach ($user_roles as $user_role){
+            $roles = $this->get_role_from_id($user_role->role_id);
+            foreach ($roles as $role) {
+                $privileges[] = $role->role;
+            }
         }
         return( $privileges );
-    }
-
-    private function get_role_from_id( $role_id )
-    {
-        $data  = '';
-        $roles = $this->role->read(
-            false,
-            $params = array( 'role_id' => $role_id ),
-            false,
-            false
-        );
-        foreach( $roles as $role ){
-            $data = $role->role;
-        }
-        return( $data );
     }
 }

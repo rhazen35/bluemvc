@@ -8,19 +8,25 @@ use app\core\Events;
 
 class Login extends BaseController implements IController
 {
+    protected $base_service;
     protected $user;
     protected $user_role;
     protected $user_login;
     protected $userID;
     protected $date;
+    protected $table;
+    protected $login_table;
 
     public function __construct()
     {
+        $this->base_service  = $this->service('BaseService');
         $this->user          = $this->service('UserService');
         $this->user_role     = $this->service('UserRoleService');
         $this->user_login    = $this->service('UserLoginService');
         $this->userID        = !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "";
         $this->date          = date( 'Y-m-d H:i:s' );
+        $this->table         = 'users';
+        $this->login_table   = 'login_user';
     }
 
     public function index()
@@ -30,6 +36,7 @@ class Login extends BaseController implements IController
 
     /**
      * Handle a user login, authorize the request, register the login if successful and trigger a corresponding event.
+     * @return void
      */
     public function login()
     {
@@ -74,7 +81,7 @@ class Login extends BaseController implements IController
         if( $valid ) {
             $email      = $data['email'];
             $password   = $data['password'];
-            $login_data = $this->user->read( false, ['email' => $email], false, false );
+            $login_data = $this->base_service->read( $this->table, ['email' => $email], false, false );
             if ($this->verify($login_data, $password)) {
                 foreach ($login_data as $item) {
                     $_SESSION['login'] = $item->id;
@@ -118,21 +125,25 @@ class Login extends BaseController implements IController
      */
     public function register_login_datetime( $authorized )
     {
-        $data = $this->user_login->read(false, ['user_id' => $authorized], false, false);
+        $data = $this->base_service->read( $this->login_table, ['user_id' => $authorized], false, false );
 
         if( $data->isEmpty() ){
-            $this->user_login->create([
+            $this->base_service->create(
+                $this->login_table,
+                [
                 'user_id' => $authorized,
                 'previous' => "",
                 'current' => $this->date,
                 'first' => $this->date,
                 'count' => 1,
                 'created_at' => $this->date
-            ]);
+                ]
+            );
         } else {
             foreach ($data as $login) {
                 $previous = $login->current;
-                $this->user_login->update(
+                $this->base_service->update(
+                    $this->login_table,
                     ['user_id' => $authorized],
                     ['current' => $this->date, 'previous' => $previous, 'updated_at' => $this->date]
                 );

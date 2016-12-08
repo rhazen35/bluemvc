@@ -3,11 +3,17 @@
 namespace app\traits;
 
 use app\service\UserService;
+use app\service\UserRoleService;
 
 trait User
 {
-    public function get_users_and_groups_and_roles()
+    public function get_all_users()
     {
-        return( ( new UserService() )->get_users_and_groups_and_roles() );
+        return( ( new UserService() )->get_all_users() );
+    }
+
+    public function get_user_roles()
+    {
+        return( ( new UserRoleService() )->get_user_roles() );
     }
 }
