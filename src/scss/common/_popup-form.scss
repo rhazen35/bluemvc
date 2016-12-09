@@ -1,0 +1,46 @@
+.popup-form
+{
+  display:none;
+  position:absolute;
+  height:50%;
+  width:50%;
+  top:25%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #F1F1F1;
+  border: 1px solid $light-grey;
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 7px 5px -5px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 7px 5px -5px rgba(0,0,0,0.75);
+  box-shadow: 0px 7px 5px -5px rgba(0,0,0,0.75);
+
+  h1
+  {
+    padding:2rem;
+  }
+}
+
+.popup-form-close {
+  float:right;
+  margin-top:-10px;
+  margin-right:-10px;
+  line-height: 0.5rem;
+  padding:0.25rem 0.5rem 0.75rem 0.5rem;
+  cursor:pointer;
+  color: #fff;
+  border: 1px solid #AEAEAE;
+  border-radius: 30px;
+  background: #605F61;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration:none;
+}
+
+.popup-form-close:before {
+  content: "×";
+}
+
+.popup-form-close:hover
+{
+background: $light-sky-blue;
+}

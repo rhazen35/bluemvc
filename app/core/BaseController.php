@@ -47,7 +47,7 @@ class BaseController implements IBaseController
      */
     public function view_partial( $view, $partial, $data = [] )
     {
-        include_once( Lib::path("app/view/" . $view . "/partials/" . $partial . ".phtml" ) );
+        include( Lib::path("app/view/" . $view . "/partials/" . $partial . ".phtml" ) );
     }
 
 

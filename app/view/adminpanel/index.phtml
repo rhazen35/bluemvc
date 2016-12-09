@@ -10,51 +10,61 @@ $users = $this->get_all_users();
     <div class="container-menu">
         <a href="" onclick="goBack()">Go back</a>
         <a href="<?= BASE_PATH; ?>user/index">Users</a>
-        <a href="<?= BASE_PATH; ?>user/groups">User groups</a>
-        <a href="<?= BASE_PATH; ?>user/roles">User roles</a>
+        <a href="<?= BASE_PATH; ?>user/groups">Groups</a>
+        <a href="<?= BASE_PATH; ?>user/roles">Roles</a>
     </div>
 </div>
 
-<div class="users">
-    <div class="table-row">
-        <div class="table-header">User</div>
-        <div class="table-header">Groups</div>
-        <div class="table-header">Roles</div>
-        <div class="table-header">Last login</div>
-        <div class="table-header">Since</div>
-        <div class="table-header"></div>
+<div class="users-table">
+    <div class="users">
+        <div class="table-row">
+            <div class="table-header">User</div>
+            <div class="table-header">Groups</div>
+            <div class="table-header">Roles</div>
+            <div class="table-header">Last login</div>
+            <div class="table-header">Since</div>
+            <div class="table-header"></div>
+            <div class="table-header"></div>
+        </div>
+        <?php
+            foreach( $users as $user ){
+                echo '<div class="table-row">';
+                echo '<div class="table-cell">' . $user->email . '</div>';
+                echo '<div class="table-cell">';
+                /** User groups */
+                $total_groups =  $user->groups->count();
+                $i = 1;
+                foreach( $user->groups as $group ){
+                    echo $group->name;
+                    if( $i< $total_groups ){
+                        echo',&nbsp;';
+                    }
+                    $i++;
+                }
+                echo '</div>';
+                echo '<div class="table-cell">';
+                /** User roles */
+                $total_roles =  $user->roles->count();
+                $j = 1;
+                foreach( $user->roles as $role ){
+                    echo $role->role;
+                    if( $j < $total_roles ){
+                        echo',&nbsp;';
+                    }
+                    $j++;
+                }
+                echo '</div>';
+                /** User last login */
+                $user_last_login = !empty( $user->login ) ? $user->login->previous : "";
+                echo '<div class="table-cell">' . $user_last_login . '</div>';
+                echo '<div class="table-cell">' . $user->created_at . '</div>';
+                echo '<div class="table-cell"><a href="" class="edit-user-link" data-id="' . $user->id . '">Edit</a></div>';
+                echo '<div class="table-cell"><a href="' . BASE_PATH . 'users/delete">Delete</a></div>';
+                echo '</div>';
+                echo '<div class="popup-form" id="' . $user->id . '">';
+                    $this->view_partial('users', 'edit-user', $user);
+                echo '</div>';
+            }
+        ?>
     </div>
-    <?php
-        foreach( $users as $user ){
-            echo '<div class="table-row">';
-            echo '<div class="table-cell">' . $user->email . '</div>';
-            echo '<div class="table-cell">';
-            $total_groups =  $user->groups->count();
-            $i = 1;
-            foreach( $user->groups as $group ){
-                echo $group->name;
-                if( $i< $total_groups ){
-                    echo',&nbsp;';
-                }
-                $i++;
-            }
-            echo '</div>';
-            echo '<div class="table-cell">';
-            $total_roles =  $user->roles->count();
-            $j = 1;
-            foreach( $user->roles as $role ){
-                echo $role->role;
-                if( $j < $total_roles ){
-                    echo',&nbsp;';
-                }
-                $j++;
-            }
-            echo '</div>';
-            $user_last_login = !empty( $user->login ) ? $user->login->previous : "";
-            echo '<div class="table-cell">' . $user_last_login . '</div>';
-            echo '<div class="table-cell">' . $user->created_at . '</div>';
-            echo '<div class="table-cell"><a href="' . BASE_PATH . 'users/delete">Delete</a></div>';
-            echo '</div>';
-        }
-    ?>
 </div>
