@@ -14,9 +14,10 @@ class BaseModel extends Eloquent implements IBaseModel
         parent::__construct();
     }
 
-    public function insert( $table, $where )
+    public function insert( $table, $params )
     {
-
+        $return_id = $this->capsule->table( $table )->insertGetId( $params );
+        return( $return_id );
     }
 
     public function get( $table, $params, $groups, $orders )

@@ -8,14 +8,14 @@ use app\core\interfaces\IBaseController;
 class BaseController implements IBaseController
 {
     /**
-     * @param $service
+     * @param $repository
      * @return mixed
      */
-    public function service( $service )
+    public function repository( $repository )
     {
-        require_once( Lib::path("app/service/" . $service . ".php" ) );
-        $service = "\\app\\service\\" . $service;
-        return( new $service );
+        require_once( Lib::path("app/repositories/" . $repository . ".php" ) );
+        $repository = "\\app\\repositories\\" . $repository;
+        return( new $repository );
     }
 
     /** View

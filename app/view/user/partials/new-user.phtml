@@ -1,0 +1,27 @@
+<?php $roles  = $this->get_all_roles(); ?>
+<?php $groups = $this->get_all_groups(); ?>
+
+<form action="<?= BASE_PATH ?>user/add_user" method="post" class="newuser">
+    <a href="" class="popup-form-close"></a>
+    <h1>New system user</h1>
+    <fieldset>
+        <legend>Enter a name, email, type and password</legend>
+        <input type="text" name="full_name" value="" placeholder="Full name">
+        <input type="email" name="email" value="" placeholder="Email">
+        <br>
+        <select name="role">
+            <option value="">Choose a type</option>
+            <?php
+                foreach( $roles as $role ){
+                    echo '<option value="' . $role->id . '">' . $role->id . '</option>';
+                }
+            ?>
+        </select>
+        <br>
+        <input type="password" name="password" value="" placeholder="Password">
+        <input type="password" name="pass_repeat" value="" placeholder="Password repeat">
+        <br>
+        <input type="submit" name="newUserSubmit" value="Add" class="submit-form">
+    </fieldset>
+</form>
+

@@ -1,8 +1,8 @@
 <?php
 
-namespace app\service;
+namespace app\repositories;
 
-interface IService
+interface IRepository
 {
     public function create( $table, $params );
     public function read( $table, $where, $groups, $orders );

@@ -7,10 +7,10 @@ namespace app\core\interfaces;
 interface IBaseController
 {
     /**
-     * @param $service
+     * @param $repository
      * @return mixed
      */
-    public function service($service );
+    public function repository( $repository );
 
     /**
      * @param $view

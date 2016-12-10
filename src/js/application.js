@@ -56,9 +56,10 @@ window.onclick = function(event) {
 
 }());
 
-// Users
+/// ------------------------  POPUP FORM ------------------ \\\
 
-$(document).on('click', '.edit-user-link', function(e) {
+
+$(document).on('click', '.popup-form-link', function(e) {
     e.preventDefault();
     $('.popup-form').css('display', 'none');
     var id = $(this).attr('data-id');
@@ -66,6 +67,7 @@ $(document).on('click', '.edit-user-link', function(e) {
 
 });
 
+// CLOSE POPUP
 $(document).on('click', '.popup-form-close', function(e){
    e.preventDefault();
     $('.popup-form').css({display: 'none'});
@@ -74,9 +76,10 @@ $(document).on('click', '.popup-form-close', function(e){
 
 (function() {
 
-    var $tableWrapper = $('#stage-table-wrapper');
+    var table_wrapper = $('#table-wrapper');
+    var ajax_success  = $('.ajax-success');
 
-    body.on('change', '#updateUser', function(e) {
+    body.on('click', '.submit-form', function(e) {
         var url = this.form.action,
             data = $(this.form).serialize();
 
@@ -86,7 +89,10 @@ $(document).on('click', '.popup-form-close', function(e){
             data: data,
             success: function(response)
             {
-                $tableWrapper.html(response);
+                $('.popup-form').fadeOut('fast');
+                ajax_success.html('User added');
+                ajax_success.show().delay(3500).animate({ height: 0, opacity: 0 }, 'fast');
+                table_wrapper.html(response);
             }
         });
 

@@ -2,9 +2,8 @@
 
 namespace app\core;
 
-use app\core\BaseController;
-use app\traits\User;
-use app\traits\Role;
+use app\traits\UsersTrait;
+use app\traits\RolesTrait;
 
 class Privileges extends BaseController
 {
@@ -16,15 +15,15 @@ class Privileges extends BaseController
     protected $table_role;
     protected $table_user_role;
 
-    use User;
-    use Role;
+    use UsersTrait;
+    use RolesTrait;
 
     public function __construct()
     {
         $this->userID          = ( !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "" );
-        $this->base_service    = $this->service('BaseService');
-        $this->user_role       = $this->service('UserRoleService');
-        $this->role            = $this->service('RoleService');
+        $this->base_service    = $this->repository('BaseRepository');
+        $this->user_role       = $this->repository('UsersRoleRepository');
+        $this->role            = $this->repository('RolesRepository');
         $this->privileges      = $this->get_privileges();
         $this->table_role      = 'roles';
         $this->table_user_role = 'user_role';

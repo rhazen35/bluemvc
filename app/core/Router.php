@@ -70,7 +70,7 @@ class Router extends BaseController
             $cp_controller    = ucfirst( $this->controller );
             $ns_controller    = "\\app\\controller\\".$cp_controller;
             $this->controller = ( new $ns_controller );
-            /** Check if the method exists, if not send 404 */
+            /** Check if the method exist s, if not send 404 */
             if( method_exists( $this->controller, $this->method ) ):
                 unset( $url[1] );
             else:

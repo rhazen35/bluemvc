@@ -4,7 +4,7 @@ namespace app\core;
 
 use app\core\Library as Lib;
 
-class ServiceController
+class RepositoryController
 {
     /** Model
      * @param $model

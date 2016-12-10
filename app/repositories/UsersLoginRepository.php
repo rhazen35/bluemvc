@@ -1,10 +1,10 @@
 <?php
 
-namespace app\service;
+namespace app\repositories;
 
-use app\core\ServiceController;
+use app\core\RepositoryController;
 
-class UserLoginService extends ServiceController
+class UsersLoginRepository extends RepositoryController
 {
     protected $model;
 

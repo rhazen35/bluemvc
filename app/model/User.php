@@ -17,7 +17,6 @@ class User extends Eloquent
     {
         parent::__construct();
         $this->capsule = unserialize( CAPSULE );
-        $this->table   = 'users';
         $this->userID  = ( !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "" );
     }
 

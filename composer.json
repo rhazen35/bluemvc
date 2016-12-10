@@ -11,7 +11,7 @@
       "app/core/interfaces",
       "app/model",
       "app/observer",
-      "app/service",
+      "app/repositories",
       "app/traits"
     ]
   }

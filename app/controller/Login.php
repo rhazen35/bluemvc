@@ -8,7 +8,7 @@ use app\core\Events;
 
 class Login extends BaseController implements IController
 {
-    protected $base_service;
+    protected $base_repo;
     protected $user;
     protected $user_role;
     protected $user_login;
@@ -19,10 +19,10 @@ class Login extends BaseController implements IController
 
     public function __construct()
     {
-        $this->base_service  = $this->service('BaseService');
-        $this->user          = $this->service('UserService');
-        $this->user_role     = $this->service('UserRoleService');
-        $this->user_login    = $this->service('UserLoginService');
+        $this->base_repo     = $this->repository('BaseRepository');
+        $this->user          = $this->repository('UsersRepository');
+        $this->user_role     = $this->repository('UsersRoleRepository');
+        $this->user_login    = $this->repository('UsersLoginRepository');
         $this->userID        = !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "";
         $this->date          = date( 'Y-m-d H:i:s' );
         $this->table         = 'users';
@@ -81,7 +81,7 @@ class Login extends BaseController implements IController
         if( $valid ) {
             $email      = $data['email'];
             $password   = $data['password'];
-            $login_data = $this->base_service->read( $this->table, ['email' => $email], false, false );
+            $login_data = $this->base_repo->read( $this->table, ['email' => $email], false, false );
             if ($this->verify($login_data, $password)) {
                 foreach ($login_data as $item) {
                     $_SESSION['login'] = $item->id;
@@ -125,10 +125,10 @@ class Login extends BaseController implements IController
      */
     public function register_login_datetime( $authorized )
     {
-        $data = $this->base_service->read( $this->login_table, ['user_id' => $authorized], false, false );
+        $data = $this->base_repo->read( $this->login_table, ['user_id' => $authorized], false, false );
 
         if( $data->isEmpty() ){
-            $this->base_service->create(
+            $this->base_repo->create(
                 $this->login_table,
                 [
                 'user_id' => $authorized,
@@ -142,7 +142,7 @@ class Login extends BaseController implements IController
         } else {
             foreach ($data as $login) {
                 $previous = $login->current;
-                $this->base_service->update(
+                $this->base_repo->update(
                     $this->login_table,
                     ['user_id' => $authorized],
                     ['current' => $this->date, 'previous' => $previous, 'updated_at' => $this->date]

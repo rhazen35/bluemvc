@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="container-title">Users</div>
+    <div class="container-menu">
+        <a href="" onclick="goBack()">Go back</a>
+        <a href="" class="popup-form-link" data-id="new-user">New user</a>
+    </div>
+</div>
+
+<div class="popup-form" id="new-user" id="popup-form">
+    <?php $this->view_partial('user', 'new-user', []); ?>
+</div>
+
+<div id="table-wrapper">
+    <?php $this->view_partial( "user", "table-user", [] ); ?>
+</div>

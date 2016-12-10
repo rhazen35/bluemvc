@@ -1,10 +1,10 @@
 <?php
 
-namespace app\service;
+namespace app\repositories;
 
-use app\core\ServiceController;
+use app\core\RepositoryController;
 
-class BaseService extends ServiceController implements IService
+class BaseRepository extends RepositoryController implements IRepository
 {
     protected $base_model;
 

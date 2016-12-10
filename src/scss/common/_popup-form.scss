@@ -44,3 +44,37 @@
 {
 background: $light-sky-blue;
 }
+
+.popup-form form
+{
+  text-align:center;
+}
+
+.popup-form form fieldset
+{
+  margin:2rem;
+  padding: 1rem 0 1rem 0;
+  border: 1px solid $dark-grey;
+}
+
+.popup-form form fieldset legend
+{
+  padding: 0 0.5rem 0 0.5rem;
+  font-size:90%;
+}
+
+.popup-form form fieldset input[type="email"],
+.popup-form form fieldset input[type="text"],
+.popup-form form fieldset input[type="password"],
+.popup-form form fieldset select
+{
+  margin: 0.25rem;
+  padding:0.25rem;
+}
+
+.popup-form form fieldset input[type="submit"]
+{
+  margin-top:1rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  cursor:pointer;
+}
