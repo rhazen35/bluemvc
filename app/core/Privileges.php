@@ -36,7 +36,7 @@ class Privileges extends BaseController
         foreach ($user_roles as $user_role){
             $roles = $this->get_role_from_id($user_role->role_id);
             foreach ($roles as $role) {
-                $privileges[] = $role->role;
+                $privileges[] = $role->name;
             }
         }
         return( $privileges );

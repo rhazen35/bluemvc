@@ -16,4 +16,22 @@ trait UsersTrait
     {
         return( ( new UsersRoleRepository() )->get_user_roles() );
     }
+
+    public function get_user_groups_from_user( $user )
+    {
+        $groups = array();
+        foreach( $user->groups as $group ){
+            $groups[]   = $group->name;
+        }
+        return( $groups );
+    }
+
+    public function get_user_roles_from_user( $user )
+    {
+        $roles = array();
+        foreach( $user->roles as $role ){
+            $roles[] = $role->name;
+        }
+        return( $roles );
+    }
 }

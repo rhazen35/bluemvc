@@ -80,8 +80,9 @@ $(document).on('click', '.popup-form-close', function(e){
     var ajax_success  = $('.ajax-success');
 
     body.on('click', '.submit-form', function(e) {
-        var url = this.form.action,
-            data = $(this.form).serialize();
+        var form    = this.form,
+            url     = form.action,
+            data    = $(form).serialize();
 
         $.ajax({
             type: "POST",
@@ -89,9 +90,28 @@ $(document).on('click', '.popup-form-close', function(e){
             data: data,
             success: function(response)
             {
+                form.reset();
                 $('.popup-form').fadeOut('fast');
-                ajax_success.html('User added');
-                ajax_success.show().delay(3500).animate({ height: 0, opacity: 0 }, 'fast');
+                ajax_success
+                    .html('User added')
+                    .show();
+
+                window.setTimeout(function () {
+                    ajax_success.animate({
+                        height: 0,
+                        opacity: 0
+                    }, 200);
+                }, 3500);
+
+                window.setTimeout(function () {
+                    ajax_success
+                        .hide()
+                        .css({
+                            height: '',
+                            opacity: ''
+                        });
+                }, 3800);
+
                 table_wrapper.html(response);
             }
         });

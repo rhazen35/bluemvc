@@ -47,7 +47,7 @@ $privileges = ( new Privileges() )->privileges;
             <a href="<?= BASE_PATH ?>manual/index">Manual</a>
             <?php
                 foreach( $privileges as $privilege ):
-                    if( $privilege === 1 ):
+                    if( $privilege === "Administrator" ):
                 ?>
                         <a href="<?= BASE_PATH ?>adminPanel/index">Admin Panel</a>
                 <?php

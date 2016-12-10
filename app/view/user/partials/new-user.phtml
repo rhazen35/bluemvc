@@ -10,11 +10,19 @@
         <input type="email" name="email" value="" placeholder="Email">
         <br>
         <select name="role">
-            <option value="">Choose a type</option>
+            <option value="">Choose a role</option>
             <?php
                 foreach( $roles as $role ){
-                    echo '<option value="' . $role->id . '">' . $role->id . '</option>';
+                    echo '<option value="' . $role->id . '">' . $role->name . '</option>';
                 }
+            ?>
+        </select>
+        <select name="group">
+            <option value="">Choose a group</option>
+            <?php
+            foreach( $groups as $group ){
+                echo '<option value="' . $group->id . '">' . $group->name . '</option>';
+            }
             ?>
         </select>
         <br>
