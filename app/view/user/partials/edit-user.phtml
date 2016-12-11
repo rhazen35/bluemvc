@@ -17,7 +17,7 @@ $groups = $this->get_all_groups();
         $user_roles  = $this->get_user_roles_from_user( $data );
 
         echo '<h2>Groups</h2>';
-        echo'<div class="popup-form-sections">';
+        echo'<div class="popup-form-section">';
         foreach( $groups as $group => $value ){
             echo '<label for="groups[]">' . $value['name'] . '</label>';
             $checked = in_array( $value['name'], $user_groups ) ? "checked" : "";
@@ -26,7 +26,7 @@ $groups = $this->get_all_groups();
 
         echo'</div>';
         echo '<h2>Roles</h2>';
-        echo'<div class="popup-form-sections">';
+        echo'<div class="popup-form-section">';
         foreach( $roles as $role => $value ) {
             echo '<label for="roles[]">' . $value->name . '</label>';
             $checked = in_array( $value->name, $user_roles ) ? "checked" : "";

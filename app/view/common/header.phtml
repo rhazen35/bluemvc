@@ -27,15 +27,15 @@ $privileges = ( new Privileges() )->privileges;
     <title>Blueberry</title>
 </head>
 <body>
-<!--<div class="se-pre-con">-->
-<!--    <div class="se-pre-con-txt">-->
-<!--            <span>-->
-<!--                <img src="--><?//= PUBLIC_PATH . 'img/icons/gears.gif?'. uniqid() ?><!--">-->
-<!--                <br>-->
-<!--                Loading, please wait...-->
-<!--            </span>-->
-<!--    </div>-->
-<!--</div>-->
+<div class="se-pre-con">
+    <div class="se-pre-con-txt">
+            <span>
+                <img src="<?= PUBLIC_PATH . 'img/icons/gears.gif?'. uniqid() ?>">
+                <br>
+                Loading, please wait...
+            </span>
+    </div>
+</div>
 
 <div class="header">
     <?php if( !empty( $_SESSION['login'] ) ): ?>

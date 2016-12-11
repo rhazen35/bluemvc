@@ -27,13 +27,16 @@ class UsersRepository extends RepositoryController
     {
         $full_name       = !empty( $data['full_name'] ) ? $data['full_name'] : "";
         $email           = !empty( $data['email'] ) ? $data['email'] : "";
-        $role            = !empty( $data['role'] ) ? $data['role'] : "";
         $group           = !empty( $data['group'] ) ? $data['group'] : "";
+        $role            = !empty( $data['role'] ) ? $data['role'] : "";
         $password        = !empty( $data['password'] ) ? $data['password'] : "";
         $password_repeat = !empty( $data['password_repeat'] ) ? $data['password_repeat'] : "";
         /** Setup the validate array */
         $array = array(
-            array('subject' => 'email|required', 'value' => $email)
+            array('subject' => 'full_name|required'         , 'value' => $full_name),
+            array('subject' => 'email|required'             , 'value' => $email),
+            array('subject' => 'text|required'              , 'value' => $group),
+            array('subject' => 'text|required'              , 'value' => $role)
         );
         /** Validate the user input */
         $validate = $this->validate( $array );

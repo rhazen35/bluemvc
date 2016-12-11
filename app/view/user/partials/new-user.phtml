@@ -2,21 +2,18 @@
 <?php $groups = $this->get_all_groups(); ?>
 
 <form action="<?= BASE_PATH ?>user/add_user" method="post" class="newuser">
+
+    <input type="hidden" name="success" value="User successfully added.">
+    <input type="hidden" name="error" value="There were errors while creating a new user.">
     <a href="" class="popup-form-close"></a>
     <h1>New system user</h1>
     <fieldset>
         <legend>Enter a name, email, type and password</legend>
-        <input type="text" name="full_name" value="" placeholder="Full name">
-        <input type="email" name="email" value="" placeholder="Email">
-        <br>
-        <select name="role">
-            <option value="">Choose a role</option>
-            <?php
-                foreach( $roles as $role ){
-                    echo '<option value="' . $role->id . '">' . $role->name . '</option>';
-                }
-            ?>
-        </select>
+        <div class="popup-form-section">
+            <input type="text" name="full_name" value="" placeholder="Full name">
+            <input type="email" name="email" value="" placeholder="Email">
+        </div>
+        <div class="popup-form-section">
         <select name="group">
             <option value="">Choose a group</option>
             <?php
@@ -25,11 +22,22 @@
             }
             ?>
         </select>
-        <br>
-        <input type="password" name="password" value="" placeholder="Password">
-        <input type="password" name="pass_repeat" value="" placeholder="Password repeat">
-        <br>
-        <input type="submit" name="newUserSubmit" value="Add" class="submit-form">
+        <select name="role">
+            <option value="">Choose a role</option>
+            <?php
+                foreach( $roles as $role ){
+                    echo '<option value="' . $role->id . '">' . $role->name . '</option>';
+                }
+            ?>
+        </select>
+        </div>
+        <div class="popup-form-section">
+            <input type="password" name="password" value="" placeholder="Password">
+            <input type="password" name="pass_repeat" value="" placeholder="Password repeat">
+        </div>
+        <div class="popup-form-section">
+            <input type="submit" name="newUserSubmit" value="Add" class="submit-form">
+        </div>
     </fieldset>
 </form>
 

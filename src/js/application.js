@@ -1,5 +1,16 @@
 var body = $('body');
 
+$(document).mouseup(function (e)
+{
+    var container = $(".popup-form");
+
+    if (!container.is(e.target)
+        && container.has(e.target).length === 0)
+    {
+        container.css('display', 'none');
+    }
+});
+
 // Loading gears
 
 $(window).load(function() {
@@ -80,9 +91,12 @@ $(document).on('click', '.popup-form-close', function(e){
     var ajax_success  = $('.ajax-success');
 
     body.on('click', '.submit-form', function(e) {
-        var form    = this.form,
-            url     = form.action,
-            data    = $(form).serialize();
+        var form       = this.form,
+            url        = form.action,
+            data       = $(form).serialize(),
+            data_array = $(form).serializeArray();
+            success_mesg = $('input[name=success]').val();
+            error_mesg   = $('input[name=error]').val();
 
         $.ajax({
             type: "POST",
@@ -93,7 +107,7 @@ $(document).on('click', '.popup-form-close', function(e){
                 form.reset();
                 $('.popup-form').fadeOut('fast');
                 ajax_success
-                    .html('User added')
+                    .html(success_mesg)
                     .show();
 
                 window.setTimeout(function () {
@@ -113,7 +127,14 @@ $(document).on('click', '.popup-form-close', function(e){
                 }, 3800);
 
                 table_wrapper.html(response);
+            },
+            error: function()
+            {
+                ajax_success
+                    .html(data['error'])
+                    .show();
             }
+
         });
 
         e.preventDefault();
