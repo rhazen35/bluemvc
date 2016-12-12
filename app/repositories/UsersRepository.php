@@ -35,13 +35,15 @@ class UsersRepository extends RepositoryController
         $array = array(
             array('subject' => 'full_name|required'         , 'value' => $full_name),
             array('subject' => 'email|required'             , 'value' => $email),
-            array('subject' => 'text|required'              , 'value' => $group),
-            array('subject' => 'text|required'              , 'value' => $role)
+            array('subject' => 'group|required'             , 'value' => $group),
+            array('subject' => 'role|required'              , 'value' => $role),
+            array('subject' => 'password|required'          , 'value' => $password),
+            array('subject' => 'password_repeat|required'   , 'value' => $password_repeat)
         );
         /** Validate the user input */
-        $validate = $this->validate( $array );
+        $validation = $this->validate( $array );
         /** Check if total validation has succeeded */
-        if( $validate['total_validation'] === true ){
+        if( $validation === true ) {
             /** Create a new user */
             $params = array(
                 'id' => '',
@@ -63,7 +65,13 @@ class UsersRepository extends RepositoryController
             );
             $this->base_model->insert('group_user', $params_group);
             /** Trigger event */
-            ( new Events() )->trigger( 21, true );
+            (new Events())->trigger(21, true);
+            echo json_encode( true );
+        } else {
+            if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&  strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+                echo json_encode( $validation ) ;
+                exit;
+            }
         }
     }
 }

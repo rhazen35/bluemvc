@@ -10,10 +10,15 @@ class RepositoryController
      * @param $model
      * @return mixed
      */
-    protected function model( $model )
+    public function model( $model )
     {
         require_once( Lib::path("app/model/" . $model . ".php" ) );
         $model = "\\app\\model\\" . $model;
         return( new $model );
+    }
+
+    public function view_partial( $view, $partial, $data = [] )
+    {
+        include( Lib::path("app/view/" . $view . "/partials/" . $partial . ".phtml" ) );
     }
 }

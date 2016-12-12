@@ -90,6 +90,7 @@ background: $light-sky-blue;
   margin: 0.25rem 0 0.25rem 0.25rem;
   padding:0.5rem;
   background: $dark-gray-blue;
+  border: 1px solid $light-grey;
 
   &::-webkit-input-placeholder {
     color: $dark-grey;
@@ -128,4 +129,17 @@ background: $light-sky-blue;
 .popup-form form fieldset input[type="submit"]:hover
 {
   background: $light-sky-blue;
+}
+
+// Input errors
+
+.input-error
+{
+  border-color: $red !important;
+}
+
+.input-error-label
+{
+  color: $red;
+  font-size:80%;
 }

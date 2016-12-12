@@ -38,6 +38,6 @@ class BaseModel extends Eloquent implements IBaseModel
 
     public function remove( $table, $where )
     {
-
+        $this->capsule->table($table)->where($where)->delete();
     }
 }

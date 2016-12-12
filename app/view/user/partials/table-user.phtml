@@ -50,7 +50,7 @@ $users = $this->get_all_users();
             echo '<div class="table-cell">' . $user_last_login . '</div>';
             echo '<div class="table-cell">' . $user->created_at . '</div>';
             echo '<div class="table-cell"><a href="" class="popup-form-link" data-id="' . $user->id . '">Edit</a></div>';
-            echo '<div class="table-cell"><a href="' . BASE_PATH . 'user/delete">Delete</a></div>';
+            echo '<div class="table-cell"><a href="' . BASE_PATH . 'user/delete" class="user-delete" data-id="' . $user->id . '">Delete</a></div>';
             echo '</div>';
             echo '<div class="popup-form" id="' . $user->id . '">';
             $this->view_partial('user', 'edit-user', $user);

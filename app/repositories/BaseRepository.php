@@ -30,8 +30,8 @@ class BaseRepository extends RepositoryController implements IRepository
 
     }
 
-    public function delete( $table, $params )
+    public function delete( $table, $where )
     {
-
+        $this->base_model->remove( $table, $where );
     }
 }

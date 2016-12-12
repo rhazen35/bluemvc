@@ -12,10 +12,13 @@ class User extends BaseController implements IController
     use UsersTrait;
     use GroupsTrait;
     use RolesTrait;
+
+    protected $base_repo;
     protected $repository;
 
     public function __construct()
     {
+        $this->base_repo  = $this->repository("BaseRepository");
         $this->repository = $this->repository("UsersRepository");
     }
 
@@ -32,7 +35,19 @@ class User extends BaseController implements IController
     public function add_user()
     {
         $this->repository->add_user( $_POST );
-        return( $this->view_partial( "user", "table-user", [] ) );
+    }
+
+    public function get_user_table_result()
+    {
+        return ($this->view_partial("user", "table-user", []));
+    }
+
+    public function delete()
+    {
+        $this->base_repo->delete( 'role_user', ['user_id' => $_POST['id']] );
+        $this->base_repo->delete( 'group_user', ['user_id' => $_POST['id']] );
+        $this->base_repo->delete( 'users', ['id' => $_POST['id']] );
+        return ($this->view_partial("user", "table-user", []));
     }
 
 }

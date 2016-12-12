@@ -1,4 +1,5 @@
-var body = $('body');
+var body          = $('body');
+var table_wrapper = $('#table-wrapper');
 
 $(document).mouseup(function (e)
 {
@@ -72,86 +73,112 @@ window.onclick = function(event) {
 
 $(document).on('click', '.popup-form-link', function(e) {
     e.preventDefault();
+    var form = $('#new-user form')[0];
+    $('form input, form select').removeClass('input-error');
+    $('label.input-error-label').remove();
     $('.popup-form').css('display', 'none');
     var id = $(this).attr('data-id');
     $('#' + id).css('display', 'block');
-
+    form.reset();
 });
 
 // CLOSE POPUP
 $(document).on('click', '.popup-form-close', function(e){
    e.preventDefault();
-    $('.popup-form').css({display: 'none'});
-
+   $('.popup-form').css({display: 'none'});
 });
 
-(function() {
+////////////////////////////////////////////
+// POPUP FORM AJAX
+////////////////////////////////////////////
+var data = {};
 
-    var table_wrapper = $('#table-wrapper');
-    var ajax_success  = $('.ajax-success');
-
-    body.on('click', '.submit-form', function(e) {
-        var form       = this.form,
-            url        = form.action,
-            data       = $(form).serialize(),
-            data_array = $(form).serializeArray();
-            success_mesg = $('input[name=success]').val();
-            error_mesg   = $('input[name=error]').val();
-
+$(document).ready(function() {
+    $('.submit-form').on('click', function(e) {
+        resetErrors();
+        e.preventDefault();
+        var form         = this.form,
+            url          = form.action,
+            data_url     = $(form).attr('data-url'),
+            data         = $(form).serialize(),
+            success_mesg = $('input[name=success]').val(),
+            error_mesg   = $('input[name=error]').val(),
+            ajax_success = $('.ajax-success');
+        ////////////////////////////////////////////
         $.ajax({
-            type: "POST",
+            dataType: 'json',
+            type: 'POST',
             url: url,
             data: data,
-            success: function(response)
-            {
-                form.reset();
-                $('.popup-form').fadeOut('fast');
-                ajax_success
-                    .html(success_mesg)
-                    .show();
-
-                window.setTimeout(function () {
-                    ajax_success.animate({
-                        height: 0,
-                        opacity: 0
-                    }, 200);
-                }, 3500);
-
-                window.setTimeout(function () {
-                    ajax_success
-                        .hide()
-                        .css({
-                            height: '',
-                            opacity: ''
-                        });
-                }, 3800);
-
-                table_wrapper.html(response);
+            success: function(resp) {
+                if ( resp === true ) {
+                    form.reset();
+                    ////////////////////////////////////////////
+                    ajax_success.html(success_mesg).show();
+                    window.setTimeout(function () {
+                        ajax_success.animate({
+                            height: 0,
+                            opacity: 0
+                        }, 200);
+                    }, 3500);
+                    ////////////////////////////////////////////
+                    window.setTimeout(function () {
+                        ajax_success
+                            .hide()
+                            .css({
+                                height: '',
+                                opacity: ''
+                            });
+                    }, 3800);
+                    ////////////////////////////////////////////
+                    $('.popup-form').fadeOut('fast');
+                    $.ajax({
+                        dataType: 'html',
+                        type: 'POST',
+                        url: data_url,
+                        success: function (html_response) {
+                            table_wrapper.html(html_response);
+                        }
+                    });
+                    ////////////////////////////////////////////
+                } else {
+                    $.each(resp, function(i, v) {
+                        var msg = '<label class="input-error-label" for="'+i+'">'+v+'</label>';
+                        $('input[name="' + i + '"], select[name="' + i + '"]').addClass('input-error').after(msg);
+                    });
+                    var keys = Object.keys(resp);
+                    $('input[name="'+keys[0]+'"]').focus();
+                }
+                ////////////////////////////////////////////
             },
-            error: function()
-            {
-                ajax_success
-                    .html(data['error'])
-                    .show();
+            error: function() {
+                console.log('Error');
             }
-
         });
+        return false;
+    });
+});
+////////////////////////////////////////////
+function resetErrors() {
+    $('form input, form select').removeClass('input-error');
+    $('label.input-error-label').remove();
+}
 
-        e.preventDefault();
 
+/// ------------------------  Users ------------------ \\\
+
+body.on('click', '.user-delete', function(e) {
+    e.preventDefault();
+    var url  = $(this).attr('href');
+    var data = $(this).attr('data-id');
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {id:data},
+        success: function (response) {
+            table_wrapper.html(response);
+        }
     });
 
-    body.on('click', '#deleteUser', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('data-url');
-
-        $.get( url, function( data ) {
-            $tableWrapper.html( data );
-        });
-
-    });
-
-}());
-
-
-
+});

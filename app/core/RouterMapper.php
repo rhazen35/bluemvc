@@ -29,6 +29,7 @@ class RouterMapper
             array('url' => 'user/add_user'                      , 'controller' => 'user'               , 'action' => 'add_user'),
             array('url' => 'user/delete'                        , 'controller' => 'user'               , 'action' => 'delete'),
             array('url' => 'user/edit'                          , 'controller' => 'user'               , 'action' => 'edit'),
+            array('url' => 'user/get_user_table_result'         , 'controller' => 'user'               , 'action' => 'get_user_table_result'),
 
             /** Home */
             array('url' => 'home/index'                         ,'controller' => 'home'                ,'action' => 'index')
