@@ -1,16 +1,16 @@
 var body          = $('body');
 var table_wrapper = $('#table-wrapper');
 
-$(document).mouseup(function (e)
-{
-    var container = $(".popup-form");
-
-    if (!container.is(e.target)
-        && container.has(e.target).length === 0)
-    {
-        container.css('display', 'none');
-    }
-});
+// $(document).mouseup(function (e)
+// {
+//     var container = $(".popup-form");
+//
+//     if (!container.is(e.target)
+//         && container.has(e.target).length === 0)
+//     {
+//         container.css('display', 'none');
+//     }
+// });
 
 // Loading gears
 
@@ -144,7 +144,7 @@ $(document).ready(function() {
                 } else {
                     $.each(resp, function(i, v) {
                         var msg = '<label class="input-error-label" for="'+i+'">'+v+'</label>';
-                        $('input[name="' + i + '"], select[name="' + i + '"]').addClass('input-error').after(msg);
+                        $('input[name="' + i + '"], select[name="' + i + '"]').addClass('input-error').before(msg);
                     });
                     var keys = Object.keys(resp);
                     $('input[name="'+keys[0]+'"]').focus();

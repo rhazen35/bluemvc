@@ -31,7 +31,7 @@
 
 .popup-form-section
 {
-  padding:1rem 0 1rem 1rem;
+  padding:0.5rem 0 0.5rem 1rem;
 }
 
 .popup-form-close {
@@ -72,6 +72,11 @@ background: $light-sky-blue;
 .popup-form form fieldset legend
 {
   padding: 0.5rem 0 0 0.5rem;
+  font-size:80%;
+}
+
+.popup-form form fieldset label
+{
   font-size:80%;
 }
 

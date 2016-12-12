@@ -18,12 +18,20 @@ class UsersRepository extends RepositoryController
         $this->model      = $this->model('User');
     }
 
+    /**
+     * @return mixed
+     */
     public function get_all_users()
     {
         return( $this->model->get_all_users() );
     }
 
-    public function add_user( $data )
+    /**
+     * Add a new user.
+     * Pass all posted values to the validation function as an array, specifying the type and if it's required.
+     * @param $data
+     */
+    public function add_user($data )
     {
         $full_name       = !empty( $data['full_name'] ) ? $data['full_name'] : "";
         $email           = !empty( $data['email'] ) ? $data['email'] : "";

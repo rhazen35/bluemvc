@@ -9,29 +9,35 @@
         <input type="hidden" name="success" value="New user successfully added.">
         <input type="hidden" name="error" value="There was problem validating the form.">
         <div class="popup-form-section">
+            <label for="full_name">Full name</label>
             <input type="text" name="full_name" value="" placeholder="Full name">
+            <label for="email">Email</label>
             <input type="email" name="email" value="" placeholder="Email">
         </div>
         <div class="popup-form-section">
-        <select name="group">
-            <option value="">Choose a group</option>
-            <?php
-            foreach( $groups as $group ){
-                echo '<option value="' . $group->id . '">' . $group->name . '</option>';
-            }
-            ?>
-        </select>
-        <select name="role">
-            <option value="">Choose a role</option>
-            <?php
-                foreach( $roles as $role ){
-                    echo '<option value="' . $role->id . '">' . $role->name . '</option>';
+            <label for="group">Group</label>
+            <select name="group">
+                <option value="">Choose a group</option>
+                <?php
+                foreach( $groups as $group ){
+                    echo '<option value="' . $group->id . '">' . $group->name . '</option>';
                 }
-            ?>
-        </select>
+                ?>
+            </select>
+            <label for="group">Role</label>
+            <select name="role">
+                <option value="">Choose a role</option>
+                <?php
+                    foreach( $roles as $role ){
+                        echo '<option value="' . $role->id . '">' . $role->name . '</option>';
+                    }
+                ?>
+            </select>
         </div>
         <div class="popup-form-section">
+            <label for="password">Password</label>
             <input type="password" name="password" value="" placeholder="Password">
+            <label for="password_repeat">Password repeat</label>
             <input type="password" name="password_repeat" value="" placeholder="Password repeat">
         </div>
         <div class="popup-form-section">

@@ -22,6 +22,15 @@ trait UsersTrait
         return( false );
     }
 
+    public function get_email_by_email( $email )
+    {
+        $emails = ( new BaseRepository() )->read( 'users', ['email' => $email], false, false );
+        foreach( $emails as $email ){
+            return( $email );
+        }
+        return( false );
+    }
+
     public function get_user_roles()
     {
         return( ( new UsersRoleRepository() )->get_user_roles() );

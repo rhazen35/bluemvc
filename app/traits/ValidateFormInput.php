@@ -7,14 +7,25 @@ use app\core\Library as Lib;
 trait ValidateFormInput
 {
     use UsersTrait;
+
+    /**
+     * Validate passes the array to the rules to check if it matches any
+     * @param $array
+     * @return array|bool
+     */
     public function validate( $array )
     {
         return( $this->rules( $array ) );
     }
 
-    public function rules( $array )
+    /**
+     * Rules check for valid input and input requirements
+     * @param $array
+     * @return array|bool
+     */
+    public function rules($array )
     {
-        $result                     = array();
+        $result = array();
 
         foreach( $array as $item => $value ){
             $param = trim( $value['value'] );
@@ -22,31 +33,36 @@ trait ValidateFormInput
 
             /** Full name validation */
             if( $parts[0] === "full_name" ) {
-
                 $valid = Lib::hashSpecialChars( $param ) ? false : true;
                 $required = $parts[1] === "required" ? true : false;
                 if( !empty( $param ) ){
                     $exists = empty( $this->get_user_from_name( $param ) ) ? false : true;
                     if( $exists ){
-                        $result[$parts[0]] = "Name is in use.";
+                        $result[$parts[0]] = " is in use.";
                     }
                 }
                 if ( false === $valid ) {
-                    $result[$parts[0]] = "Invalid name";
+                    $result[$parts[0]] = " has special characters";
                 }
                 if ( empty( $param ) && $required ) {
-                    $result[$parts[0]] = "Name is empty but required";
+                    $result[$parts[0]] = " is empty but required";
                 }
             }
             /** Email validation */
             if( $parts[0] === "email" ) {
                 $valid    = filter_var( $param, FILTER_VALIDATE_EMAIL );
                 $required = $parts[1] === "required" ? true : false;
+                if( !empty( $param ) ){
+                    $exists = empty( $this->get_email_by_email( $param ) ) ? false : true;
+                    if( $exists ){
+                        $result[$parts[0]] = " is in use.";
+                    }
+                }
                 if( false === $valid ){
-                    $result[$parts[0]] = "Invalid email address";
+                    $result[$parts[0]] = "is not a valid email address";
                 }
                 if( empty( $param ) && $required ){
-                    $result[$parts[0]] = "Email is empty but required";
+                    $result[$parts[0]] = " is empty but required";
                 }
             }
             /** Group validation - single */
@@ -54,10 +70,10 @@ trait ValidateFormInput
                 $valid    = Lib::hashSpecialChars( $param ) ? false : true;
                 $required = $parts[1] === "required" ? true : false;
                 if( false === $valid ){
-                    $result[$parts[0]] = "Invalid group.";
+                    $result[$parts[0]] = " has special characters.";
                 }
                 if( empty( $param ) && $required ){
-                    $result[$parts[0]] = "Group is empty but required.";
+                    $result[$parts[0]] = " is empty but required.";
                 }
             }
             /** Role validation - single */
@@ -65,28 +81,28 @@ trait ValidateFormInput
                 $valid    = Lib::hashSpecialChars( $param ) ? false : true;
                 $required = $parts[1] === "required" ? true : false;
                 if( false === $valid ){
-                    $result[$parts[0]] = "Invalid role.";
+                    $result[$parts[0]] = " has special characters.";
                 }
                 if( empty( $param ) && $required ){
-                    $result[$parts[0]] = "Role is empty but required.";
+                    $result[$parts[0]] = " is empty but required.";
                 }
             }
             /** Password validation*/
             if( $parts[0] === "password" ){
-                $password = $param;
+                $password = $param; // Set the pass for pass repeat
                 $valid    = strlen( $param ) >= 6 ? true : false;
                 $required = $parts[1] === "required" ? true : false;
                 if( false === $valid ){
-                    $result[$parts[0]] = "Password must contain at least 6 characters.";
+                    $result[$parts[0]] = " must contain at least 6 characters.";
                 }
                 if( empty( $param ) && $required ){
-                    $result[$parts[0]] = "Password is empty but required.";
+                    $result[$parts[0]] = " is empty but required.";
                 }
             }
             /** Password repeat validation*/
             if( $parts[0] === "password_repeat" ){
                 if( !empty( $password ) && $password !== $param ){
-                    $result[$parts[0]] = "Passwords don't match.";
+                    $result[$parts[0]] = " don't match.";
                 }
                 if( !empty( $password ) && empty( $param ) ){
                     $result[$parts[0]] = "Please re-type the password.";
