@@ -8,12 +8,21 @@ use app\repositories\UsersRoleRepository;
 
 trait UsersTrait
 {
+    /**
+     * Get all users.
+     * @return mixed
+     */
     public function get_all_users()
     {
         return( ( new UsersRepository() )->get_all_users() );
     }
 
-    public function get_user_from_name( $user_name )
+    /**
+     * Get a user by full name
+     * @param $user_name
+     * @return bool
+     */
+    public function get_user_from_name($user_name )
     {
         $names = ( new BaseRepository() )->read( 'users', ['name' => $user_name], false, false );
         foreach( $names as $name ){
@@ -22,7 +31,12 @@ trait UsersTrait
         return( false );
     }
 
-    public function get_email_by_email( $email )
+    /**
+     * Get the email matching the given email
+     * @param $email
+     * @return bool
+     */
+    public function get_email_by_email($email )
     {
         $emails = ( new BaseRepository() )->read( 'users', ['email' => $email], false, false );
         foreach( $emails as $email ){
@@ -31,12 +45,21 @@ trait UsersTrait
         return( false );
     }
 
+    /**
+     * Get a user his/her roles
+     * @return mixed
+     */
     public function get_user_roles()
     {
         return( ( new UsersRoleRepository() )->get_user_roles() );
     }
 
-    public function get_user_groups_from_user( $user )
+    /**
+     *  Get a user his/her groups
+     * @param $user
+     * @return array
+     */
+    public function get_user_groups_from_user($user )
     {
         $groups = array();
         foreach( $user->groups as $group ){
@@ -45,6 +68,11 @@ trait UsersTrait
         return( $groups );
     }
 
+    /**
+     * Get a user his/her roles by user
+     * @param $user
+     * @return array
+     */
     public function get_user_roles_from_user( $user )
     {
         $roles = array();

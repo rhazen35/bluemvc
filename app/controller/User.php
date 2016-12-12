@@ -37,17 +37,27 @@ class User extends BaseController implements IController
         $this->repository->add_user( $_POST );
     }
 
+    /** Returns the user-table partial in case of a needed ajax response */
     public function get_user_table_result()
     {
         return ($this->view_partial("user", "table-user", []));
     }
 
+    /**
+     * Delete a specific user
+     *
+     * Tables to remove from:
+     *  - role_user, group_user, login_user, users
+     *
+     * Returns the user-table for ajax response
+     */
     public function delete()
     {
         $this->base_repo->delete( 'role_user', ['user_id' => $_POST['id']] );
         $this->base_repo->delete( 'group_user', ['user_id' => $_POST['id']] );
+        $this->base_repo->delete( 'login_user', ['user_id' => $_POST['id']] );
         $this->base_repo->delete( 'users', ['id' => $_POST['id']] );
-        return ($this->view_partial("user", "table-user", []));
+        return ( $this->get_user_table_result() );
     }
 
 }

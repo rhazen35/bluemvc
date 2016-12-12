@@ -2,6 +2,13 @@
 
 namespace app\repositories;
 
+/**
+ * Base repository is responsible for all basic queries.
+ * - Simple CRUD operations must be provided with a table.
+ *
+ * Additional params per CRUD-item:
+ * - C = $params, R = $where, $groups and $orders, U = $where, $params, D = $where
+ */
 use app\core\RepositoryController;
 
 class BaseRepository extends RepositoryController implements IRepository
@@ -12,9 +19,7 @@ class BaseRepository extends RepositoryController implements IRepository
     {
         $this->base_model = $this->model('BaseModel');
     }
-    /**
-     * Standard CRUD operations
-     */
+
     public function create( $table, $params )
     {
 
