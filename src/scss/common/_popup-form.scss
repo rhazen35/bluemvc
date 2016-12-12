@@ -77,7 +77,12 @@ background: $light-sky-blue;
 
 .popup-form form fieldset label
 {
+  display:block;
+  min-width:15rem;
+  padding:0.2rem;
   font-size:80%;
+  background: $light-blue-gray;
+  border-bottom: 1px solid #9CAAAF;
 }
 
 .popup-form form fieldset input[type="checkbox"]
@@ -92,10 +97,10 @@ background: $light-sky-blue;
 {
   min-width:15rem;
   display:block;
-  margin: 0.25rem 0 0.25rem 0.25rem;
+  margin: 0 0 0.25rem 0.25rem;
   padding:0.5rem;
   background: $dark-gray-blue;
-  border: 1px solid $light-grey;
+  border: 1px solid transparent;
 
   &::-webkit-input-placeholder {
     color: $dark-grey;
@@ -114,6 +119,11 @@ background: $light-sky-blue;
   }
 }
 
+.popup-form form fieldset select
+{
+  min-width:16rem;
+}
+
 .popup-form form fieldset input[type="email"]:focus,
 .popup-form form fieldset input[type="text"]:focus,
 .popup-form form fieldset input[type="password"]:focus,
@@ -121,6 +131,7 @@ background: $light-sky-blue;
 {
   border: 1px solid $ultra-light-blue;
   background: $white;
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
 }
 
 .popup-form form fieldset input[type="submit"]

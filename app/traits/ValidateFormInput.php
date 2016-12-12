@@ -44,14 +44,14 @@ trait ValidateFormInput
                 if( !empty( $param ) ){
                     $exists = empty( $this->get_user_from_name( $param ) ) ? false : true;
                     if( $exists ){
-                        $result[$parts[0]] = " is in use.";
+                        $result[$parts[0]] = "Full name is in use.";
                     }
                 }
                 if ( false === $valid ) {
-                    $result[$parts[0]] = " has special characters";
+                    $result[$parts[0]] = "Full name has special characters";
                 }
                 if ( empty( $param ) && $required ) {
-                    $result[$parts[0]] = " is empty but required";
+                    $result[$parts[0]] = "Full name is empty but required";
                 }
             }
             /**
@@ -63,14 +63,14 @@ trait ValidateFormInput
                 if( !empty( $param ) ){
                     $exists = empty( $this->get_email_by_email( $param ) ) ? false : true;
                     if( $exists ){
-                        $result[$parts[0]] = " is in use.";
+                        $result[$parts[0]] = "Email is in use.";
                     }
                 }
                 if( false === $valid ){
-                    $result[$parts[0]] = "is not a valid email address";
+                    $result[$parts[0]] = "Email is not a valid email address";
                 }
                 if( empty( $param ) && $required ){
-                    $result[$parts[0]] = " is empty but required";
+                    $result[$parts[0]] = "Email is empty but required";
                 }
             }
             /**
@@ -80,10 +80,10 @@ trait ValidateFormInput
                 $valid    = Lib::hashSpecialChars( $param ) ? false : true;
                 $required = $parts[1] === "required" ? true : false;
                 if( false === $valid ){
-                    $result[$parts[0]] = " has special characters.";
+                    $result[$parts[0]] = "Group has special characters.";
                 }
                 if( empty( $param ) && $required ){
-                    $result[$parts[0]] = " is empty but required.";
+                    $result[$parts[0]] = "Group is empty but required.";
                 }
             }
             /**
@@ -93,10 +93,10 @@ trait ValidateFormInput
                 $valid    = Lib::hashSpecialChars( $param ) ? false : true;
                 $required = $parts[1] === "required" ? true : false;
                 if( false === $valid ){
-                    $result[$parts[0]] = " has special characters.";
+                    $result[$parts[0]] = "Role has special characters.";
                 }
                 if( empty( $param ) && $required ){
-                    $result[$parts[0]] = " is empty but required.";
+                    $result[$parts[0]] = "Role is empty but required.";
                 }
             }
             /**
@@ -107,10 +107,10 @@ trait ValidateFormInput
                 $valid    = strlen( $param ) >= 6 ? true : false;
                 $required = $parts[1] === "required" ? true : false;
                 if( false === $valid ){
-                    $result[$parts[0]] = " must contain at least 6 characters.";
+                    $result[$parts[0]] = "Password must contain at least 6 characters.";
                 }
                 if( empty( $param ) && $required ){
-                    $result[$parts[0]] = " is empty but required.";
+                    $result[$parts[0]] = "Password is empty but required.";
                 }
             }
             /**
@@ -118,7 +118,7 @@ trait ValidateFormInput
              */
             if( $parts[0] === "password_repeat" ){
                 if( !empty( $password ) && $password !== $param ){
-                    $result[$parts[0]] = " don't match.";
+                    $result[$parts[0]] = "Password is no match.";
                 }
                 if( !empty( $password ) && empty( $param ) ){
                     $result[$parts[0]] = "Please re-type the password.";

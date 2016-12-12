@@ -74,8 +74,6 @@ window.onclick = function(event) {
 $(document).on('click', '.popup-form-link', function(e) {
     e.preventDefault();
     var form = $('#new-user form')[0];
-    $('form input, form select').removeClass('input-error');
-    $('label.input-error-label').remove();
     $('.popup-form').css('display', 'none');
     var id = $(this).attr('data-id');
     $('#' + id).css('display', 'block');
@@ -113,6 +111,7 @@ $(document).ready(function() {
             success: function(resp) {
                 if ( resp === true ) {
                     form.reset();
+                    $('.popup-form').fadeOut('fast');
                     ////////////////////////////////////////////
                     ajax_success.html(success_mesg).show();
                     window.setTimeout(function () {
@@ -131,7 +130,6 @@ $(document).ready(function() {
                             });
                     }, 3800);
                     ////////////////////////////////////////////
-                    $('.popup-form').fadeOut('fast');
                     $.ajax({
                         dataType: 'html',
                         type: 'POST',
@@ -143,8 +141,10 @@ $(document).ready(function() {
                     ////////////////////////////////////////////
                 } else {
                     $.each(resp, function(i, v) {
-                        var msg = '<label class="input-error-label" for="'+i+'">'+v+'</label>';
-                        $('input[name="' + i + '"], select[name="' + i + '"]').addClass('input-error').before(msg);
+                        var label = $("label[for='"+i+"']");
+                        label.html(v);
+                        label.addClass('input-error-label')
+                        $('input[name="' + i + '"], select[name="' + i + '"]').addClass('input-error');
                     });
                     var keys = Object.keys(resp);
                     $('input[name="'+keys[0]+'"]').focus();
@@ -161,7 +161,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////
 function resetErrors() {
     $('form input, form select').removeClass('input-error');
-    $('label.input-error-label').remove();
+    $('form label').removeClass('.input-error-label');
 }
 
 
