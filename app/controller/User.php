@@ -58,10 +58,13 @@ class User extends BaseController implements IController
      */
     public function delete()
     {
-        $this->base_repo->delete( 'role_user', ['user_id' => $_POST['id']] );
-        $this->base_repo->delete( 'group_user', ['user_id' => $_POST['id']] );
-        $this->base_repo->delete( 'login_user', ['user_id' => $_POST['id']] );
-        $this->base_repo->delete( 'users', ['id' => $_POST['id']] );
+        $user_id = !empty( $_POST['id'] ) ? $_POST['id'] : "";
+        if( !empty( $user_id ) ) {
+            $this->base_repo->delete('role_user', ['user_id' => $user_id]);
+            $this->base_repo->delete('group_user', ['user_id' => $user_id]);
+            $this->base_repo->delete('login_user', ['user_id' => $user_id]);
+            $this->base_repo->delete('users', ['id' => $user_id]);
+        }
         return ( $this->get_user_table_result() );
     }
 

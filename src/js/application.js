@@ -192,9 +192,8 @@ function popup_message_timeout( element, message ) {
     }, 3800);
 }
 ////////////////////////////////////////////
-/// ------------------------  Users ------------------ \\\
-
-body.on('click', '.user-delete', function(e) {
+// POPUP FORM DELETE
+body.on('click', '.popup-form-delete', function(e) {
     e.preventDefault();
     var url  = $(this).attr('href');
     var data = $(this).attr('data-id');

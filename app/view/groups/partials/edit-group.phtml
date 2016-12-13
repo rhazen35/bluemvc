@@ -1,0 +1,18 @@
+<form action="<?= BASE_PATH ?>groups/edit_group" method="post" data-url="<?= BASE_PATH ?>groups/get_groups_table_result">
+    <a href="" class="popup-form-close"></a>
+    <h1>Edit group <?= $data->name ?></h1>
+    <fieldset>
+        <legend>Please fill in the form below.</legend>
+        <input type="hidden" name="group_id" value="<?= $data->id ?>">
+        <input type="hidden" name="success" value="Group <?= $data->name ?> modified.">
+        <input type="hidden" name="error" value="There were problems validating the form.">
+        <div class="popup-form-section">
+            <label for="full_name">Group name<span></span></label>
+            <input type="text" name="full_name" value="<?= $data->name ?>" title="Please enter a group name"placeholder="Group name">
+        </div>
+        <div class="popup-form-section">
+            <input type="submit" name="editGroupSubmit" value="Modify" class="submit-form">
+        </div>
+    </fieldset>
+</form>
+

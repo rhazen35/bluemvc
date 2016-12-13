@@ -53,7 +53,7 @@ $users = $this->get_all_users();
                     <a href="" class="popup-form-link" data-id="' . $user->id . '">Edit</a>
                   </div>';
             echo '<div class="table-cell">
-                    <a href="' . BASE_PATH . 'user/delete" class="user-delete" data-id="' . $user->id . '" data-text="User ' . $user->name . ' is deleted.">Delete</a>
+                    <a href="' . BASE_PATH . 'user/delete" class="popup-form-delete" data-id="' . $user->id . '" data-text="User ' . $user->name . ' is deleted.">Delete</a>
                   </div>';
             echo '</div>';
             echo '<div class="popup-form-container">';
