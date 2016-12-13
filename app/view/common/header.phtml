@@ -21,9 +21,10 @@ $privileges = ( new Privileges() )->privileges;
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Raleway%7cPassion+One%7cWork+Sans%7cRoboto+Condensed:400" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="<?= CSS_PATH ?>">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <title>Blueberry</title>
 </head>
 <body>
@@ -70,4 +71,5 @@ $privileges = ( new Privileges() )->privileges;
 <?= ( new EventMessage() )->display() ?>
 
 <div class="ajax-success"></div>
+<div class="ajax-failed"></div>
 

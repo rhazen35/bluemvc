@@ -12,12 +12,14 @@
   background-color: #96C761;
 }
 
-.ajax-success
+.ajax-success,
+.ajax-failed
 {
   display:none;
 }
 
-.event-failed
+.event-failed,
+.ajax-failed
 {
   z-index:900;
   position:fixed;

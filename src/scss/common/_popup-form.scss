@@ -1,12 +1,15 @@
-.popup-form
+.popup-form-container
 {
-  display:none;
+  z-index: 100;
   position:absolute;
   height:auto;
   width:auto;
   top:10%;
   left: 50%;
-
+}
+.popup-form
+{
+  display:none;
   transform: translateX(-50%);
   background-color: #F9F9F9;
   border: 1px solid #D1D1D1;
@@ -41,9 +44,9 @@
   line-height: 0.5rem;
   padding:0.25rem 0.5rem 0.75rem 0.5rem;
   cursor:pointer;
-  color: #fff;
+  color: $white;
   border-radius: 30px;
-  background: #605F61;
+  background: $darker-grey;
   font-size: 30px;
   font-weight: bold;
   text-decoration:none;
@@ -78,11 +81,17 @@ background: $light-sky-blue;
 .popup-form form fieldset label
 {
   display:block;
-  min-width:15rem;
-  padding:0.2rem;
+  width:17.2rem;
+  padding:0.3rem;
   font-size:80%;
   background: $light-blue-gray;
   border-bottom: 1px solid #9CAAAF;
+}
+
+.popup-form form fieldset label span
+{
+  color: $red;
+  padding-left:0.2rem;
 }
 
 .popup-form form fieldset input[type="checkbox"]
@@ -90,17 +99,36 @@ background: $light-sky-blue;
   margin: 0.25rem;
 }
 
+.checkbox-field
+{
+  width:17.25rem;
+  margin-left:0.25rem;
+  display:block;
+  background: $dark-gray-blue;
+  border: 1px solid transparent;
+}
+
+.checkbox-field span
+{
+  margin-right:0.2rem;
+  font-size:90%;
+}
+
+.popup-form form fieldset input[type="checkbox"]
+{
+  transform: scale(1.2);
+}
+
 .popup-form form fieldset input[type="email"],
 .popup-form form fieldset input[type="text"],
-.popup-form form fieldset input[type="password"],
-.popup-form form fieldset select
+.popup-form form fieldset input[type="password"]
 {
-  min-width:15rem;
+  width:16.2rem;
   display:block;
   margin: 0 0 0.25rem 0.25rem;
   padding:0.5rem;
   background: $dark-gray-blue;
-  border: 1px solid transparent;
+  border: 1px solid $light-blue-gray;
 
   &::-webkit-input-placeholder {
     color: $dark-grey;
@@ -121,7 +149,17 @@ background: $light-sky-blue;
 
 .popup-form form fieldset select
 {
-  min-width:16rem;
+  width:17.35rem;
+  display:block;
+  margin: 0 0 0.25rem 0.25rem;
+  padding:0.5rem;
+  background: $dark-gray-blue;
+  border: 1px solid $light-blue-gray;
+}
+
+option:first-child
+{
+  color: #ccc;
 }
 
 .popup-form form fieldset input[type="email"]:focus,
@@ -136,6 +174,7 @@ background: $light-sky-blue;
 
 .popup-form form fieldset input[type="submit"]
 {
+  margin-top:0.5rem;
   padding: 0.5rem 1rem 0.5rem 1rem;
   background: $dark-gray-blue;
   border: 1px solid $ultra-light-blue;
@@ -152,10 +191,4 @@ background: $light-sky-blue;
 .input-error
 {
   border-color: $red !important;
-}
-
-.input-error-label
-{
-  color: $red;
-  font-size:80%;
 }

@@ -18,6 +18,16 @@ trait UsersTrait
     }
 
     /**
+     * Get a user by id
+     * @param $user_id
+     * @return mixed
+     */
+    public function get_user_from_id($user_id )
+    {
+        return ( ( new BaseRepository() )->read( 'users', ['id' => $user_id], false, false) );
+    }
+
+    /**
      * Get a user by full name
      * @param $user_name
      * @return bool
@@ -59,13 +69,23 @@ trait UsersTrait
      * @param $user
      * @return array
      */
-    public function get_user_groups_from_user($user )
+    public function get_user_groups_from_user( $user )
     {
         $groups = array();
         foreach( $user->groups as $group ){
             $groups[]   = $group->name;
         }
         return( $groups );
+    }
+
+    /**
+     * Get a user his/her groups by id
+     * @param $user_id
+     * @return mixed
+     */
+    public function get_user_groups_from_user_id($user_id )
+    {
+        return( ( new BaseRepository() )->read( 'group_user', ['user_id' => $user_id], false, false  ) );
     }
 
     /**
@@ -80,5 +100,15 @@ trait UsersTrait
             $roles[] = $role->name;
         }
         return( $roles );
+    }
+
+    /**
+     * Get a user his/her groups by id
+     * @param $user_id
+     * @return mixed
+     */
+    public function get_user_roles_from_user_id($user_id )
+    {
+        return( ( new BaseRepository() )->read( 'role_user', ['user_id' => $user_id], false, false  ) );
     }
 }

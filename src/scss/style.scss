@@ -9,6 +9,7 @@
 , "common/errors"
 , "common/events"
 , "common/popup-form"
+, "common/tooltip"
 // Users
 , "users/users"
 ;
@@ -25,7 +26,6 @@ html, body
   font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
   clear:both;
   padding: 0;
-  margin: 0;
   margin: 0;
 }
 

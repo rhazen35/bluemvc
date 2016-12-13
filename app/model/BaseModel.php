@@ -33,7 +33,7 @@ class BaseModel extends Eloquent implements IBaseModel
 
     public function edit( $table, $where, $params )
     {
-
+        $this->capsule->table($table)->where($where)->update($params);
     }
 
     public function remove( $table, $where )

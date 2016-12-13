@@ -3,39 +3,51 @@ $roles  = $this->get_all_roles();
 $groups = $this->get_all_groups();
 ?>
 
-<form action="<?= BASE_PATH ?>users/edit" method="post">
+<form action="<?= BASE_PATH ?>user/edit_user" method="post" data-url="<?= BASE_PATH ?>user/get_user_table_result">
     <a href="" class="popup-form-close"></a>
     <h1>Edit user <?= $data->name ?></h1>
     <fieldset>
-        <legend>Enter a name, email, type and password</legend>
-        <input type="text" name="full_name" value="<?= $data->name ?>">
-        <input type="text" name="email" value="<?= $data->email ?>">
-        <br><br>
+        <legend>Edit the fields below</legend>
+        <input type="hidden" name="user_id" value="<?= $data->id ?>">
+        <input type="hidden" name="success" value="User <?= $data->name ?> successfully modified.">
+        <input type="hidden" name="error" value="There were problems validating the form.">
+        <div class="popup-form-section">
+            <label for="full_name">Full name<span></span></label>
+            <input type="text" name="full_name" value="<?= $data->name ?>" title="Modify the name of <?= $data->name ?>">
+        </div>
+        <div class="popup-form-section">
+            <label for="email">Email<span></span></label>
+            <input type="text" name="email" value="<?= $data->email ?>" title="Modify the email of <?= $data->name ?>">
+        </div>
         <?php
 
         $user_groups = $this->get_user_groups_from_user( $data );
         $user_roles  = $this->get_user_roles_from_user( $data );
 
-        echo '<h2>Groups</h2>';
-        echo'<div class="popup-form-section">';
+        echo '<div class="popup-form-section">';
+        echo '<label for="groups[]">Groups<span></span></label>';
+        echo '<div class="checkbox-field">';
         foreach( $groups as $group => $value ){
-            echo '<label for="groups[]">' . $value['name'] . '</label>';
-            $checked = in_array( $value['name'], $user_groups ) ? "checked" : "";
-            echo '<input type="checkbox" name="groups[]" value="' . $value['id'] . '" checked="' . $checked . '">';
+            $checked = in_array( $value['name'], $user_groups ) ? 'checked="checked"' : '';
+            echo '<input type="checkbox" name="groups[]" value="' . $value['id'] . '" ' . $checked . '>';
+            echo '<span>' . $value['name'] . '</span>';
         }
-
-        echo'</div>';
-        echo '<h2>Roles</h2>';
-        echo'<div class="popup-form-section">';
+        echo '</div>';
+        echo '<br>';
+        echo '<label for="roles[]">Roles<span></span></label>';
+        echo '<div class="checkbox-field">';
         foreach( $roles as $role => $value ) {
-            echo '<label for="roles[]">' . $value->name . '</label>';
-            $checked = in_array( $value->name, $user_roles ) ? "checked" : "";
-            echo '<input type="checkbox" name="roles[]" value="' . $value->id . '" checked="' . $checked . '">';
+            $checked = in_array( $value->name, $user_roles ) ? 'checked="checked"' : '';
+            echo '<input type="checkbox" name="roles[]" value="' . $value->id . '" ' . $checked . '>';
+            echo '<span>' . $value->name . '</span>';
         }
-        echo'</div>';
+        echo '</div>';
+        echo '</div>';
 
         ?>
 
-
+        <div class="popup-form-section">
+            <input type="submit" name="editUserSubmit" value="Modify" class="submit-form">
+        </div>
     </fieldset>
 </form>

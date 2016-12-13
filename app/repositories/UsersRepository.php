@@ -31,7 +31,7 @@ class UsersRepository extends RepositoryController
      * Pass all posted values to the validation function as an array, specifying the type and if it's required.
      * @param $data
      */
-    public function add_user($data )
+    public function add_user( $data )
     {
         $full_name       = !empty( $data['full_name'] ) ? $data['full_name'] : "";
         $email           = !empty( $data['email'] ) ? $data['email'] : "";
@@ -41,12 +41,12 @@ class UsersRepository extends RepositoryController
         $password_repeat = !empty( $data['password_repeat'] ) ? $data['password_repeat'] : "";
         /** Setup the validate array */
         $array = array(
-            array('subject' => 'full_name|required'         , 'value' => $full_name),
-            array('subject' => 'email|required'             , 'value' => $email),
-            array('subject' => 'group|required'             , 'value' => $group),
-            array('subject' => 'role|required'              , 'value' => $role),
-            array('subject' => 'password|required'          , 'value' => $password),
-            array('subject' => 'password_repeat|required'   , 'value' => $password_repeat)
+            array('subject' => 'full_name|required|match-not-allowed'   , 'value' => $full_name),
+            array('subject' => 'email|required|match-not-allowed'       , 'value' => $email),
+            array('subject' => 'group|required'                         , 'value' => $group),
+            array('subject' => 'role|required'                          , 'value' => $role),
+            array('subject' => 'password|required'                      , 'value' => $password),
+            array('subject' => 'password_repeat|required'               , 'value' => $password_repeat)
         );
         /** Validate the user input */
         $validation = $this->validate( $array );
@@ -73,7 +73,6 @@ class UsersRepository extends RepositoryController
             );
             $this->base_model->insert('group_user', $params_group);
             /** Trigger event */
-            (new Events())->trigger(21, true);
             echo json_encode( true );
         } else {
             /** Respond with json object */
@@ -81,6 +80,120 @@ class UsersRepository extends RepositoryController
                 echo json_encode( $validation ) ;
                 exit;
             /** Respond with html message */
+            } else {
+                echo 'Form validation failed.';
+                foreach( $validation as $validated ){
+                    echo $validated;
+                }
+            }
+        }
+    }
+
+    /**
+     * Edit a user
+     */
+    public function edit_user( $data )
+    {
+        $user_id          = !empty( $data['user_id'] ) ? $data['user_id'] : "";
+        $full_name        = !empty( $data['full_name'] ) ? $data['full_name'] : "";
+        $email            = !empty( $data['email'] ) ? $data['email'] : "";
+        $groups           = !empty( $data['groups'] ) ? $data['groups'] : "";
+        $roles            = !empty( $data['roles'] ) ? $data['roles'] : "";
+
+        /** Groups and roles arrays for edit and delete */
+        $user_groups      = $this->get_user_groups_from_user_id( $user_id );
+        $user_roles       = $this->get_user_roles_from_user_id( $user_id );
+        $roles_in_use     = array();
+        $groups_in_use    = array();
+        $roles_to_delete  = array();
+        $roles_to_add     = array();
+        $groups_to_delete = array();
+        $groups_to_add    = array();
+        /** Roles in use and groups in use arrays */
+        foreach( $user_roles as $user_role ){
+            $roles_in_use[] = $user_role->role_id;
+        }
+        foreach( $user_groups as $user_group ){
+            $groups_in_use[] = $user_group->group_id;
+        }
+        /** Setup the validate array */
+        $array = array(
+            'user_id'       => $user_id,
+            array('subject' => 'full_name|required|match-allowed'         , 'value' => $full_name),
+            array('subject' => 'email|required|match-allowed'             , 'value' => $email),
+            array('subject' => 'groups|required'                          , 'value' => $groups),
+            array('subject' => 'roles|required'                           , 'value' => $roles),
+        );
+        /** Validate the user input */
+        $validation = $this->validate( $array );
+        /** Check if total validation has succeeded */
+        if( $validation === true ) {
+            /** Update the user */
+            $params = array(
+                'name'  => $full_name,
+                'email' => $email,
+            );
+            $this->base_model->edit('users', ['id' => $user_id], $params);
+            /**
+             * Update user roles
+             * Create an array for roles to add and roles to delete
+             */
+            foreach( $roles as $role ){
+                if( !in_array( $role, $roles_in_use ) ){
+                    $roles_to_add[] = $role; /** Add */
+                }
+            }
+            foreach( $roles_in_use as $roles_in_us ){
+                if( !in_array( $roles_in_us, $roles ) ){
+                    $roles_to_delete[] = $roles_in_us; /** Delete */
+                }
+            }
+            /** Delete the roles */
+            if( !empty( $roles_to_delete ) ){
+                foreach( $roles_to_delete as $role_to_delete ){
+                    $this->base_model->remove( 'role_user', ['user_id' => $user_id, 'role_id' => $role_to_delete] );
+                }
+            }
+            /** Add the roles */
+            if( !empty( $roles_to_add ) ){
+                foreach( $roles_to_add as $role_to_add ){
+                    $this->base_model->insert( 'role_user', ['user_id' => $user_id, 'role_id' => $role_to_add] );
+                }
+            }
+            /**
+             * Update user groups
+             * Create an array for groups to add and groups to delete
+             */
+            foreach( $groups as $group ){
+                if( !in_array( $group, $groups_in_use ) ){
+                    $groups_to_add[] = $group; /** Add */
+                }
+            }
+            foreach( $groups_in_use as $groups_in_us ){
+                if( !in_array( $groups_in_us, $groups ) ){
+                    $groups_to_delete[] = $groups_in_us; /** Delete */
+                }
+            }
+            /** Delete groups */
+            if( !empty( $groups_to_delete ) ){
+                foreach( $groups_to_delete as $group_to_delete ){
+                    $this->base_model->remove( 'group_user', ['user_id' => $user_id, 'group_id' => $group_to_delete] );
+                }
+            }
+            /** Add groups */
+            if( !empty( $groups_to_add ) ){
+                foreach( $groups_to_add as $group_to_add ){
+                    $this->base_model->insert( 'group_user', ['user_id' => $user_id, 'group_id' => $group_to_add] );
+                }
+            }
+            /** Trigger event */
+            echo json_encode( true );
+        } else {
+            /** Respond with json object */
+            if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&  strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+                echo json_encode( $validation ) ;
+                exit;
+                /** Respond with html message */
             } else {
                 echo 'Form validation failed.';
                 foreach( $validation as $validated ){

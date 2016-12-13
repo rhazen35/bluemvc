@@ -37,6 +37,11 @@ class User extends BaseController implements IController
         $this->repository->add_user( $_POST );
     }
 
+    public function edit_user()
+    {
+        $this->repository->edit_user( $_POST );
+    }
+
     /** Returns the user-table partial in case of a needed ajax response */
     public function get_user_table_result()
     {

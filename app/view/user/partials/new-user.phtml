@@ -1,22 +1,22 @@
 <?php $roles  = $this->get_all_roles(); ?>
 <?php $groups = $this->get_all_groups(); ?>
 
-<form action="<?= BASE_PATH ?>user/add_user" method="post" class="newuser" data-url="<?= BASE_PATH ?>user/get_user_table_result">
+<form action="<?= BASE_PATH ?>user/add_user" method="post" data-url="<?= BASE_PATH ?>user/get_user_table_result">
     <a href="" class="popup-form-close"></a>
     <h1>New system user</h1>
     <fieldset>
         <legend>Please fill in the form below.</legend>
         <input type="hidden" name="success" value="New user successfully added.">
-        <input type="hidden" name="error" value="There was problem validating the form.">
+        <input type="hidden" name="error" value="There were problems validating the form.">
         <div class="popup-form-section">
-            <label for="full_name">Full name</label>
-            <input type="text" name="full_name" value="" placeholder="First and last name">
-            <label for="email">Email</label>
-            <input type="email" name="email" value="" placeholder="Email address">
+            <label for="full_name">Full name<span></span></label>
+            <input type="text" name="full_name" value="" title="Please enter a full name"placeholder="First and last name">
+            <label for="email">Email<span></span></label>
+            <input type="email" name="email" value="" title="Please enter an email adress" placeholder="Email address">
         </div>
         <div class="popup-form-section">
-            <label for="group">Group</label>
-            <select name="group">
+            <label for="group">Group<span></span></label>
+            <select name="group" title="Please choose a group">
                 <option value="">Choose a group</option>
                 <?php
                 foreach( $groups as $group ){
@@ -24,8 +24,8 @@
                 }
                 ?>
             </select>
-            <label for="group">Role</label>
-            <select name="role">
+            <label for="group">Role<span></span></label>
+            <select name="role" title="Please choose a role">
                 <option value="">Choose a role</option>
                 <?php
                     foreach( $roles as $role ){
@@ -35,10 +35,10 @@
             </select>
         </div>
         <div class="popup-form-section">
-            <label for="password">Password</label>
-            <input type="password" name="password" value="" placeholder="Enter a password">
-            <label for="password_repeat">Password repeat</label>
-            <input type="password" name="password_repeat" value="" placeholder="Repeat the password">
+            <label for="password">Password<span></span></label>
+            <input type="password" name="password" value="" title="Enter a password, please" placeholder="Enter a password">
+            <label for="password_repeat">Password repeat<span></span></label>
+            <input type="password" name="password_repeat" value="" title="Repeat the password, please" placeholder="Repeat the password">
         </div>
         <div class="popup-form-section">
             <input type="submit" name="newUserSubmit" value="Add" class="submit-form">

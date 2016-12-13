@@ -27,90 +27,138 @@ trait ValidateFormInput
      * @param $array
      * @return array|bool
      */
-    public function rules($array )
+    public function rules( $array )
     {
         $result = array();
+        $user_id = !empty( $array['user_id'] ) ? $array['user_id'] : "";
+        unset( $array['user_id'] );
 
-        foreach( $array as $item => $value ){
-            $param = trim( $value['value'] );
+        foreach( $array as $item => $value ) {
+            /**
+             * Trim the param and explode the subject
+             * @var  $param
+             */
+            if ( is_array( $value['value'] ) ){
+                $param = array();
+                foreach( $value['value'] as $val ) {
+                    $param[] = trim( $val );
+                }
+            } else {
+                $param = trim($value['value']);
+            }
             $parts = explode( '|', $value['subject'] );
-
+            /**
+             * Check if the param is required
+             * @var  $required
+             */
+            $required = $parts[1] === "required" ? true : false;
+            $match_allowed = !empty( $parts[2] ) && $parts[2] === "match-allowed" ? true : false;
+            if ( empty( $param ) && $required && $parts[0] !== "password_repeat" ) {
+                if( $parts[0] === "groups" || $parts[0] === "roles" ){
+                    $result[$parts[0] . "[]"] = "is empty but required";
+                } else {
+                    $result[$parts[0]] = "is empty but required";
+                }
+            }
             /**
              * Full name validation
              */
             if( $parts[0] === "full_name" ) {
-                $valid = Lib::hashSpecialChars( $param ) ? false : true;
-                $required = $parts[1] === "required" ? true : false;
                 if( !empty( $param ) ){
-                    $exists = empty( $this->get_user_from_name( $param ) ) ? false : true;
-                    if( $exists ){
-                        $result[$parts[0]] = "Full name is in use.";
+                    $users = $this->get_user_from_id( $user_id );
+                    foreach( $users as $user ){
+                        $user_name = $user->name;
                     }
-                }
-                if ( false === $valid ) {
-                    $result[$parts[0]] = "Full name has special characters";
-                }
-                if ( empty( $param ) && $required ) {
-                    $result[$parts[0]] = "Full name is empty but required";
+                    $valid = Lib::hashSpecialChars( $param ) ? false : true;
+                    if ( false === $valid ) {
+                        $result[$parts[0]] = "has special characters";
+                    } elseif( false === $match_allowed || $param !== $user_name ) {
+                        $exists = empty( $this->get_user_from_name( $param ) ) ? false : true;
+                        if ( $exists ) {
+                            $result[$parts[0]] = "is in use.";
+                        }
+                    }
                 }
             }
             /**
              * Email validation
              */
             if( $parts[0] === "email" ) {
-                $valid    = filter_var( $param, FILTER_VALIDATE_EMAIL );
-                $required = $parts[1] === "required" ? true : false;
                 if( !empty( $param ) ){
-                    $exists = empty( $this->get_email_by_email( $param ) ) ? false : true;
-                    if( $exists ){
-                        $result[$parts[0]] = "Email is in use.";
+                    $users = $this->get_user_from_id( $user_id );
+                    foreach( $users as $user ){
+                        $user_email = $user->email;
                     }
-                }
-                if( false === $valid ){
-                    $result[$parts[0]] = "Email is not a valid email address";
-                }
-                if( empty( $param ) && $required ){
-                    $result[$parts[0]] = "Email is empty but required";
+                    $valid    = filter_var( $param, FILTER_VALIDATE_EMAIL );
+                    if( false === $valid ){
+                        $result[$parts[0]] = "is not a valid email address";
+                    } elseif( false === $match_allowed || $param !== $user_email ) {
+                        $exists = empty( $this->get_email_by_email( $param ) ) ? false : true;
+                        if ( $exists ) {
+                            $result[$parts[0]] = "is in use.";
+                        }
+                    }
                 }
             }
             /**
              * Group validation - single
              */
             if( $parts[0] === "group" ){
-                $valid    = Lib::hashSpecialChars( $param ) ? false : true;
-                $required = $parts[1] === "required" ? true : false;
-                if( false === $valid ){
-                    $result[$parts[0]] = "Group has special characters.";
+                if( !empty( $param ) ) {
+                    $valid = Lib::hashSpecialChars( $param ) ? false : true;
+                    if ( false === $valid ) {
+                        $result[$parts[0]] = "has special characters.";
+                    }
                 }
-                if( empty( $param ) && $required ){
-                    $result[$parts[0]] = "Group is empty but required.";
+            }
+            /**
+             * Group validation - multiple
+             */
+            if( $parts[0] === "groups" ){
+                if( !empty( $param ) ) {
+                    foreach( $param as $group ) {
+                        $valid = Lib::hashSpecialChars( $group ) ? false : true;
+                        if ( false === $valid ) {
+                            $result[$parts[0] . '[]'] = "has special characters.";
+                        }
+                    }
                 }
             }
             /**
              * Role validation - single
              */
             if( $parts[0] === "role" ){
-                $valid    = Lib::hashSpecialChars( $param ) ? false : true;
-                $required = $parts[1] === "required" ? true : false;
-                if( false === $valid ){
-                    $result[$parts[0]] = "Role has special characters.";
+                if( !empty( $param ) ) {
+                    $valid = Lib::hashSpecialChars( $param ) ? false : true;
+                    if ( false === $valid ) {
+                        $result[$parts[0]] = "Role has special characters.";
+                    }
                 }
-                if( empty( $param ) && $required ){
-                    $result[$parts[0]] = "Role is empty but required.";
+            }
+            /**
+             * Role validation - multiple
+             */
+            if( $parts[0] === "roles" ){
+                if( !empty( $param ) ) {
+                    foreach( $param as $role ) {
+                        $valid = Lib::hashSpecialChars( $role ) ? false : true;
+                        if ( false === $valid ) {
+                            $result[$parts[0] . '[]'] = "has special characters.";
+                        }
+                    }
                 }
             }
             /**
              * Password validation
+             * @param $password -> Store for password match
              */
             if( $parts[0] === "password" ){
-                $password = $param; // Set the pass for pass repeat
-                $valid    = strlen( $param ) >= 6 ? true : false;
-                $required = $parts[1] === "required" ? true : false;
-                if( false === $valid ){
-                    $result[$parts[0]] = "Password must contain at least 6 characters.";
-                }
-                if( empty( $param ) && $required ){
-                    $result[$parts[0]] = "Password is empty but required.";
+                if( !empty( $param ) ) {
+                    $password = $param;
+                    $valid = strlen($param) >= 6 ? true : false;
+                    if ( false === $valid ) {
+                        $result[$parts[0]] = "must contain at least 6 characters.";
+                    }
                 }
             }
             /**
@@ -118,10 +166,10 @@ trait ValidateFormInput
              */
             if( $parts[0] === "password_repeat" ){
                 if( !empty( $password ) && $password !== $param ){
-                    $result[$parts[0]] = "Password is no match.";
+                    $result[$parts[0]] = "is not a match.";
                 }
                 if( !empty( $password ) && empty( $param ) ){
-                    $result[$parts[0]] = "Please re-type the password.";
+                    $result[$parts[0]] = "is empty but required.";
                 }
             }
         }
