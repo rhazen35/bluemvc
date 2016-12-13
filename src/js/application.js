@@ -26,16 +26,16 @@ $( function() {
 
 // POPUP FORM - close on click outside
 
-// $(document).mouseup(function (e)
-// {
-//     var container = $(".popup-form");
-//
-//     if (!container.is(e.target)
-//         && container.has(e.target).length === 0)
-//     {
-//         container.css('display', 'none');
-//     }
-// });
+$(document).mousedown(function (e)
+{
+    var container = $(".popup-form");
+
+    if (!container.is(e.target)
+        && container.has(e.target).length === 0)
+    {
+        container.css('display', 'none');
+    }
+});
 
 // Loading gears
 
@@ -113,7 +113,7 @@ $(document).on('click', '.popup-form-close', function(e){
    e.preventDefault();
     $('form input, form select').removeClass('input-error');
     $('.popup-form-section label span').html('');
-   $('.popup-form').css({display: 'none'});
+    $('.popup-form').css({display: 'none'});
 });
 
 ////////////////////////////////////////////
