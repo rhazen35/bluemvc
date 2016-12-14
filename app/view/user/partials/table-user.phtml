@@ -1,67 +1,75 @@
 <?php
 
 $users = $this->get_all_users();
+$users = $users->sortBy('user.name');
 
 ?>
 
-<div class="users-table">
-    <div class="users">
-        <div class="table-row">
-            <div class="table-header">User</div>
-            <div class="table-header">Email</div>
-            <div class="table-header">Groups</div>
-            <div class="table-header">Roles</div>
-            <div class="table-header">Last login</div>
-            <div class="table-header">Since</div>
-            <div class="table-header"></div>
-            <div class="table-header"></div>
-        </div>
-        <?php
-        foreach( $users as $user ){
-            echo '<div class="table-row">';
-            echo '<div class="table-cell">' . $user->name . '</div>';
-            echo '<div class="table-cell">' . $user->email . '</div>';
-            echo '<div class="table-cell">';
-            /** User groups */
-            $total_groups =  $user->groups->count();
-            $i = 1;
-            foreach( $user->groups as $group ){
-                echo $group->name;
-                if( $i< $total_groups ){
-                    echo',&nbsp;';
-                }
-                $i++;
-            }
-            echo '</div>';
-            echo '<div class="table-cell">';
-            /** User roles */
-            $total_roles =  $user->roles->count();
-            $j = 1;
-            foreach( $user->roles as $role ){
-                echo $role->name;
-                if( $j < $total_roles ){
-                    echo',&nbsp;';
-                }
-                $j++;
-            }
-            echo '</div>';
-            /** User last login */
-            $user_last_login = !empty( $user->login ) ? $user->login->previous : "";
-            echo '<div class="table-cell">' . $user_last_login . '</div>';
-            echo '<div class="table-cell">' . $user->created_at . '</div>';
-            echo '<div class="table-cell">
-                    <a href="" class="popup-form-link" data-id="' . $user->id . '">Edit</a>
-                  </div>';
-            echo '<div class="table-cell">
-                    <a href="' . BASE_PATH . 'user/delete" class="popup-form-delete" data-id="' . $user->id . '" data-text="User ' . $user->name . ' is deleted.">Delete</a>
-                  </div>';
-            echo '</div>';
-            echo '<div class="popup-form-container">';
-            echo '<div class="popup-form" id="' . $user->id . '">';
-                $this->view_partial('user', 'edit-user', $user);
-            echo '</div>';
-            echo '</div>';
-        }
-        ?>
+<div class="table-intro">
+    <h1>System users table</h1>
+    <p>Users: <?= $users->count() ?></p>
+</div>
+
+<div class="table">
+    <div class="table-row">
+        <div class="table-header">User</div>
+        <div class="table-header">Email</div>
+        <div class="table-header">Groups</div>
+        <div class="table-header">Roles</div>
+        <div class="table-header">Last login</div>
+        <div class="table-header">Since</div>
+        <div class="table-header"></div>
+        <div class="table-header"></div>
     </div>
+    <?php
+    foreach( $users as $user ){
+        echo '<div class="table-row">';
+        echo '<div class="table-cell">' . $user->name . '</div>';
+        echo '<div class="table-cell">' . $user->email . '</div>';
+        echo '<div class="table-cell">';
+        /** User groups */
+        $total_groups =  $user->groups->count();
+        $i = 1;
+        foreach( $user->groups as $group ){
+            echo $group->name;
+            if( $i< $total_groups ){
+                echo',&nbsp;';
+            }
+            $i++;
+        }
+        echo '</div>';
+        echo '<div class="table-cell">';
+        /** User roles */
+        $total_roles =  $user->roles->count();
+        $j = 1;
+        foreach( $user->roles as $role ){
+            echo $role->name;
+            if( $j < $total_roles ){
+                echo',&nbsp;';
+            }
+            $j++;
+        }
+        echo '</div>';
+        /** User last login */
+        $user_last_login = !empty( $user->login ) ? $user->login->previous : "";
+        echo '<div class="table-cell">' . $user_last_login . '</div>';
+        echo '<div class="table-cell">' . $user->created_at . '</div>';
+        echo '<div class="table-cell">
+                <a href="" class="popup-form-link" data-id="' . $user->id . '">Edit</a>
+              </div>';
+        echo '<div class="table-cell">
+                <a href="' . BASE_PATH . 'user/delete" 
+                   class="popup-form-delete" 
+                   data-id="' . $user->id . '" 
+                   data-url="' . BASE_PATH . 'user/get_user_table_result"
+                   data-text="User ' . $user->name . ' is deleted.">Delete</a>
+              </div>';
+        echo '</div>';
+        echo '<div class="popup-form-container">';
+        echo '<div class="popup-form" id="' . $user->id . '">';
+            $this->view_partial('user', 'edit-user', $user);
+        echo '</div>';
+        echo '</div>';
+    }
+    ?>
 </div>

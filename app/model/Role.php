@@ -17,4 +17,14 @@ class Role extends Eloquent
         $this->table   = 'roles';
         parent::__construct();
     }
+
+    public function users()
+    {
+        return( $this->belongsToMany( 'app\model\User' ) );
+    }
+
+    public function get_all_roles()
+    {
+        return( Role::all() );
+    }
 }

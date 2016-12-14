@@ -55,6 +55,8 @@ class User extends BaseController implements IController
      *  - role_user, group_user, login_user, users
      *
      * Returns the user-table for ajax response
+     *
+     * TODO: Show message with the relations the user has and re-ask for deletion!!!
      */
     public function delete()
     {
@@ -64,8 +66,10 @@ class User extends BaseController implements IController
             $this->base_repo->delete('group_user', ['user_id' => $user_id]);
             $this->base_repo->delete('login_user', ['user_id' => $user_id]);
             $this->base_repo->delete('users', ['id' => $user_id]);
+            echo json_encode( true );
+        } else {
+            echo json_encode( "Er is iets misgegaan, kan deze gebruiker niet verwijderen." );
         }
-        return ( $this->get_user_table_result() );
     }
 
 }

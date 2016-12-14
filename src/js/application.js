@@ -98,13 +98,13 @@ window.onclick = function(event) {
 
 $(document).on('click', '.popup-form-link', function(e) {
     e.preventDefault();
-    var form = $('#new-user form')[0];
+    var data_id = $(this).attr('data-id');
+    var form = $('.popup-form-form[data-id="' + data_id + '"]')[0];
+    $('.popup-form').css('display', 'none');
     $('form input, form select').removeClass('input-error');
     $('.popup-form-section label span').html('');
-    $('.popup-form').css('display', 'none');
-    var id = $(this).attr('data-id');
-    $('#' + id).css('display', 'block');
-    //$(".popup-form").draggable();
+    var form = $('.popup-form-form[data-id="' + data_id + '"]')[0];
+    $('#' + data_id).css('display', 'block');
     form.reset();
 });
 
@@ -195,17 +195,30 @@ function popup_message_timeout( element, message ) {
 // POPUP FORM DELETE
 body.on('click', '.popup-form-delete', function(e) {
     e.preventDefault();
-    var url  = $(this).attr('href');
-    var data = $(this).attr('data-id');
-    var text = $(this).attr('data-text');
+    var url      = $(this).attr('href');
+    var data     = $(this).attr('data-id');
+    var data_url = $(this).attr('data-url');
+    var text     = $(this).attr('data-text');
 
     $.ajax({
+        dataType: 'json',
         type: "POST",
         url: url,
         data: {id:data},
         success: function (response) {
-            table_wrapper.html(response);
-            popup_message_timeout( ajax_success, text );
+            if( response === true ) {
+                popup_message_timeout(ajax_success, text);
+                $.ajax({
+                    dataType: 'html',
+                    type: 'POST',
+                    url: data_url,
+                    success: function (html_response) {
+                        table_wrapper.html(html_response);
+                    }
+                });
+            } else {
+                popup_message_timeout(ajax_failed, response);
+            }
         }
     });
 

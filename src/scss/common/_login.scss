@@ -14,6 +14,7 @@
 {
   padding:2rem;
   text-align:center;
+  background: $soft-gray;
   border: 1px solid $swamp-green;
 }
 
@@ -24,13 +25,52 @@
   padding-right:0.5rem;
 }
 
+.login form fieldset label
+{
+  width:22rem;
+  display:block;
+  margin-top:1rem;
+  padding:0.3rem;
+  font-size:80%;
+  background: $light-blue-gray;
+  border-bottom: 1px solid #9CAAAF;
+}
+
 .login form fieldset input[type="text"],
 .login form fieldset input[type="email"],
 .login form fieldset input[type="password"]
 {
-  width:90%;
-  margin-top:0.5rem;
+  width:21rem;
+  display:block;
+  margin: 0 0 0.25rem 0.25rem;
   padding:0.5rem;
+  background: $dark-gray-blue;
+  border: 1px solid $light-blue-gray;
+  &::-webkit-input-placeholder {
+    color: $dark-grey;
+  }
+  &:-moz-placeholder {
+    /* FF 4-18 */
+    color: $black;
+  }
+  &::-moz-placeholder {
+    /* FF 19+ */
+    color: $black;
+  }
+  &:-ms-input-placeholder {
+    /* IE 10+ */
+    color: $black;
+  }
+}
+
+.login form fieldset input[type="email"]:focus,
+.login form fieldset input[type="text"]:focus,
+.login form fieldset input[type="password"]:focus,
+.login form fieldset select:focus
+{
+  border: 1px solid $ultra-light-blue;
+  background: $white;
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
 }
 
 .login .radio-box
@@ -47,18 +87,16 @@
 
 .login form fieldset input[type="submit"]
 {
-  width:90%;
-  margin-top:1rem;
-  padding:1rem;
-  font-weight:bold;
-  background-color: $swamp-green;
-  border:1px solid transparent;
+  margin-top:0.5rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background: $dark-gray-blue;
+  border: 1px solid $ultra-light-blue;
   cursor:pointer;
 }
 
 .login form fieldset input[type="submit"]:hover
 {
-  background-color: $light-sky-blue;
+  background: $light-sky-blue;
 }
 
 .login-failed

@@ -6,9 +6,11 @@
     <form action="<?= BASE_PATH ?>login/login" method="post">
         <fieldset>
             <legend>Please fill in your email and password</legend>
-            <input type="email" name="email" value="" placeholder="Email" title="Fill in your email">
-            <input type="password" name="password" value="" placeholder="Password" title="Fill in your password">
-            <input type="submit" name="login_submit" value="Login" title="Click to login">
+            <label for="email">Email</label>
+            <input type="email" name="email" value="" placeholder="Email" title="Please fill in your email">
+            <label for="password">Password</label>
+            <input type="password" name="password" value="" placeholder="Password" title="Please fill in your password">
+            <input type="submit" name="login_submit" value="Login">
         </fieldset>
     </form>
 </div>

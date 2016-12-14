@@ -1,1 +1,18 @@
-Roles
+<div class="container">
+    <div class="container-title">Roles</div>
+    <div class="container-menu">
+        <a href="" onclick="goBack()">Go back</a>
+        <a href="" class="popup-form-link" data-id="new-role">New role</a>
+    </div>
+</div>
+
+<div class="popup-form-container">
+    <div class="popup-form" id="popup-form">
+        <?php $this->view_partial('roles', 'new-role', []); ?>
+    </div>
+</div>
+
+<div id="table-wrapper">
+    <?php $this->view_partial( "roles", "table-roles", [] ); ?>
+</div>
+

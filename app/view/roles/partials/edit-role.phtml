@@ -1,1 +1,21 @@
-Roles
+<form action="<?= BASE_PATH ?>roles/edit_role"
+      class="popup-form-form" method="post"
+      data-url="<?= BASE_PATH ?>roles/get_roles_table_result"
+      data-id="<?= $data->id ?>">
+    <a href="" class="popup-form-close"></a>
+    <h1>Edit role <?= $data->name ?></h1>
+    <fieldset>
+        <legend>Please fill in the form below.</legend>
+        <input type="hidden" name="role_id" value="<?= $data->id ?>">
+        <input type="hidden" name="success" value="Role <?= $data->name ?> modified.">
+        <input type="hidden" name="error" value="There were problems validating the form.">
+        <div class="popup-form-section">
+            <label for="full_name">Role name<span></span></label>
+            <input type="text" name="full_name" value="<?= $data->name ?>" title="Please enter a role name"placeholder="Role name">
+        </div>
+        <div class="popup-form-section">
+            <input type="submit" name="editRoleSubmit" value="Modify" class="submit-form">
+        </div>
+    </fieldset>
+</form>
+

@@ -1,0 +1,53 @@
+<?php
+
+$roles = $this->get_all_roles();
+
+?>
+
+<div class="table">
+    <div class="table-row">
+        <div class="table-header">Role</div>
+        <div class="table-header">Users</div>
+        <div class="table-header">Since</div>
+        <div class="table-header"></div>
+        <div class="table-header"></div>
+    </div>
+    <?php
+    foreach( $roles  as $role ){
+        $total_users = $role->users->count();
+        echo '<div class="table-row">';
+        echo '<div class="table-cell">' . ' (' . $total_users . ') ' . $role->name . '</div>';
+        echo '<div class="table-cell">';
+        /** Users */
+        if( !$role->users->isEmpty() ) {
+            echo '<select>';
+            foreach ($role->users as $user) {
+                echo '<option>' . $user->name . '</option>';
+            }
+            echo '</select>';
+        } else {
+            echo 'This role has no users';
+        }
+        echo '</div>';
+
+        echo '<div class="table-cell">' . $role->created_at . '</div>';
+        echo '<div class="table-cell">
+                <a href="" class="popup-form-link" data-id="' . $role->id . '">Edit</a>
+              </div>';
+        echo '<div class="table-cell">
+                <a href="' . BASE_PATH . 'roles/delete" 
+                   class="popup-form-delete" 
+                   data-id="' . $role->id . '" 
+                   data-text="Role ' . $role->name . ' is deleted."
+                   data-url="' . BASE_PATH . 'roles/get_roles_table_result"
+                   >Delete</a>
+              </div>';
+        echo '</div>';
+        echo '<div class="popup-form-container">';
+        echo '<div class="popup-form" id="' . $role->id . '">';
+            $this->view_partial('roles', 'edit-role', $role);
+        echo '</div>';
+        echo '</div>';
+    }
+    ?>
+</div>

@@ -32,7 +32,7 @@ class BaseRepository extends RepositoryController implements IRepository
 
     public function update( $table, $where, $params )
     {
-
+        $this->base_model->edit( $table, $where, $params );
     }
 
     public function delete( $table, $where )

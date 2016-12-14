@@ -79,19 +79,23 @@ class Login extends BaseController implements IController
     {
         $valid = $this->validate( $data );
         if( $valid ) {
-            $email      = $data['email'];
-            $password   = $data['password'];
-            $login_data = $this->base_repo->read( $this->table, ['email' => $email], false, false );
-            if ($this->verify($login_data, $password)) {
-                foreach ($login_data as $item) {
-                    $_SESSION['login'] = $item->id;
-                    return ( $item->id );
-                }
-            } else {
+            $email = $data['email'];
+            $password = $data['password'];
+            $login_data = $this->base_repo->read($this->table, ['email' => $email], false, false);
+            /** Check if only one row is returned, otherwise it's really bad */
+            if ($login_data->count() > 1) {
+                /** WARNING LOGIN CORRUPTED */
                 return (false);
+            } else {
+                if ($this->verify($login_data, $password)) {
+                    foreach ($login_data as $item) {
+                        $_SESSION['login'] = $item->id;
+                        return ($item->id);
+                    }
+                } else {
+                    return (false);
+                }
             }
-        } else {
-            return (false);
         }
         return (false);
     }
@@ -145,7 +149,12 @@ class Login extends BaseController implements IController
                 $this->base_repo->update(
                     $this->login_table,
                     ['user_id' => $authorized],
-                    ['current' => $this->date, 'previous' => $previous, 'updated_at' => $this->date]
+                    [
+                        'current' => $this->date,
+                        'previous' => $previous,
+                        'updated_at' => $this->date,
+                        'count' => $login->count + 1
+                    ]
                 );
             }
         }

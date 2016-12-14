@@ -24,7 +24,7 @@ class GroupsRepository extends RepositoryController
 
     public function add_group( $data )
     {
-        $group_name = !empty( $_POST['full_name'] ) ? $_POST['full_name'] : "";
+        $group_name = !empty( $data['full_name'] ) ? $data['full_name'] : "";
         /** Setup the validate array */
         $array = array(
             array('subject' => 'full_name|required|match-not-allowed'   , 'value' => $group_name)

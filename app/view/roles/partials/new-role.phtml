@@ -1,0 +1,20 @@
+<form action="<?= BASE_PATH ?>roles/add_role"
+      method="post" class="popup-form-form"
+      data-url="<?= BASE_PATH ?>roles/get_roles_table_result"
+      data-id="new-role">
+    <a href="" class="popup-form-close"></a>
+    <h1>New system role</h1>
+    <fieldset>
+        <legend>Please fill in the form below.</legend>
+        <input type="hidden" name="success" value="New role successfully added.">
+        <input type="hidden" name="error" value="There were problems validating the form.">
+        <div class="popup-form-section">
+            <label for="full_name">Role name<span></span></label>
+            <input type="text" name="full_name" value="" title="Please enter a role name"placeholder="Role name">
+        </div>
+        <div class="popup-form-section">
+            <input type="submit" name="newRoleSubmit" value="Add" class="submit-form">
+        </div>
+    </fieldset>
+</form>
+

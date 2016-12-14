@@ -4,43 +4,50 @@ $groups = $this->get_all_groups();
 
 ?>
 
-<div class="users-table">
-    <div class="users">
-        <div class="table-row">
-            <div class="table-header">Group (users)</div>
-            <div class="table-header">Users</div>
-            <div class="table-header">Since</div>
-            <div class="table-header"></div>
-            <div class="table-header"></div>
-        </div>
-        <?php
-        foreach( $groups as $group ){
-            $total_users = $group->users->count();
-            echo '<div class="table-row">';
-            echo '<div class="table-cell">' . $group->name . ' ( ' . $total_users . ' )</div>';
-            echo '<div class="table-cell">';
-            /** Users */
+<div class="table">
+    <div class="table-row">
+        <div class="table-header">Group</div>
+        <div class="table-header">Users</div>
+        <div class="table-header">Since</div>
+        <div class="table-header"></div>
+        <div class="table-header"></div>
+    </div>
+    <?php
+    foreach( $groups as $group ){
+        $total_users = $group->users->count();
+        echo '<div class="table-row">';
+        echo '<div class="table-cell">' . ' (' . $total_users . ') ' . $group->name . '</div>';
+        echo '<div class="table-cell">';
+        /** Users */
+        if( !$group->users->isEmpty() ) {
             echo '<select>';
-            foreach( $group->users as $user ){
+            foreach ($group->users as $user) {
                 echo '<option>' . $user->name . '</option>';
             }
             echo '</select>';
-            echo '</div>';
-
-            echo '<div class="table-cell">' . $group->created_at . '</div>';
-            echo '<div class="table-cell">
-                    <a href="" class="popup-form-link" data-id="' . $group->id . '">Edit</a>
-                  </div>';
-            echo '<div class="table-cell">
-                    <a href="' . BASE_PATH . 'groups/delete" class="popup-form-delete" data-id="' . $group->id . '" data-text="Group ' . $group->name . ' is deleted.">Delete</a>
-                  </div>';
-            echo '</div>';
-            echo '<div class="popup-form-container">';
-            echo '<div class="popup-form" id="' . $group->id . '">';
-                $this->view_partial('groups', 'edit-group', $group);
-            echo '</div>';
-            echo '</div>';
+        } else {
+            echo 'This group has no users';
         }
-        ?>
-    </div>
+        echo '</div>';
+
+        echo '<div class="table-cell">' . $group->created_at . '</div>';
+        echo '<div class="table-cell">
+                <a href="" class="popup-form-link" data-id="' . $group->id . '">Edit</a>
+              </div>';
+        echo '<div class="table-cell">
+                <a href="' . BASE_PATH . 'groups/delete" 
+                   class="popup-form-delete" 
+                   data-id="' . $group->id . '" 
+                   data-text="Group ' . $group->name . ' is deleted."
+                   data-url="' . BASE_PATH . 'groups/get_groups_table_result"
+                   >Delete</a>
+              </div>';
+        echo '</div>';
+        echo '<div class="popup-form-container">';
+        echo '<div class="popup-form" id="' . $group->id . '">';
+            $this->view_partial('groups', 'edit-group', $group);
+        echo '</div>';
+        echo '</div>';
+    }
+    ?>
 </div>

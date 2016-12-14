@@ -1,0 +1,75 @@
+.table-intro
+{
+  width:90%;
+  margin: 0 auto;
+  margin-top:2rem;
+
+  h1{
+    width:10rem;
+    padding:0.5rem;
+    font-size:90%;
+    background-color: $light-blue-gray;
+  }
+
+  p{
+    font-size:90%;
+    margin-top:1rem;
+  }
+}
+
+.table
+{
+  display:table;
+  margin: 0 auto;
+  margin-top:0.5rem;
+  width:90%;
+}
+
+.table .table-row
+{
+  display:table-row;
+}
+
+.table-row:nth-of-type(odd) {
+   background-color: $light-blue-gray;
+ }
+
+.table .table-row:nth-child(odd) {
+  background-color: $white;
+}
+
+.table .table-header
+{
+  display:table-cell;
+  padding:0.5rem;
+  text-align:left;
+  color: $black;
+  font-size:80%;
+  background-color: $light-blue-gray;
+  border: 1px solid $light-blue-gray;
+  border-bottom: 1px solid $dark-grey;
+}
+
+.table .table-cell
+{
+  display:table-cell;
+  width: auto;
+  padding: 0.5rem;
+  font-size:80%;
+  border: 1px solid $light-blue-gray;
+}
+
+.table .table-cell-delete
+{
+  display:table-cell;
+  width: auto;
+  border: 1px solid $darker-grey;
+}
+
+.table .table-cell input,
+.table .table-cell select
+{
+  width:100%;
+  padding:0.25rem;
+  border:none;
+}
