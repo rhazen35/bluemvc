@@ -26,6 +26,10 @@ class UsersRepository extends RepositoryController
         return( $this->model->get_all_users() );
     }
 
+    public function get_user_from_id( $user_id ){
+        return( $this->base_model->get( 'users', ['id' => $user_id], false, false) );
+    }
+
     /**
      * Add a new user.
      * Pass all posted values to the validation function as an array, specifying the type and if it's required.
@@ -41,7 +45,7 @@ class UsersRepository extends RepositoryController
         $password_repeat = !empty( $data['password_repeat'] ) ? $data['password_repeat'] : "";
         /** Setup the validate array */
         $array = array(
-            array('subject' => 'full_name|required|match-not-allowed'   , 'value' => $full_name),
+            array('subject' => 'full_name|required'                     , 'value' => $full_name),
             array('subject' => 'email|required|match-not-allowed'       , 'value' => $email),
             array('subject' => 'group|required'                         , 'value' => $group),
             array('subject' => 'role|required'                          , 'value' => $role),
@@ -50,6 +54,14 @@ class UsersRepository extends RepositoryController
         );
         /** Validate the user input */
         $validation = $this->validate( $array );
+        /** Check if the name already exists */
+        $exists = empty( $this->get_user_from_name( $full_name ) ) ? false : true;
+        if ( $exists ) {
+            if( $validation === true ){
+                $validation = array();
+            }
+            $validation['full_name'] = "is in use.";
+        }
         /** Check if total validation has succeeded */
         if( $validation === true ) {
             /** Create a new user */
@@ -119,13 +131,27 @@ class UsersRepository extends RepositoryController
         /** Setup the validate array */
         $array = array(
             'user_id'       => $user_id,
-            array('subject' => 'full_name|required|match-allowed'         , 'value' => $full_name),
+            array('subject' => 'full_name|required'         , 'value' => $full_name),
             array('subject' => 'email|required|match-allowed'             , 'value' => $email),
             array('subject' => 'groups|required'                          , 'value' => $groups),
             array('subject' => 'roles|required'                           , 'value' => $roles),
         );
         /** Validate the user input */
         $validation = $this->validate( $array );
+        /** Check if the name already exists */
+        $users = $this->get_user_from_id( $user_id );
+        foreach( $users as $user ){
+            $user_name = $user->name;
+        }
+        if( $full_name !== $user_name ) {
+        $exists = empty( $this->get_user_from_name( $full_name ) ) ? false : true;
+            if ( $exists ) {
+                if( $validation === true ){
+                    $validation = array();
+                }
+                $validation['full_name'] = "is in use.";
+            }
+        }
         /** Check if total validation has succeeded */
         if( $validation === true ) {
             /** Update the user */

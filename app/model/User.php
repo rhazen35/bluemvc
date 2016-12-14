@@ -49,6 +49,6 @@ class User extends Eloquent
      */
     public function get_all_users()
     {
-        return( User::all() );
+        return( User::orderby('name')->get() );
     }
 }

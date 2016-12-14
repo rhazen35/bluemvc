@@ -1,7 +1,6 @@
 <?php
 
 $users = $this->get_all_users();
-$users = $users->sortBy('user.name');
 
 ?>
 
@@ -19,8 +18,8 @@ $users = $users->sortBy('user.name');
         <div class="table-header">Last login</div>
         <div class="table-header">Since</div>
         <div class="table-header"></div>
-        <div class="table-header"></div>
     </div>
+    <div class="table-row"></div>
     <?php
     foreach( $users as $user ){
         echo '<div class="table-row">';
@@ -54,10 +53,8 @@ $users = $users->sortBy('user.name');
         $user_last_login = !empty( $user->login ) ? $user->login->previous : "";
         echo '<div class="table-cell">' . $user_last_login . '</div>';
         echo '<div class="table-cell">' . $user->created_at . '</div>';
-        echo '<div class="table-cell-link">
+        echo '<div class="table-cell">
                 <a href="" class="popup-form-link" data-id="' . $user->id . '">Edit</a>
-              </div>';
-        echo '<div class="table-cell-link">
                 <a href="' . BASE_PATH . 'user/delete" 
                    class="popup-form-delete" 
                    data-id="' . $user->id . '" 

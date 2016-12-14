@@ -14,7 +14,7 @@ class Group extends Eloquent
 
     public function get_all_groups()
     {
-        return( Group::all() );
+        return( Group::orderby('name')->get() );
     }
 
 }

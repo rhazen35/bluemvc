@@ -30,6 +30,11 @@
   display:table-row;
 }
 
+.table-row:nth-child(2)
+{
+  height:0.5rem;
+}
+
 .table .table-header
 {
   display:table-cell;
@@ -45,16 +50,19 @@
 {
   display:table-cell;
   width: auto;
-  height:100%;
   padding: 0.5rem;
   font-size:80%;
   border-bottom: 1px solid $light-blue-gray;
+  
+  i{
+    font-style: italic;
+  }
 }
 
 .table .table-cell-link
 {
   display:table-cell;
-  height:auto;
+  padding: 0.25rem;
   font-size:80%;
   border-bottom: 1px solid $light-blue-gray;
 }
@@ -63,15 +71,20 @@
 .table .table-cell select
 {
   width:100%;
-  padding:0.25rem;
   border:none;
 }
 
-.table .table-cell-link a
+.table .table-cell a
 {
   text-decoration:none;
   width:100%;
-  height:100%;
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.75rem 0.25rem 0.75rem;
   color: $white;
   background-color: $marine;
+}
+
+.table .table-cell a:hover
+{
+  background: $light-sky-blue;
 }

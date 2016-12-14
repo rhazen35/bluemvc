@@ -22,20 +22,33 @@ class RolesRepository extends RepositoryController
         return( $this->model->get_all_roles() );
     }
 
+    public function get_all_roles_paginated( $limit, $page )
+    {
+        return( $this->model->get_all_roles_paginated( $limit, $page ) );
+    }
+
     public function add_role( $data )
     {
-        $role_name = !empty( $data['full_name'] ) ? $data['full_name'] : "";
+        $full_name = !empty( $data['full_name'] ) ? $data['full_name'] : "";
         /** Setup the validate array */
         $array = array(
-            array('subject' => 'full_name|required|match-not-allowed'   , 'value' => $role_name)
+            array('subject' => 'full_name|required|match-not-allowed'   , 'value' => $full_name)
         );
         /** Validate the user input */
         $validation = $this->validate( $array );
+        /** Check if the name already exists */
+        $exists = empty( $this->get_role_from_name( $full_name ) ) ? false : true;
+        if ( $exists ) {
+            if( $validation === true ){
+                $validation = array();
+            }
+            $validation['full_name'] = "is in use.";
+        }
         /** Check if total validation has succeeded */
         if( $validation === true ) {
             $params = array(
                 'id'   => '',
-                'name' => $role_name
+                'name' => $full_name
             );
             $this->base_model->insert('roles', $params);
             /** Trigger event */
@@ -66,6 +79,20 @@ class RolesRepository extends RepositoryController
             );
             /** Validate the user input */
             $validation = $this->validate($array);
+            /** Check if the name already exists */
+            $roles = $this->get_role_from_id( $role_id );
+            foreach( $roles as $role ){
+                $role_name = $role->name;
+            }
+            if( $full_name !== $role_name ) {
+                $exists = empty($this->get_role_from_name($full_name)) ? false : true;
+                if ($exists) {
+                    if ($validation === true) {
+                        $validation = array();
+                    }
+                    $validation['full_name'] = "is in use.";
+                }
+            }
             /** Check if total validation has succeeded */
             if ($validation === true) {
                 $this->base_model->edit('roles', ['id' => $role_id], ['name' => $full_name]);

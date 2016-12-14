@@ -4,14 +4,19 @@ $groups = $this->get_all_groups();
 
 ?>
 
+<div class="table-intro">
+    <h1>System groups table</h1>
+    <p>Groups: <?= $groups->count() ?></p>
+</div>
+
 <div class="table">
     <div class="table-row">
         <div class="table-header">Group</div>
         <div class="table-header">Users</div>
         <div class="table-header">Since</div>
         <div class="table-header"></div>
-        <div class="table-header"></div>
     </div>
+    <div class="table-row"></div>
     <?php
     foreach( $groups as $group ){
         $total_users = $group->users->count();
@@ -26,16 +31,18 @@ $groups = $this->get_all_groups();
             }
             echo '</select>';
         } else {
-            echo 'This group has no users';
+            echo '<i>This group has no users</i>';
         }
         echo '</div>';
 
         echo '<div class="table-cell">' . $group->created_at . '</div>';
         echo '<div class="table-cell">
-                <a href="" class="popup-form-link" data-id="' . $group->id . '">Edit</a>
-              </div>';
-        echo '<div class="table-cell">
+                <a href="" class="popup-form-link" 
+                   data-id="' . $group->id . '"
+                   title="Edit group ' . $group->name . '"
+                   >Edit</a>
                 <a href="' . BASE_PATH . 'groups/delete" 
+                   title="Delete group ' . $group->name . '"
                    class="popup-form-delete" 
                    data-id="' . $group->id . '" 
                    data-text="Group ' . $group->name . ' is deleted."

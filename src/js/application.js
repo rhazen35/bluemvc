@@ -225,3 +225,21 @@ body.on('click', '.popup-form-delete', function(e) {
 });
 
 ///////////////////////////////////////////////////////////////
+
+// PAGINATION
+
+$(document).on('click', '.paginate', function(e){
+   e.preventDefault();
+   var page = $(this).attr('data-page');
+   var url  = $(this).attr('data-url');
+   console.log(page);
+    $.ajax({
+        dataType: 'html',
+        type: 'POST',
+        url: url,
+        data: {page:page},
+        success: function (html_response) {
+            table_wrapper.html(html_response);
+        }
+    });
+});

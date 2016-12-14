@@ -12,9 +12,6 @@ class Role extends Eloquent
 
     public function __construct()
     {
-        $this->userID  = !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "";
-        $this->capsule = unserialize( CAPSULE );
-        $this->table   = 'roles';
         parent::__construct();
     }
 
@@ -25,6 +22,13 @@ class Role extends Eloquent
 
     public function get_all_roles()
     {
-        return( Role::all() );
+        return( Role::orderby('name')->get() );
+    }
+
+    public function get_all_roles_paginated( $limit, $page )
+    {
+        $offset = ($page - 1) * $limit;
+        $roles = Role::orderby('name')->take($limit)->offset($offset)->get();
+        return($roles);
     }
 }

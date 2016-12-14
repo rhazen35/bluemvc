@@ -24,9 +24,15 @@ class Roles extends BaseController implements IController
         return( $this->repository->get_all_roles() );
     }
 
+    public function get_all_roles_paginated( $limit, $page )
+    {
+        return( $this->repository->get_all_roles_paginated( $limit, $page ) );
+    }
+
     public function get_roles_table_result()
     {
-        return( $this->view_partial('roles', 'table-roles', []) );
+        $page = !empty( $_POST['page'] ) ? $_POST['page'] : [];
+        return( $this->view_partial('roles', 'table-roles', $page) );
     }
 
     public function add_role()

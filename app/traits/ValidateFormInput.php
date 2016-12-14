@@ -11,6 +11,8 @@ use app\core\Library as Lib;
 trait ValidateFormInput
 {
     use UsersTrait;
+    use GroupsTrait;
+    use RolesTrait;
 
     /**
      * Validate passes the array to the rules to check if it matches any rule.
@@ -65,18 +67,10 @@ trait ValidateFormInput
              */
             if( $parts[0] === "full_name" ) {
                 if( !empty( $param ) ){
-                    $users = $this->get_user_from_id( $user_id );
-                    foreach( $users as $user ){
-                        $user_name = $user->name;
-                    }
+
                     $valid = Lib::hashSpecialChars( $param ) ? false : true;
                     if ( false === $valid ) {
                         $result[$parts[0]] = "has special characters";
-                    } elseif( false === $match_allowed || $param !== $user_name ) {
-                        $exists = empty( $this->get_user_from_name( $param ) ) ? false : true;
-                        if ( $exists ) {
-                            $result[$parts[0]] = "is in use.";
-                        }
                     }
                 }
             }

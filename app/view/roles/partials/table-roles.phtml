@@ -1,8 +1,22 @@
 <?php
 
-$roles = $this->get_all_roles();
+use app\core\Pagination;
+
+// Limit and page number
+
+$limit                  = ( !empty( $limit ) ? $limit : 12 );
+$pageNumber             = ( !empty( $data ) ? $data : 1 );
+
+$total_roles = $this->get_all_roles()->count();
+$roles       = $this->get_all_roles_paginated( $limit, $pageNumber );
+$totalRows   = $total_roles;
 
 ?>
+
+<div class="table-intro">
+    <h1>System roles table</h1>
+    <p>Roles: <?= $total_roles ?></p>
+</div>
 
 <div class="table">
     <div class="table-row">
@@ -10,8 +24,8 @@ $roles = $this->get_all_roles();
         <div class="table-header">Users</div>
         <div class="table-header">Since</div>
         <div class="table-header"></div>
-        <div class="table-header"></div>
     </div>
+    <div class="table-row"></div>
     <?php
     foreach( $roles  as $role ){
         $total_users = $role->users->count();
@@ -26,15 +40,13 @@ $roles = $this->get_all_roles();
             }
             echo '</select>';
         } else {
-            echo 'This role has no users';
+            echo '<i>This role has no users</i>';
         }
         echo '</div>';
 
         echo '<div class="table-cell">' . $role->created_at . '</div>';
         echo '<div class="table-cell">
                 <a href="" class="popup-form-link" data-id="' . $role->id . '">Edit</a>
-              </div>';
-        echo '<div class="table-cell">
                 <a href="' . BASE_PATH . 'roles/delete" 
                    class="popup-form-delete" 
                    data-id="' . $role->id . '" 
@@ -49,5 +61,17 @@ $roles = $this->get_all_roles();
         echo '</div>';
         echo '</div>';
     }
+
     ?>
 </div>
+
+<?php
+
+// Show the pagination if total rows is bigger then the limit.
+
+if( $totalRows > $limit ) {
+    $data_url = 'roles/get_roles_table_result';
+    echo ( new Pagination( $totalRows, $limit, $pageNumber ) )->createPagination( $data_url );
+} else {
+    echo 'sdfsfsdf';
+}
