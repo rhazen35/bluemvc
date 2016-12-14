@@ -4,18 +4,24 @@ use app\core\Pagination;
 
 // Limit and page number
 
-$limit                  = ( !empty( $limit ) ? $limit : 12 );
-$pageNumber             = ( !empty( $data ) ? $data : 1 );
+$limit                 = ( !empty( $limit ) ? $limit : 12 );
+$page                  = ( !empty( $data ) ? $data : 1 );
 
-$total_roles = $this->get_all_roles()->count();
-$roles       = $this->get_all_roles_paginated( $limit, $pageNumber );
-$totalRows   = $total_roles;
+$total_roles           = $this->get_all_roles()->count();
+$roles                 = $this->get_all_roles_paginated( $limit, $page );
+$total_roles_paginated = $roles->count();
+$total_rows            = $total_roles;
 
 ?>
 
 <div class="table-intro">
     <h1>System roles table</h1>
-    <p>Roles: <?= $total_roles ?></p>
+    <p>
+        Roles: <?= $total_roles ?>
+        <?php if( $total_roles_paginated > $limit ){ ?>
+        On this page: <?= $total_roles_paginated ?>
+        <?php } ?>
+    </p>
 </div>
 
 <div class="table">
@@ -69,9 +75,7 @@ $totalRows   = $total_roles;
 
 // Show the pagination if total rows is bigger then the limit.
 
-if( $totalRows > $limit ) {
+if( $total_rows > $limit ) {
     $data_url = 'roles/get_roles_table_result';
-    echo ( new Pagination( $totalRows, $limit, $pageNumber ) )->createPagination( $data_url );
-} else {
-    echo 'sdfsfsdf';
+    echo ( new Pagination( $total_rows, $limit, $page ) )->createPagination( $data_url );
 }

@@ -99,7 +99,7 @@ window.onclick = function(event) {
 $(document).on('click', '.popup-form-link', function(e) {
     e.preventDefault();
     var data_id = $(this).attr('data-id');
-    var form = $('.popup-form-form[data-id="' + data_id + '"]')[0];
+    var form    = $('.popup-form-form[data-id="' + data_id + '"]')[0];
     $('.popup-form').css('display', 'none');
     $('form input, form select').removeClass('input-error');
     $('.popup-form-section label span').html('');
