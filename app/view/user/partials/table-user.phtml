@@ -6,7 +6,7 @@ use app\core\Pagination;
 $limit                 = ( !empty( $limit ) ? $limit : 12 );
 $page                  = ( !empty( $data ) ? $data : 1 );
 $total_users           = $this->get_all_users()->count();
-$users                 = $this->get_all_users_paginated( $limit, $page )->sortBy('name', SORT_NATURAL, false);
+$users                 = $this->get_all_users_paginated( $limit, $page );
 
 $total_users_paginated = $users->count();
 $total_rows            = $total_users;

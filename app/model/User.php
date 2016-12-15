@@ -3,6 +3,7 @@
 namespace app\model;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class User extends Eloquent
 {
@@ -49,13 +50,13 @@ class User extends Eloquent
      */
     public function get_all_users()
     {
-        return( User::orderby('name')->get() );
+        return( User::orderby(DB::raw('LENGTH(name), name'))->get() );
     }
 
     public function get_all_users_paginated( $limit, $page )
     {
         $offset = ($page - 1) * $limit;
-        $users = User::orderby('name')->take($limit)->offset($offset)->get();
+        $users = User::orderby(DB::raw('LENGTH(name), name'))->take($limit)->offset($offset)->get();
         return($users);
     }
 }
