@@ -11,7 +11,7 @@ $user = !empty( $data ) ? $data : "";
     <h1>Delete system user <?= $user->name ?></h1>
     <fieldset>
         <legend>Please choose an option.</legend>
-        <input type="hidden" name="success" value="Role <?= $user->name ?> successfully deleted.">
+        <input type="hidden" name="success" value="User <?= $user->name ?> successfully deleted.">
         <input type="hidden" name="error" value="Something went wrong while deleting this user..">
         <input type="hidden" name="id" value="<?= $user->id ?>">
         <div class="popup-form-section">

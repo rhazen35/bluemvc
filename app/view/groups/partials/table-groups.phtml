@@ -16,7 +16,7 @@ $total_rows             = $total_groups;
 <div class="table-intro">
     <h1>System groups table</h1>
     <p>
-        Groups: <?= $groups->count() ?>
+        Groups: <?= $total_groups ?>
         <?php
         if( $total_groups > $limit ){
             echo '/ On this page: ' . $total_groups_paginated ;

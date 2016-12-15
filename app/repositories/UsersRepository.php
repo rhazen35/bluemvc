@@ -58,6 +58,7 @@ class UsersRepository extends RepositoryController
             array('subject' => 'password_repeat|required'               , 'value' => $password_repeat)
         );
         /** Validate the user input */
+        $full_name = ucfirst($full_name);
         $validation = $this->validate( $array );
         /** Check if the name already exists */
         $exists = empty( $this->get_user_from_name( $full_name ) ) ? false : true;
@@ -161,7 +162,7 @@ class UsersRepository extends RepositoryController
         if( $validation === true ) {
             /** Update the user */
             $params = array(
-                'name'  => $full_name,
+                'name'  => ucfirst($full_name),
                 'email' => $email,
             );
             $this->base_model->edit('users', ['id' => $user_id], $params);

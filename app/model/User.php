@@ -56,7 +56,7 @@ class User extends Eloquent
     public function get_all_users_paginated( $limit, $page )
     {
         $offset = ($page - 1) * $limit;
-        $users = User::orderby(DB::raw('LENGTH(name), name'))->take($limit)->offset($offset)->get();
+        $users = User::orderby('name')->take($limit)->offset($offset)->get();
         return($users);
     }
 }

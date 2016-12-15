@@ -151,7 +151,7 @@ $(document).on('click', '.submit-form', function(e) {
             ////////////////////////////////////////////
         },
         error: function() {
-            console.log();
+
         }
     });
     return false;
