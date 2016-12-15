@@ -51,4 +51,11 @@ class User extends Eloquent
     {
         return( User::orderby('name')->get() );
     }
+
+    public function get_all_users_paginated( $limit, $page )
+    {
+        $offset = ($page - 1) * $limit;
+        $users = User::orderby('name')->take($limit)->offset($offset)->get();
+        return($users);
+    }
 }

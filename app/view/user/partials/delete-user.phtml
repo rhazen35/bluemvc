@@ -1,0 +1,26 @@
+<?php
+$user = !empty( $data ) ? $data : "";
+?>
+
+<form action="<?= BASE_PATH ?>user/delete"
+      method="post"
+      class="popup-form-form"
+      data-url="<?= BASE_PATH ?>user/get_user_table_result"
+      data-id="delete-<?= $user->id ?>">
+    <a href="" class="popup-form-close"></a>
+    <h1>Delete system user <?= $user->name ?></h1>
+    <fieldset>
+        <legend>Please choose an option.</legend>
+        <input type="hidden" name="success" value="Role <?= $user->name ?> successfully deleted.">
+        <input type="hidden" name="error" value="Something went wrong while deleting this user..">
+        <input type="hidden" name="id" value="<?= $user->id ?>">
+        <div class="popup-form-section">
+            <label for="delete">Are you sure?<span></span></label>
+        </div>
+        <div class="popup-form-section">
+            <input type="submit" name="deleteUserSubmit" value="Yes" class="popup-form-delete">
+            <a href="" class="popup-form-delete-cancel">No</a>
+        </div>
+    </fieldset>
+</form>
+

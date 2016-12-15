@@ -17,4 +17,10 @@ class Group extends Eloquent
         return( Group::orderby('name')->get() );
     }
 
+    public function get_all_groups_paginated( $limit, $page )
+    {
+        $offset = ($page - 1) * $limit;
+        $groups = Group::orderby('name')->take($limit)->offset($offset)->get();
+        return($groups);
+    }
 }

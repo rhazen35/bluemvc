@@ -11,5 +11,5 @@ interface IController
     /**
      * @return mixed
      */
-    public function index();
+    public function index( $data = [] );
 }

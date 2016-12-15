@@ -3,7 +3,10 @@ $roles  = $this->get_all_roles();
 $groups = $this->get_all_groups();
 ?>
 
-<form action="<?= BASE_PATH ?>user/edit_user" method="post" class="popup-form-form" data-id="<?= $data->id ?>" data-url="<?= BASE_PATH ?>user/get_user_table_result">
+<form action="<?= BASE_PATH ?>user/edit_user"
+      method="post" class="popup-form-form"
+      data-id="edit-<?= $data->id ?>"
+      data-url="<?= BASE_PATH ?>user/get_user_table_result">
     <a href="" class="popup-form-close"></a>
     <h1>Edit user <?= $data->name ?></h1>
     <fieldset>

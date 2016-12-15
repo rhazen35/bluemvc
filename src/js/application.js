@@ -24,19 +24,6 @@ $( function() {
     });
 } );
 
-// POPUP FORM - close on click outside
-
-$(document).mousedown(function (e)
-{
-    var container = $(".popup-form");
-
-    if (!container.is(e.target)
-        && container.has(e.target).length === 0)
-    {
-        container.css('display', 'none');
-    }
-});
-
 // Loading gears
 
 $(window).load(function() {
@@ -95,7 +82,6 @@ window.onclick = function(event) {
 
 /// ------------------------  POPUP FORM ------------------ \\\
 
-
 $(document).on('click', '.popup-form-link', function(e) {
     e.preventDefault();
     var data_id = $(this).attr('data-id');
@@ -103,13 +89,13 @@ $(document).on('click', '.popup-form-link', function(e) {
     $('.popup-form').css('display', 'none');
     $('form input, form select').removeClass('input-error');
     $('.popup-form-section label span').html('');
-    var form = $('.popup-form-form[data-id="' + data_id + '"]')[0];
     $('#' + data_id).css('display', 'block');
+    $('.popup-form-form[data-id="' + data_id + '"] :input:enabled:visible:first').focus();
     form.reset();
 });
 
 // CLOSE POPUP
-$(document).on('click', '.popup-form-close', function(e){
+$(document).on('click', '.popup-form-close, .popup-form-delete-cancel', function(e){
    e.preventDefault();
     $('form input, form select').removeClass('input-error');
     $('.popup-form-section label span').html('');
@@ -128,6 +114,7 @@ $(document).on('click', '.submit-form', function(e) {
         url          = form.action,
         data_url     = $(form).attr('data-url'),
         data         = $(form).serialize(),
+        page         = localStorage.getItem('_pagination_page'),
         success_mesg = $(form).find("input[name='success']").val(),
         error_mesg   = $(form).find("input[name='error']").val();
     ////////////////////////////////////////////
@@ -145,6 +132,7 @@ $(document).on('click', '.submit-form', function(e) {
                     dataType: 'html',
                     type: 'POST',
                     url: data_url,
+                    data: {page:page},
                     success: function (html_response) {
                         table_wrapper.html(html_response);
                     }
@@ -193,12 +181,17 @@ function popup_message_timeout( element, message ) {
 }
 ////////////////////////////////////////////
 // POPUP FORM DELETE
+
 body.on('click', '.popup-form-delete', function(e) {
     e.preventDefault();
-    var url      = $(this).attr('href');
-    var data     = $(this).attr('data-id');
-    var data_url = $(this).attr('data-url');
-    var text     = $(this).attr('data-text');
+    var form         = this.form;
+    var url          = form.action;
+    var data         = $(form).find("input[name='id']").val();
+    var data_url     = $(form).attr('data-url');
+    var text         = $(form).attr('data-text');
+    var page         = localStorage.getItem('_pagination_page');
+    var success_mesg = $(form).find("input[name='success']").val();
+    var error_mesg   = $(form).find("input[name='error']").val();
 
     $.ajax({
         dataType: 'json',
@@ -207,17 +200,18 @@ body.on('click', '.popup-form-delete', function(e) {
         data: {id:data},
         success: function (response) {
             if( response === true ) {
-                popup_message_timeout(ajax_success, text);
+                popup_message_timeout(ajax_success, success_mesg);
                 $.ajax({
                     dataType: 'html',
                     type: 'POST',
                     url: data_url,
+                    data: {page:page},
                     success: function (html_response) {
                         table_wrapper.html(html_response);
                     }
                 });
             } else {
-                popup_message_timeout(ajax_failed, response);
+                popup_message_timeout(ajax_failed, error_mesg);
             }
         }
     });
@@ -232,14 +226,14 @@ $(document).on('click', '.paginate', function(e){
    e.preventDefault();
    var page = $(this).attr('data-page');
    var url  = $(this).attr('data-url');
-   console.log(page);
+    localStorage.setItem('_pagination_page', page);
     $.ajax({
         dataType: 'html',
         type: 'POST',
         url: url,
         data: {page:page},
-        success: function (html_response) {
-            table_wrapper.html(html_response);
+        success: function (response) {
+            table_wrapper.html(response);
         }
     });
 });

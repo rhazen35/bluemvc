@@ -8,11 +8,11 @@
 
 <div class="popup-form-container">
     <div class="popup-form" id="new-group">
-        <?php $this->view_partial('groups', 'new-group', []); ?>
+        <?php $this->view_partial('groups', 'new-group', $data = []); ?>
     </div>
 </div>
 
 <div id="table-wrapper">
-    <?php $this->view_partial( "groups", "table-groups", [] ); ?>
+    <?php $this->view_partial( "groups", "table-groups", $data = [] ); ?>
 </div>
 

@@ -22,6 +22,11 @@ class GroupsRepository extends RepositoryController
         return( $this->model->get_all_groups() );
     }
 
+    public function get_all_groups_paginated( $limit, $page )
+    {
+        return( $this->model->get_all_groups_paginated( $limit, $page ) );
+    }
+
     public function add_group( $data )
     {
         $full_name = !empty( $data['full_name'] ) ? $data['full_name'] : "";

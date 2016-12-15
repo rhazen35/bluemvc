@@ -1,0 +1,26 @@
+<?php
+$group = !empty( $data ) ? $data : "";
+?>
+
+<form action="<?= BASE_PATH ?>groups/delete"
+      method="post"
+      class="popup-form-form"
+      data-url="<?= BASE_PATH ?>groups/get_groups_table_result"
+      data-id="delete-<?= $group->id ?>">
+    <a href="" class="popup-form-close"></a>
+    <h1>Delete system group <?= $group->name ?></h1>
+    <fieldset>
+        <legend>Please choose an option.</legend>
+        <input type="hidden" name="success" value="Group <?= $group->name ?> successfully deleted.">
+        <input type="hidden" name="error" value="Something went wrong while deleting this role..">
+        <input type="hidden" name="id" value="<?= $group->id ?>">
+        <div class="popup-form-section">
+            <label for="delete">Are you sure?<span></span></label>
+        </div>
+        <div class="popup-form-section">
+            <input type="submit" name="deleteGroupSubmit" value="Yes" class="popup-form-delete">
+            <a href="" class="popup-form-delete-cancel">No</a>
+        </div>
+    </fieldset>
+</form>
+

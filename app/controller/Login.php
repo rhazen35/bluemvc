@@ -29,9 +29,9 @@ class Login extends BaseController implements IController
         $this->login_table   = 'login_user';
     }
 
-    public function index()
+    public function index( $data = [] )
     {
-        $this->view('home/index', []);
+        $this->view('home/index', $data = []);
     }
 
     /**

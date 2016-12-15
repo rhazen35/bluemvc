@@ -26,6 +26,11 @@ class UsersRepository extends RepositoryController
         return( $this->model->get_all_users() );
     }
 
+    public function get_all_users_paginated( $limit, $page )
+    {
+        return( $this->model->get_all_users_paginated( $limit, $page ) );
+    }
+
     public function get_user_from_id( $user_id ){
         return( $this->base_model->get( 'users', ['id' => $user_id], false, false) );
     }

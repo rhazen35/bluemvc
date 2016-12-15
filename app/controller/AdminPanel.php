@@ -12,8 +12,8 @@ class AdminPanel extends BaseController implements IController
 
     }
 
-    public function index()
+    public function index( $data = [] )
     {
-        $this->view('adminpanel/index', []);
+        $this->view('adminpanel/index', $data = []);
     }
 }

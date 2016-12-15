@@ -14,9 +14,9 @@ class Roles extends BaseController implements IController
         $this->repository = $this->repository('RolesRepository');
     }
 
-    public function index()
+    public function index( $data = [] )
     {
-        $this->view('roles/index', []);
+        $this->view('roles/index', $data = []);
     }
 
     public function get_all_roles()

@@ -172,8 +172,10 @@ option:first-child
   box-shadow: 0 0 5px rgba(81, 203, 238, 1);
 }
 
-.popup-form form fieldset input[type="submit"]
+.popup-form form fieldset input[type="submit"],
+.popup-form-delete-cancel
 {
+  text-decoration:none;
   margin-top:0.5rem;
   padding: 0.5rem 1rem 0.5rem 1rem;
   background: $dark-gray-blue;
@@ -181,7 +183,15 @@ option:first-child
   cursor:pointer;
 }
 
-.popup-form form fieldset input[type="submit"]:hover
+.popup-form-delete-cancel
+{
+  margin-left:1rem;
+  padding: 0.4rem 1rem 0.4rem 1rem;
+  font-size:90%;
+}
+
+.popup-form form fieldset input[type="submit"]:hover,
+.popup-form-delete-cancel:hover
 {
   background: $light-sky-blue;
 }

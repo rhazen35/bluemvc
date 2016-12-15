@@ -22,9 +22,9 @@ class User extends BaseController implements IController
         $this->repository = $this->repository("UsersRepository");
     }
 
-    public function index()
+    public function index( $data = [] )
     {
-        $this->view('user/index', []);
+        $this->view('user/index', $data = []);
     }
 
     public function new_user()
@@ -42,10 +42,16 @@ class User extends BaseController implements IController
         $this->repository->edit_user( $_POST );
     }
 
+    public function get_all_users_paginated( $limit, $page )
+    {
+        return( $this->repository->get_all_users_paginated( $limit, $page ) );
+    }
+
     /** Returns the user-table partial in case of a needed ajax response */
     public function get_user_table_result()
     {
-        return ($this->view_partial("user", "table-user", []));
+        $page = !empty( $_POST['page'] ) ? $_POST['page'] : [];
+        return ($this->view_partial("user", "table-user", $page));
     }
 
     /**

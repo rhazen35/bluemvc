@@ -14,9 +14,9 @@ class Groups extends BaseController implements IController
         $this->repository = $this->repository('GroupsRepository');
     }
 
-    public function index()
+    public function index( $data = [] )
     {
-        $this->view('groups/index', []);
+        $this->view('groups/index', $data = []);
     }
 
     /**
@@ -28,12 +28,19 @@ class Groups extends BaseController implements IController
         return( $this->repository->get_all_groups() );
     }
 
+    /** Get all groups paginated */
+    public function get_all_groups_paginated( $limit, $page )
+    {
+        return( $this->repository->get_all_groups_paginated( $limit, $page ) );
+    }
+
     /**
      * Get the groups table as a response after AJAX request
      */
     public function get_groups_table_result()
     {
-        return( $this->view_partial('groups', 'table-groups', []) );
+        $page = !empty( $_POST['page'] ) ? $_POST['page'] : [];
+        return( $this->view_partial('groups', 'table-groups', $page) );
     }
 
     /**

@@ -1,12 +1,35 @@
 <?php
 
-$users = $this->get_all_users();
+use app\core\Pagination;
+
+// Limit and page number
+$limit                 = ( !empty( $limit ) ? $limit : 12 );
+$page                  = ( !empty( $data ) ? $data : 1 );
+$total_users           = $this->get_all_users()->count();
+$users                 = $this->get_all_users_paginated( $limit, $page )->sortBy('name', SORT_NATURAL, false);
+
+$total_users_paginated = $users->count();
+$total_rows            = $total_users;
 
 ?>
 
 <div class="table-intro">
     <h1>System users table</h1>
-    <p>Users: <?= $users->count() ?></p>
+    <p>
+        Users: <?= $total_users ?>
+        <?php
+        if( $total_users > $limit ){
+            echo '/ On this page: ' . $total_users_paginated ;
+        }
+        ?>
+    </p>
+    <div class="table-select-rows">
+        <form action="<?= BASE_PATH ?>user/index"
+        >
+            <input type="text" name="rows" value="<?= $limit ?>">
+            <input type="submit" name="rowSubmit" value="set" class="submit-form">
+        </form>
+    </div>
 </div>
 
 <div class="table">
@@ -54,19 +77,37 @@ $users = $this->get_all_users();
         echo '<div class="table-cell">' . $user_last_login . '</div>';
         echo '<div class="table-cell">' . $user->created_at . '</div>';
         echo '<div class="table-cell">
-                <a href="" class="popup-form-link" data-id="' . $user->id . '">Edit</a>
+                <a href="" 
+                   class="popup-form-link" 
+                   data-id="edit-' . $user->id . '"
+                   title="Edit user ' . $user->name . '"
+                   >Edit</a>
                 <a href="' . BASE_PATH . 'user/delete" 
-                   class="popup-form-delete" 
-                   data-id="' . $user->id . '" 
+                   class="popup-form-link" 
+                   data-id="delete-' . $user->id . '" 
                    data-url="' . BASE_PATH . 'user/get_user_table_result"
-                   data-text="User ' . $user->name . ' is deleted.">Delete</a>
+                   data-text="User ' . $user->name . ' is deleted."
+                   title="Delete user ' . $user->name . '"
+                   >Delete</a>
               </div>';
         echo '</div>';
         echo '<div class="popup-form-container">';
-        echo '<div class="popup-form" id="' . $user->id . '">';
+        echo '<div class="popup-form" id="edit-' . $user->id . '">';
             $this->view_partial('user', 'edit-user', $user);
+        echo '</div>';
+        echo '<div class="popup-form" id="delete-' . $user->id  . '">';
+            $this->view_partial('user', 'delete-user', $user);
         echo '</div>';
         echo '</div>';
     }
     ?>
 </div>
+
+<?php
+// Show the pagination if total rows is bigger then the limit.
+
+if( $total_rows > $limit ) {
+    $data_url = 'user/get_user_table_result';
+    echo ( new Pagination( $total_rows, $limit, $page ) )->createPagination( $data_url );
+}
+?>

@@ -1,12 +1,28 @@
 <?php
 
-$groups = $this->get_all_groups();
+use app\core\Pagination;
+
+// Limit and page number
+$limit                 = ( !empty( $limit ) ? $limit : 12 );
+$page                  = ( !empty( $data ) ? $data : 1 );
+$total_groups          = $this->get_all_groups()->count();
+$groups                = $this->get_all_groups_paginated( $limit, $page )->sortBy('name', SORT_NATURAL, true);
+
+$total_groups_paginated = $groups->count();
+$total_rows             = $total_groups;
 
 ?>
 
 <div class="table-intro">
     <h1>System groups table</h1>
-    <p>Groups: <?= $groups->count() ?></p>
+    <p>
+        Groups: <?= $groups->count() ?>
+        <?php
+        if( $total_groups > $limit ){
+            echo '/ On this page: ' . $total_groups_paginated ;
+        }
+        ?>
+    </p>
 </div>
 
 <div class="table">
@@ -37,24 +53,39 @@ $groups = $this->get_all_groups();
 
         echo '<div class="table-cell">' . $group->created_at . '</div>';
         echo '<div class="table-cell">
-                <a href="" class="popup-form-link" 
-                   data-id="' . $group->id . '"
+                <a href="" 
+                   class="popup-form-link" 
+                   data-id="edit-' . $group->id . '"
+                   data-page="' . $page . '"
                    title="Edit group ' . $group->name . '"
                    >Edit</a>
                 <a href="' . BASE_PATH . 'groups/delete" 
                    title="Delete group ' . $group->name . '"
-                   class="popup-form-delete" 
-                   data-id="' . $group->id . '" 
-                   data-text="Group ' . $group->name . ' is deleted."
+                   class="popup-form-link" 
+                   data-id="delete-' . $group->id . '" 
+                   data-page="' . $page . '"
                    data-url="' . BASE_PATH . 'groups/get_groups_table_result"
+                   title="Delete group ' . $group->name . '"
                    >Delete</a>
               </div>';
         echo '</div>';
         echo '<div class="popup-form-container">';
-        echo '<div class="popup-form" id="' . $group->id . '">';
+        echo '<div class="popup-form" id="edit-' . $group->id . '">';
             $this->view_partial('groups', 'edit-group', $group);
+        echo '</div>';
+        echo '<div class="popup-form" id="delete-' . $group->id  . '">';
+        $this->view_partial('groups', 'delete-group', $group);
         echo '</div>';
         echo '</div>';
     }
     ?>
 </div>
+
+<?php
+// Show the pagination if total rows is bigger then the limit.
+
+if( $total_rows > $limit ) {
+    $data_url = 'groups/get_groups_table_result';
+    echo ( new Pagination( $total_rows, $limit, $page ) )->createPagination( $data_url );
+}
+?>

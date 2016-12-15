@@ -3,12 +3,11 @@
 use app\core\Pagination;
 
 // Limit and page number
-
 $limit                 = ( !empty( $limit ) ? $limit : 12 );
 $page                  = ( !empty( $data ) ? $data : 1 );
-
 $total_roles           = $this->get_all_roles()->count();
-$roles                 = $this->get_all_roles_paginated( $limit, $page );
+$roles                 = $this->get_all_roles_paginated( $limit, $page )->sortBy('name');
+
 $total_roles_paginated = $roles->count();
 $total_rows            = $total_roles;
 
@@ -18,9 +17,11 @@ $total_rows            = $total_roles;
     <h1>System roles table</h1>
     <p>
         Roles: <?= $total_roles ?>
-        <?php if( $total_roles_paginated > $limit ){ ?>
-        On this page: <?= $total_roles_paginated ?>
-        <?php } ?>
+        <?php
+            if( $total_roles > $limit ){
+                echo '/ On this page: ' . $total_roles_paginated ;
+             }
+        ?>
     </p>
 </div>
 
@@ -52,18 +53,26 @@ $total_rows            = $total_roles;
 
         echo '<div class="table-cell">' . $role->created_at . '</div>';
         echo '<div class="table-cell">
-                <a href="" class="popup-form-link" data-id="' . $role->id . '">Edit</a>
+                <a href="" class="popup-form-link" 
+                   data-id="edit-' . $role->id . '"
+                   data-page="' . $page . '"
+                   title="Edit role ' . $role->name . '"
+                   >Edit</a>
                 <a href="' . BASE_PATH . 'roles/delete" 
-                   class="popup-form-delete" 
-                   data-id="' . $role->id . '" 
-                   data-text="Role ' . $role->name . ' is deleted."
+                   class="popup-form-link" 
+                   data-id="delete-'. $role->id . '"
                    data-url="' . BASE_PATH . 'roles/get_roles_table_result"
+                   data-page="' . $page . '"
+                   title="Delete role ' . $role->name . '"
                    >Delete</a>
               </div>';
         echo '</div>';
         echo '<div class="popup-form-container">';
-        echo '<div class="popup-form" id="' . $role->id . '">';
+        echo '<div class="popup-form" id="edit-' . $role->id . '">';
             $this->view_partial('roles', 'edit-role', $role);
+        echo '</div>';
+        echo '<div class="popup-form" id="delete-' . $role->id  . '">';
+            $this->view_partial('roles', 'delete-role', $role);
         echo '</div>';
         echo '</div>';
     }
@@ -72,10 +81,10 @@ $total_rows            = $total_roles;
 </div>
 
 <?php
-
 // Show the pagination if total rows is bigger then the limit.
 
 if( $total_rows > $limit ) {
     $data_url = 'roles/get_roles_table_result';
     echo ( new Pagination( $total_rows, $limit, $page ) )->createPagination( $data_url );
 }
+?>
