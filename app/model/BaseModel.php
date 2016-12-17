@@ -20,12 +20,12 @@ class BaseModel extends Eloquent implements IBaseModel
         return( $return_id );
     }
 
-    public function get( $table, $params, $groups, $orders )
+    public function get( $table, $where, $groups, $orders )
     {
         $query = $this->capsule->table( $table );
 
-        if( $params !== false ) {
-            $query->where( $params );
+        if( $where !== false ) {
+            $query->where( $where );
         }
         $execute = $query->get();
         return ($execute);

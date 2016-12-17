@@ -6,11 +6,13 @@ use app\core\Pagination;
 $limit                 = ( !empty( $limit ) ? $limit : 12 );
 $page                  = ( !empty( $data ) ? $data : 1 );
 $total_groups          = $this->get_all_groups()->count();
-$groups                = $this->get_all_groups_paginated( $limit, $page )->sortBy('name', SORT_NATURAL, true);
+$groups                = $this->get_all_groups_paginated( $limit, $page );
 
 $total_groups_paginated = $groups->count();
 $total_rows             = $total_groups;
 
+
+var_dump( $page );
 ?>
 
 <div class="table-intro">
@@ -85,7 +87,7 @@ $total_rows             = $total_groups;
 // Show the pagination if total rows is bigger then the limit.
 
 if( $total_rows > $limit ) {
-    $data_url = 'groups/get_groups_table_result';
+    $data_url   = 'groups/get_groups_table_result';
     echo ( new Pagination( $total_rows, $limit, $page ) )->createPagination( $data_url );
 }
 ?>

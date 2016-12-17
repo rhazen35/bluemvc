@@ -3,9 +3,17 @@
 namespace app\model;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Capsule\Manager as DB;
 
 class Group extends Eloquent
 {
+    protected $capsule;
+
+    public function __construct(array $attributes = [])
+    {
+        $this->capsule = unserialize( CAPSULE );
+        parent::__construct($attributes);
+    }
 
     public function users()
     {
@@ -20,7 +28,7 @@ class Group extends Eloquent
     public function get_all_groups_paginated( $limit, $page )
     {
         $offset = ($page - 1) * $limit;
-        $groups = Group::orderby('name')->take($limit)->offset($offset)->get();
+        $groups = Group::orderBy(DB::raw('LENGTH(name), name'))->take($limit)->offset($offset)->get();
         return($groups);
     }
 }
