@@ -1,0 +1,96 @@
+<?php
+
+use app\traits\GroupsTrait;
+
+$roles  = $this->get_all_roles();
+$groups = $this->get_all_groups();
+
+$validation_params = isset( $_SESSION['validationParams'] ) ? $_SESSION['validationParams'] : "";
+$form_params       = isset( $_SESSION['formParams'] ) ? $_SESSION['formParams'] : "";
+
+var_dump($form_params);
+
+if( !empty( $validation_params ) ){ unset( $_SESSION['validationParams'] );}
+if( !empty( $form_params ) ){ unset( $_SESSION['formParams'] );}
+
+$posted_full_name    = isset( $form_params['full_name'] ) ? $form_params['full_name'] : "";
+$posted_email        = isset( $form_params['email'] ) ? $form_params['email'] : "";
+$posted_group        = isset( $form_params['group'] ) ? $form_params['group'] : "";
+$posted_role         = isset( $form_params['role'] ) ? $form_params['role'] : "";
+$posted_password     = isset( $form_params['password'] ) ? $form_params['password'] : "";
+$posted_pass_repeat  = isset( $form_params['password_repeat'] ) ? $form_params['password_repeat'] : "";
+
+$invalid_full_name   = isset( $validation_params['full_name'] ) ? $validation_params['full_name'] : "";
+$invalid_email       = isset( $validation_params['email'] ) ? $validation_params['email'] : "";
+$invalid_group       = isset( $validation_params['group'] ) ? $validation_params['group'] : "";
+$invalid_role        = isset( $validation_params['role'] ) ? $validation_params['role'] : "";
+$invalid_password    = isset( $validation_params['password'] ) ? $validation_params['password'] : "";
+$invalid_pass_repeat = isset( $validation_params['password_repeat'] ) ? $validation_params['password_repeat'] : "";
+
+?>
+
+
+<div class="container">
+    <div class="container-title">New user</div>
+    <div class="container-menu">
+        <a href="<?= BASE_PATH ?>user/index" onclick="goBack()">Go back</a>
+    </div>
+</div>
+
+<div class="popup-form-container">
+    <div class="popup-form" id="new-user">
+        <form action="<?= BASE_PATH ?>user/add_user"
+              class="popup-form-form"
+              method="post"
+              data-id="new-user"
+              data-url="<?= BASE_PATH ?>user/get_user_table_result">
+            <h1>New system user</h1>
+            <fieldset>
+                <legend>Please fill in the form below.</legend>
+                <input type="hidden" name="success" value="New user successfully added.">
+                <input type="hidden" name="error" value="There were problems validating the form.">
+                <div class="popup-form-section">
+                    <label for="full_name">Full name<span><?= $invalid_full_name ?></span></label>
+                    <input type="text" name="full_name" value="<?= $posted_full_name ?>" title="Please enter a full name"placeholder="First and last name">
+                    <label for="email">Email<span><?= $invalid_email ?></span></label>
+                    <input type="email" name="email" value="<?= $posted_email ?>" title="Please enter an email adress" placeholder="Email address">
+                </div>
+                <div class="popup-form-section">
+                    <label for="group">Group<span><?= $invalid_group ?></span></label>
+                    <select name="group" title="Please choose a group">
+                        <?php
+                            if( !empty( $posted_group ) ){
+                                $group_name = $this->get_group_from_id( $posted_group );
+                                echo'<option value="' . $posted_group . '">' . $posted_group . '</option>';
+                            }
+                        ?>
+                        <option value="">Choose a group</option>
+                        <?php
+                        foreach( $groups as $group ){
+                            echo '<option value="' . $group->id . '">' . $group->name . '</option>';
+                        }
+                        ?>
+                    </select>
+                    <label for="group">Role<span><?= $invalid_role ?></span></label>
+                    <select name="role" title="Please choose a role">
+                        <option value="">Choose a role</option>
+                        <?php
+                        foreach( $roles as $role ){
+                            echo '<option value="' . $role->id . '">' . $role->name . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="popup-form-section">
+                    <label for="password">Password<span><?= $invalid_password ?></span></label>
+                    <input type="password" name="password" value="" title="Enter a password, please" placeholder="Enter a password">
+                    <label for="password_repeat">Password repeat<span><?= $invalid_pass_repeat ?></span></label>
+                    <input type="password" name="password_repeat" value="" title="Repeat the password, please" placeholder="Repeat the password">
+                </div>
+                <div class="popup-form-section">
+                    <input type="submit" name="newUserSubmit" value="Add" class="submit-form">
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

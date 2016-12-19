@@ -28,48 +28,40 @@ $privileges = ( new Privileges() )->privileges;
     <title>Blueberry</title>
 </head>
 <body>
-<!--<div class="se-pre-con">-->
-<!--    <div class="se-pre-con-txt">-->
-<!--            <span>-->
-<!--                <img src="--><?//= PUBLIC_PATH . 'img/icons/gears.gif?'. uniqid() ?><!--">-->
-<!--                <br>-->
-<!--                Loading, please wait...-->
-<!--            </span>-->
-<!--    </div>-->
-<!--</div>-->
 
-<div class="header">
-    <?php if( !empty( $_SESSION['login'] ) ): ?>
-    <div class="header-navigation dropdown">
-        <button onclick="menuDropDown()" class="dropbtn"></button>
-        <div id="myDropdown" class="dropdown-content">
-            <a href="<?= BASE_PATH ?>home/index">Home</a>
-            <a href="<?= BASE_PATH ?>projects/index">Projects</a>
-            <a href="<?= BASE_PATH ?>manual/index">Manual</a>
-            <?php
-                foreach( $privileges as $privilege ):
-                    if( $privilege === "Administrator" ):
-                ?>
-                        <a href="<?= BASE_PATH ?>adminPanel/index">Admin Panel</a>
-                <?php
-                    endif;
-                endforeach;
-             ?>
-            <a href="<?= BASE_PATH ?>contact/index">Contact</a>
+    <div class="header">
+        <?php if( !empty( $_SESSION['login'] ) ): ?>
+        <div class="header-navigation dropdown">
+            <div class="dropdown-content">
+                <ul class="dropbtn">
+                    <li><a href="<?= BASE_PATH ?>home/index">Home</a></li>
+                    <li><a href="<?= BASE_PATH ?>projects/index">Projects</a></li>
+                    <li><a href="<?= BASE_PATH ?>manual/index">Manual</a></li>
+                    <?php
+                    foreach( $privileges as $privilege ):
+                        if( $privilege === "Administrator" ):
+                            ?>
+                            <li><a href="<?= BASE_PATH ?>adminPanel/index">Admin Panel</a></li>
+                            <?php
+                        endif;
+                    endforeach;
+                    ?>
+                    <li><a href="<?= BASE_PATH ?>contact/index">Contact</a></li>
+                </ul>
+            </div>
         </div>
+        <?php endif; ?>
+        <div class="header-title">Blueberry</div>
+        <?php if( !empty( $_SESSION['login'] ) ): ?>
+        <div class="header-logout">
+            <img class="logout-img" data-alt-src="<?= PUBLIC_PATH . 'img/icons/lock_icon_closed.png'?>" src="<?= PUBLIC_PATH ?>img/icons/lock_icon_open.png">
+            <a class="logout" href="<?= BASE_PATH ?>login/logout" title="Click to logout">Logout</a>
+        </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
-    <div class="header-title">Blueberry</div>
-    <?php if( !empty( $_SESSION['login'] ) ): ?>
-    <div class="header-logout">
-        <img class="logout-img" data-alt-src="<?= PUBLIC_PATH . 'img/icons/lock_icon_closed.png'?>" src="<?= PUBLIC_PATH ?>img/icons/lock_icon_open.png">
-        <a class="logout" href="<?= BASE_PATH ?>login/logout" title="Click to logout">Logout</a>
-    </div>
-    <?php endif; ?>
-</div>
 
-<?= ( new EventMessage() )->display() ?>
+    <?= ( new EventMessage() )->display() ?>
 
-<div class="ajax-success"></div>
-<div class="ajax-failed"></div>
+    <div class="ajax-success"></div>
+    <div class="ajax-failed"></div>
 

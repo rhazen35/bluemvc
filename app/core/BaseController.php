@@ -50,5 +50,17 @@ class BaseController implements IBaseController
         include( Lib::path("app/view/" . $view . "/partials/" . $partial . ".phtml" ) );
     }
 
+    /**
+     * @return bool
+     */
+    public function is_ajax_request()
+    {
+        if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            return( true );
+        } else {
+            return( false );
+        }
+    }
+
 
 }

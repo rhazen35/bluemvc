@@ -24,7 +24,7 @@ class User extends BaseController implements IController
 
     public function index( $data = [] )
     {
-        $this->view('user/index', $data = []);
+        $this->view('user/index', $data);
     }
 
     public function new_user()

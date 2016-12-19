@@ -94,15 +94,13 @@ class UsersRepository extends RepositoryController
             echo json_encode( true );
         } else {
             /** Respond with json object */
-            if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&  strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            if( $this->is_ajax_request() ){
+                /** Respond with json object */
                 echo json_encode( $validation ) ;
-                exit;
-            /** Respond with html message */
             } else {
-                echo 'Form validation failed.';
-                foreach( $validation as $validated ){
-                    echo $validated;
-                }
+                $_SESSION['validationParams'] = $validation;
+                $_SESSION['formParams']       = $data;
+                header("Location: " . BASE_PATH . "user/new");
             }
         }
     }
@@ -221,16 +219,11 @@ class UsersRepository extends RepositoryController
             /** Trigger event */
             echo json_encode( true );
         } else {
-            /** Respond with json object */
-            if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&  strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            if( $this->is_ajax_request() ){
+                /** Respond with json object */
                 echo json_encode( $validation ) ;
-                exit;
-                /** Respond with html message */
             } else {
-                echo 'Form validation failed.';
-                foreach( $validation as $validated ){
-                    echo $validated;
-                }
+               header("Location: " . BASE_PATH . "user/index");
             }
         }
     }

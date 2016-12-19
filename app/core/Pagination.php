@@ -87,7 +87,7 @@ class Pagination
         return ($paginationParams);
     }
 
-    public function createPagination ( $data_url )
+    public function createPagination ( $url, $data_url )
     {
         // Determine total number of pages
         $totalPages = $lastPage = ceil($this->totalRows / $this->limit);
@@ -115,7 +115,11 @@ class Pagination
             $previous = $pageNumber - 1;
             $markup .= '<div class="paginationFlex">';
             $markup .= '<div class="pagination-link">';
-            $markup .= '<a href="" data-page="' . $previous . '" data-url="' . BASE_PATH . $data_url . '" class="paginate">Previous</a>';
+            $markup .= '<a href="' . BASE_PATH . $url .'?page=' . $previous . '" 
+                           data-page="' . $previous . '" 
+                           data-url="' . BASE_PATH . $data_url . '" 
+                           class="paginate"
+                           >Previous</a>';
             $markup .= '</div>';
             $markup .= '</div>';
         endif;
@@ -126,7 +130,11 @@ class Pagination
         if($paginationParams['drawFirstPage']):
             $markup .= '<div class="paginationFlex">';
             $markup .= '<div class="pagination-link">';
-            $markup .= '<a href=""  data-page="' . 1 . '" data-url="' . BASE_PATH . $data_url . '" class="paginate">1...</a>';
+            $markup .= '<a href="' . BASE_PATH . $url .'?page=1"  
+                           data-page="' . 1 . '" 
+                           data-url="' . BASE_PATH . $data_url . '" 
+                           class="paginate"
+                           >1...</a>';
             $markup .= '</div>';
             $markup .= '</div>';
         endif;
@@ -138,7 +146,11 @@ class Pagination
         for($i = $pageNumber - $paginationParams['linksBefore']; $i < $pageNumber; $i++):
             $markup .= '<div class="paginationFlex">';
             $markup .= '<div class="pagination-link">';
-            $markup .= '<a href="" data-page="' . $i . '" data-url="' . BASE_PATH . $data_url . '" class="paginate">' . $i . '</a>';
+            $markup .= '<a href="' . BASE_PATH . $url .'?page=' . $i . '" 
+                           data-page="' . $i . '" 
+                           data-url="' . BASE_PATH . $data_url . '" 
+                           class="paginate"
+                           >' . $i . '</a>';
             $markup .= '</div>';
             $markup .= '</div>';
         endfor;
@@ -159,7 +171,11 @@ class Pagination
         for($i = $pageNumber+1, $l = $paginationParams['linksAfter']; $l > 0; $i++, $l--):
             $markup .= '<div class="paginationFlex">';
             $markup .= '<div class="pagination-link">';
-            $markup .= '<a href="" data-page="' . $i . '" data-url="' . BASE_PATH . $data_url . '" class="paginate">'.$i.'</a> ';
+            $markup .= '<a href="' . BASE_PATH . $url .'?page=' . $i . '" 
+                           data-page="' . $i . '" 
+                           data-url="' . BASE_PATH . $data_url . '" 
+                           class="paginate"
+                           >'.$i.'</a> ';
             $markup .= '</div>';
             $markup .= '</div>';
         endfor;
@@ -170,7 +186,11 @@ class Pagination
         if($paginationParams['drawLastPage']):
             $markup .= '<div class="paginationFlex">';
             $markup .= '<div class="pagination-link">';
-            $markup .= '<a href=""  data-page="' . $lastPage . '" data-url="' . BASE_PATH . $data_url . '" class="paginate">...'.$lastPage.'</a>';
+            $markup .= '<a href="' . BASE_PATH . $url .'?page=' . $i . '"  
+                           data-page="' . $lastPage . '" 
+                           data-url="' . BASE_PATH . $data_url . '" 
+                           class="paginate"
+                           >...'.$lastPage.'</a>';
             $markup .= '</div>';
             $markup .= '</div>';
         endif;
@@ -180,13 +200,13 @@ class Pagination
 
         if($pageNumber < $lastPage):
             $next = $pageNumber + 1;
-            $_SESSION['page'] = $next;
             $markup .= '<div class="paginationFlex">';
             $markup .= '<div class="pagination-link">';
-            $markup .= '<a href="" 
+            $markup .= '<a href="' . BASE_PATH . $url .'?page=' . $next . '" 
                            data-page="' . $next . '" 
                            data-url="' . BASE_PATH . $data_url . '"
-                           class="paginate">Next</a>';
+                           class="paginate"
+                           >Next</a>';
             $markup .= '</div>';
             $markup .= '</div>';
         endif;

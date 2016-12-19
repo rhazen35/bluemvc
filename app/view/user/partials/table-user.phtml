@@ -3,8 +3,9 @@
 use app\core\Pagination;
 
 // Limit and page number
-$limit                 = ( !empty( $limit ) ? $limit : 12 );
-$page                  = ( !empty( $data ) ? $data : 1 );
+$limit                 = !empty( $limit ) ? $limit : 12;
+$page                  = !empty( $data ) ? $data : 1 ;
+
 $total_users           = $this->get_all_users()->count();
 $users                 = $this->get_all_users_paginated( $limit, $page );
 
@@ -24,8 +25,7 @@ $total_rows            = $total_users;
         ?>
     </p>
     <div class="table-select-rows">
-        <form action="<?= BASE_PATH ?>user/index"
-        >
+        <form action="<?= BASE_PATH ?>user/index">
             <input type="text" name="rows" value="<?= $limit ?>">
             <input type="submit" name="rowSubmit" value="set" class="submit-form">
         </form>
@@ -79,10 +79,11 @@ $total_rows            = $total_users;
         echo '<div class="table-cell">
                 <a href="" 
                    class="popup-form-link" 
+                   data-page="' . $page . '"
                    data-id="edit-' . $user->id . '"
                    title="Edit user ' . $user->name . '"
                    >Edit</a>
-                <a href="' . BASE_PATH . 'user/delete" 
+                <a href="' . BASE_PATH . 'user/delete/page=' . $page . '" 
                    class="popup-form-link" 
                    data-id="delete-' . $user->id . '" 
                    data-url="' . BASE_PATH . 'user/get_user_table_result"
@@ -107,7 +108,6 @@ $total_rows            = $total_users;
 // Show the pagination if total rows is bigger then the limit.
 
 if( $total_rows > $limit ) {
-    $data_url = 'user/get_user_table_result';
-    echo ( new Pagination( $total_rows, $limit, $page ) )->createPagination( $data_url );
+    echo ( new Pagination( $total_rows, $limit, $page ) )->createPagination( 'user/index', 'user/get_user_table_result' );
 }
 ?>

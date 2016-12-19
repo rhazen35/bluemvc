@@ -4,7 +4,7 @@ namespace app\core;
 
 use app\core\Library as Lib;
 
-class RepositoryController
+class RepositoryController extends BaseController
 {
     /** Model
      * @param $model
