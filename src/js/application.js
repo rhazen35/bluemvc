@@ -36,7 +36,7 @@ $(window).load(function() {
 // Event messages
 
 $(document).ready(function(){
-    $(".event-success").delay(3500).animate({ height: 0, opacity: 0 }, 'fast');
+    $(".event-success").delay(2000).animate({ height: 0, opacity: 0 }, 'fast');
     $(".event-failed").delay(4500).animate({ height: 0, opacity: 0 }, 'fast');
 });
 
@@ -114,7 +114,6 @@ $(document).on('click', '.submit-form', function(e) {
         url          = form.action,
         data_url     = $(form).attr('data-url'),
         data         = $(form).serialize(),
-        page         = localStorage.getItem('_pagination_page'),
         success_mesg = $(form).find("input[name='success']").val(),
         error_mesg   = $(form).find("input[name='error']").val();
     ////////////////////////////////////////////
@@ -132,7 +131,7 @@ $(document).on('click', '.submit-form', function(e) {
                     dataType: 'html',
                     type: 'POST',
                     url: data_url,
-                    data: {page:page},
+                    data: data,
                     success: function (html_response) {
                         table_wrapper.html(html_response);
                     }
@@ -189,7 +188,6 @@ body.on('click', '.popup-form-delete', function(e) {
     var data         = $(form).find("input[name='id']").val();
     var data_url     = $(form).attr('data-url');
     var text         = $(form).attr('data-text');
-    var page         = localStorage.getItem('_pagination_page');
     var success_mesg = $(form).find("input[name='success']").val();
     var error_mesg   = $(form).find("input[name='error']").val();
 
@@ -226,7 +224,6 @@ $(document).on('click', '.paginate', function(e){
    e.preventDefault();
    var page = $(this).attr('data-page');
    var url  = $(this).attr('data-url');
-    localStorage.setItem('_pagination_page', page);
     $.ajax({
         dataType: 'html',
         type: 'POST',

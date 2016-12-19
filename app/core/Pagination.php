@@ -23,6 +23,8 @@ class Pagination
 
     private function getPaginationParams($pageNumber, $totalPages)
     {
+        $paginationParams = array();
+
         // Get linkCount from options variable
         $linkCount = $this->paginationOpts['linkCount'];
 
@@ -82,7 +84,7 @@ class Pagination
             );
         endif;
 
-        return $paginationParams;
+        return ($paginationParams);
     }
 
     public function createPagination ( $data_url )
@@ -178,18 +180,23 @@ class Pagination
 
         if($pageNumber < $lastPage):
             $next = $pageNumber + 1;
+            $_SESSION['page'] = $next;
             $markup .= '<div class="paginationFlex">';
             $markup .= '<div class="pagination-link">';
-            $markup .= '<a href="" data-page="' . $next . '" data-url="' . BASE_PATH . $data_url . '" class="paginate">Next</a>';
+            $markup .= '<a href="" 
+                           data-page="' . $next . '" 
+                           data-url="' . BASE_PATH . $data_url . '"
+                           class="paginate">Next</a>';
             $markup .= '</div>';
             $markup .= '</div>';
         endif;
 
 
-        //////////////////// Finish and echo ////////////////////
+        //////////////////// Finish and return ////////////////////
 
         $markup .= '</div>';
-        return($markup);
+
+        return( $markup );
     }
 }
 ?>

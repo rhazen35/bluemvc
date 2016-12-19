@@ -16,7 +16,7 @@ class Groups extends BaseController implements IController
 
     public function index( $data = [] )
     {
-        $this->view('groups/index', $data = []);
+        $this->view('groups/index', $data);
     }
 
     /**

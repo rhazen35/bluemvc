@@ -19,8 +19,15 @@ class Library
     {
         return str_replace( $sDelimiter, $sReplacementDelimiter, $sPath );
     }
-    /** Get the current user is */
-    public static function get_current_user_id(){return( !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "" );}
+
+    /**
+     * Get the current user id
+     */
+    public static function get_current_user_id()
+    {
+        return( !empty( $_SESSION['login'] ) ? $_SESSION['login'] : "" );
+    }
+
     /** Redirect
      * @param string $location
      */
@@ -29,6 +36,7 @@ class Library
         header("Location: " . BASE_PATH . $location . "");
         exit();
     }
+
     /**
      * Convert microtime to readable time
      * @param $data
@@ -43,6 +51,7 @@ class Library
 
         return( number_format( (float)$seconds, 2, '.', '' ) );
     }
+
     /** Convert a date time format
      * @param $data
      * @return false|string
@@ -52,6 +61,7 @@ class Library
         $originalDate = $data;
         return( date( "d-m-Y H:i:s", strtotime( $originalDate ) ) );
     }
+
     /**
      * @param $data
      * @return false|string
@@ -61,6 +71,7 @@ class Library
         $originalDate = $data;
         return( date( "d-m-Y", strtotime( $originalDate ) ) );
     }
+
     /**
      * Remove a directory recursively
      * @param $dir
@@ -82,6 +93,7 @@ class Library
             rmdir( $dir );
         endif;
     }
+
     /**
      * Create a random password
      * @return string
@@ -99,6 +111,7 @@ class Library
 
         return( implode( $pass ) );
     }
+
     /** Check if an array is not empty
      * @param $params
      * @return bool
@@ -112,22 +125,33 @@ class Library
                 return false;
         return true;
     }
+
     /** Returns selected */
     public static function selectedIf( $expression ){return $expression ? 'selected' : '';}
+
     /** Checks if a date isn't empty */
     public static function ifNotEmptyDate( $date ){return $date !== '0000-00-00' ? $date : '';}
+
     /** Checks if a string has special chars */
-    public static function hashSpecialChars( $string ){return( preg_match( '/[\'^£$%&*()}{@~?><>,|=_]/', trim( $string ) ) ? true : false );}
+    public static function hashSpecialChars( $string )
+    {
+        return( preg_match( '/[\'^£$%&*()}{@~?><>,|=_]/', trim( $string ) ) ? true : false );
+
+    }
+
     /** Checks if the given email is valid */
     public static function isValidEmail( $email ){return( filter_var( trim( $email ), FILTER_VALIDATE_EMAIL ) );}
+
     /** Checks if the string has numbers */
     public static function stringHasNumbers( $string ){return( preg_match('#[0-9]#',trim( $string ) ) ? true : false );}
+
     /** Checks if the string contains digits only */
     public static function containsOnlyDigits( $string )
     {
         $string = str_replace( " ", "", $string );
         return( ctype_digit( $string ) );
     }
+
     /** Create a random color hex code */
     public static function random_color_hex() {return sprintf('#%06X', mt_rand(0, 0xFFFFFF));}
 

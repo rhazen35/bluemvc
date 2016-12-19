@@ -46,6 +46,7 @@ class GroupsRepository extends RepositoryController
         }
         /** Check if total validation has succeeded */
         if( $validation === true ) {
+            $full_name = ucfirst( $full_name );
             $params = array(
                 'id'   => '',
                 'name' => $full_name
@@ -95,6 +96,7 @@ class GroupsRepository extends RepositoryController
             }
             /** Check if total validation has succeeded */
             if ($validation === true) {
+                $full_name = ucfirst( $full_name );
                 $this->base_model->edit('groups', ['id' => $group_id], ['name' => $full_name]);
                 /** Trigger event */
                 echo json_encode(true);
